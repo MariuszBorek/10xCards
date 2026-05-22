@@ -45,3 +45,9 @@ pnpm-debug.log*
 # Misc
 .claude/
 .env.test
+
+# from 10x-astro-starter
+.astro/
+.env.production
+.dev.vars
+.wrangler/
