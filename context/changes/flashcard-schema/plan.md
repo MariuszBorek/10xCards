@@ -197,21 +197,21 @@ export interface FlashcardInsert {
 
 #### Automated
 
-- [x] 1.1 `npx supabase db reset` exits 0 with no errors
+- [x] 1.1 `npx supabase db reset` exits 0 with no errors — 7368058
 
 #### Manual
 
-- [x] 1.2 Studio shows `flashcards` table with 7 columns
-- [x] 1.3 Studio shows RLS enabled with 4 policies on `flashcards`
-- [x] 1.4 Studio shows `idx_flashcards_user_id` index
+- [x] 1.2 Studio shows `flashcards` table with 7 columns — 7368058
+- [x] 1.3 Studio shows RLS enabled with 4 policies on `flashcards` — 7368058
+- [x] 1.4 Studio shows `idx_flashcards_user_id` index — 7368058
 
 ### Phase 2: TypeScript Entity Types
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` passes on `src/types.ts`
-- [ ] 2.2 `npx astro check` passes
+- [x] 2.1 `npm run lint` passes on `src/types.ts`
+- [x] 2.2 `npx astro check` passes
 
 #### Manual
 
-- [ ] 2.3 `src/types.ts` fields match migration columns column-for-column
+- [x] 2.3 `src/types.ts` fields match migration columns column-for-column
