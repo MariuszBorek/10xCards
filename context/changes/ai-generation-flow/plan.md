@@ -420,32 +420,32 @@ Wire the React component to an Astro page, protect the route via middleware, and
 
 #### Automated
 
-- [x] 3.1 `npm run lint` passes on src/components/generate/
-- [x] 3.2 `npx astro check` passes
+- [x] 3.1 `npm run lint` passes on src/components/generate/ — cf80896
+- [x] 3.2 `npx astro check` passes — cf80896
 
 #### Manual
 
-- [ ] 3.3 Idle state renders textarea and Generate button
-- [ ] 3.4 > 300 words shows soft-cap warning (does not block submit)
-- [ ] 3.5 Empty submit shows validation error, no API call fired
-- [ ] 3.6 Submit shows 4 skeleton cards then real candidates
-- [ ] 3.7 Accept persists card immediately; Supabase Studio shows the row
-- [ ] 3.8 Reject removes candidate from view
-- [ ] 3.9 Edit shows all 3 fields; Save auto-accepts and persists
-- [ ] 3.10 Zero-candidate response shows empty state with Try again + Add manually
-- [ ] 3.11 API failure shows error message + Retry (input preserved)
+- [x] 3.3 Idle state renders textarea and Generate button
+- [x] 3.4 > 300 words shows soft-cap warning (does not block submit)
+- [x] 3.5 Empty submit shows validation error, no API call fired
+- [x] 3.6 Submit shows 4 skeleton cards then real candidates
+- [x] 3.7 Accept persists card immediately; Supabase Studio shows the row
+- [x] 3.8 Reject removes candidate from view
+- [x] 3.9 Edit shows all 3 fields; Save auto-accepts and persists
+- [x] 3.10 Zero-candidate response shows empty state with Try again + Add manually
+- [x] 3.11 API failure shows error message + Retry (input preserved)
 
 ### Phase 4: Page, Route Protection & Navigation
 
 #### Automated
 
-- [ ] 4.1 `npm run lint` passes
-- [ ] 4.2 `npx astro check` passes
-- [ ] 4.3 `npm run build` exits 0
+- [x] 4.1 `npm run lint` passes
+- [x] 4.2 `npx astro check` passes
+- [x] 4.3 `npm run build` exits 0
 
 #### Manual
 
-- [ ] 4.4 Unauthenticated visit to /generate redirects to /auth/signin
-- [ ] 4.5 Authenticated visit to /generate loads GenerateView
-- [ ] 4.6 Dashboard shows working link to /generate
-- [ ] 4.7 Full end-to-end flow: sign in → generate → accept → verify row in Supabase Studio
+- [x] 4.4 Unauthenticated visit to /generate redirects to /auth/signin
+- [x] 4.5 Authenticated visit to /generate loads GenerateView
+- [x] 4.6 Dashboard shows working link to /generate
+- [x] 4.7 Full end-to-end flow: sign in → generate → accept → verify row in Supabase Studio
