@@ -214,49 +214,49 @@ No schema migration needed. The `flashcards` table and all RLS policies were pro
 
 #### Automated
 
-- [x] 1.1 Type check passes: `npx astro check`
-- [x] 1.2 Linting passes: `npm run lint`
+- [x] 1.1 Type check passes: `npx astro check` — 6bba87b
+- [x] 1.2 Linting passes: `npm run lint` — 6bba87b
 
 #### Manual
 
-- [x] 1.3 GET /api/flashcards returns empty array for user with no flashcards
-- [x] 1.4 GET /api/flashcards returns flashcards for authenticated user (newest-first)
-- [x] 1.5 GET /api/flashcards returns 401 for unauthenticated request
-- [x] 1.6 PATCH /api/flashcards/:id updates and returns updated flashcard
-- [x] 1.7 PATCH /api/flashcards/:id returns 404 for unknown/unowned ID
-- [x] 1.8 DELETE /api/flashcards/:id returns 204 and removes the row
-- [x] 1.9 DELETE /api/flashcards/:id returns 404 for unknown/unowned ID
+- [x] 1.3 GET /api/flashcards returns empty array for user with no flashcards — 6bba87b
+- [x] 1.4 GET /api/flashcards returns flashcards for authenticated user (newest-first) — 6bba87b
+- [x] 1.5 GET /api/flashcards returns 401 for unauthenticated request — 6bba87b
+- [x] 1.6 PATCH /api/flashcards/:id updates and returns updated flashcard — 6bba87b
+- [x] 1.7 PATCH /api/flashcards/:id returns 404 for unknown/unowned ID — 6bba87b
+- [x] 1.8 DELETE /api/flashcards/:id returns 204 and removes the row — 6bba87b
+- [x] 1.9 DELETE /api/flashcards/:id returns 404 for unknown/unowned ID — 6bba87b
 
 ### Phase 2: Collection UI Components
 
 #### Automated
 
-- [ ] 2.1 Input and Dialog components installed: `ls src/components/ui/input.tsx src/components/ui/dialog.tsx`
-- [ ] 2.2 Type check passes: `npx astro check`
-- [ ] 2.3 Linting passes: `npm run lint`
+- [x] 2.1 Input and Dialog components installed: `ls src/components/ui/input.tsx src/components/ui/dialog.tsx`
+- [x] 2.2 Type check passes: `npx astro check`
+- [x] 2.3 Linting passes: `npm run lint`
 
 #### Manual
 
-- [ ] 2.4 Loading skeletons appear, then list populates from API
-- [ ] 2.5 Empty state shows "Generate flashcards" link to /generate
-- [ ] 2.6 Add form validates: inline error for blank word or translation
-- [ ] 2.7 Add form saves new flashcard; it appears at top of list
-- [ ] 2.8 Edit mode shows pre-filled fields; Save persists changes
-- [ ] 2.9 Cancel returns to view mode without changes
-- [ ] 2.10 Delete button opens confirmation dialog
-- [ ] 2.11 Confirm removes the row; Cancel does nothing
+- [x] 2.4 Loading skeletons appear, then list populates from API
+- [x] 2.5 Empty state shows "Generate flashcards" link to /generate
+- [x] 2.6 Add form validates: inline error for blank word or translation
+- [x] 2.7 Add form saves new flashcard; it appears at top of list
+- [x] 2.8 Edit mode shows pre-filled fields; Save persists changes
+- [x] 2.9 Cancel returns to view mode without changes
+- [x] 2.10 Delete button opens confirmation dialog
+- [x] 2.11 Confirm removes the row; Cancel does nothing
 
 ### Phase 3: Page, Navigation, and Route Protection
 
 #### Automated
 
-- [ ] 3.1 Type check passes: `npx astro check`
-- [ ] 3.2 Linting passes: `npm run lint`
-- [ ] 3.3 Production build succeeds: `npm run build`
+- [x] 3.1 Type check passes: `npx astro check`
+- [x] 3.2 Linting passes: `npm run lint`
+- [x] 3.3 Production build succeeds: `npm run build`
 
 #### Manual
 
-- [ ] 3.4 /collection redirects to /auth/signin when unauthenticated
-- [ ] 3.5 Authenticated user accesses /collection without redirect
-- [ ] 3.6 Topbar shows Dashboard | Collection | Sign out when logged in
-- [ ] 3.7 End-to-end: add → edit inline → delete flow works correctly
+- [x] 3.4 /collection redirects to /auth/signin when unauthenticated
+- [x] 3.5 Authenticated user accesses /collection without redirect
+- [x] 3.6 Topbar shows Dashboard | Collection | Sign out when logged in
+- [x] 3.7 End-to-end: add → edit inline → delete flow works correctly
