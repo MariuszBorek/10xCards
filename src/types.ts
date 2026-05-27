@@ -14,3 +14,9 @@ export interface FlashcardInsert {
   translation: string;
   context?: string | null;
 }
+
+export interface FlashcardCandidate {
+  word: string;
+  translation: string;
+  context: string | null;
+}
