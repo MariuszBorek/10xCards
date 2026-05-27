@@ -391,13 +391,13 @@ Wire the React component to an Astro page, protect the route via middleware, and
 
 #### Automated
 
-- [x] 1.1 `npm run lint` passes on new files
-- [x] 1.2 `npx astro check` passes
-- [x] 1.3 `npm run build` completes without errors
+- [x] 1.1 `npm run lint` passes on new files — a23dcad
+- [x] 1.2 `npx astro check` passes — a23dcad
+- [x] 1.3 `npm run build` completes without errors — a23dcad
 
 #### Manual
 
-- [x] 1.4 `OPENROUTER_MOCK=true`: POST /api/flashcards/generate returns 3 mock candidates
+- [x] 1.4 `OPENROUTER_MOCK=true`: POST /api/flashcards/generate returns 3 mock candidates — a23dcad
 - [ ] 1.5 Real API key: POST /api/flashcards/generate returns plausible candidates for a foreign-language sentence
 - [ ] 1.6 Blank input returns HTTP 400
 - [ ] 1.7 Unauthenticated request returns HTTP 401
@@ -406,15 +406,15 @@ Wire the React component to an Astro page, protect the route via middleware, and
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` passes
-- [ ] 2.2 `npx astro check` passes
+- [x] 2.1 `npm run lint` passes
+- [x] 2.2 `npx astro check` passes
 
 #### Manual
 
-- [ ] 2.3 Authenticated POST /api/flashcards with valid body returns 201 + flashcard object
-- [ ] 2.4 Unauthenticated request returns 401
-- [ ] 2.5 Missing required field returns 400
-- [ ] 2.6 Row appears in Supabase Studio with correct user_id
+- [x] 2.3 Authenticated POST /api/flashcards with valid body returns 201 + flashcard object
+- [x] 2.4 Unauthenticated request returns 401
+- [x] 2.5 Missing required field returns 400
+- [x] 2.6 Row appears in Supabase Studio with correct user_id
 
 ### Phase 3: GenerateView React Component
 
