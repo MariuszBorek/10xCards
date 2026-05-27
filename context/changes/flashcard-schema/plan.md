@@ -209,9 +209,9 @@ export interface FlashcardInsert {
 
 #### Automated
 
-- [x] 2.1 `npm run lint` passes on `src/types.ts`
-- [x] 2.2 `npx astro check` passes
+- [x] 2.1 `npm run lint` passes on `src/types.ts` — 81073bb
+- [x] 2.2 `npx astro check` passes — 81073bb
 
 #### Manual
 
-- [x] 2.3 `src/types.ts` fields match migration columns column-for-column
+- [x] 2.3 `src/types.ts` fields match migration columns column-for-column — 81073bb
