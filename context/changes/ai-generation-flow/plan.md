@@ -439,13 +439,13 @@ Wire the React component to an Astro page, protect the route via middleware, and
 
 #### Automated
 
-- [x] 4.1 `npm run lint` passes
-- [x] 4.2 `npx astro check` passes
-- [x] 4.3 `npm run build` exits 0
+- [x] 4.1 `npm run lint` passes — 0f5e621
+- [x] 4.2 `npx astro check` passes — 0f5e621
+- [x] 4.3 `npm run build` exits 0 — 0f5e621
 
 #### Manual
 
-- [x] 4.4 Unauthenticated visit to /generate redirects to /auth/signin
-- [x] 4.5 Authenticated visit to /generate loads GenerateView
-- [x] 4.6 Dashboard shows working link to /generate
-- [x] 4.7 Full end-to-end flow: sign in → generate → accept → verify row in Supabase Studio
+- [x] 4.4 Unauthenticated visit to /generate redirects to /auth/signin — 0f5e621
+- [x] 4.5 Authenticated visit to /generate loads GenerateView — 0f5e621
+- [x] 4.6 Dashboard shows working link to /generate — 0f5e621
+- [x] 4.7 Full end-to-end flow: sign in → generate → accept → verify row in Supabase Studio — 0f5e621
