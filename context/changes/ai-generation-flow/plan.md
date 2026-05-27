@@ -406,22 +406,22 @@ Wire the React component to an Astro page, protect the route via middleware, and
 
 #### Automated
 
-- [x] 2.1 `npm run lint` passes
-- [x] 2.2 `npx astro check` passes
+- [x] 2.1 `npm run lint` passes — d872c94
+- [x] 2.2 `npx astro check` passes — d872c94
 
 #### Manual
 
-- [x] 2.3 Authenticated POST /api/flashcards with valid body returns 201 + flashcard object
-- [x] 2.4 Unauthenticated request returns 401
-- [x] 2.5 Missing required field returns 400
-- [x] 2.6 Row appears in Supabase Studio with correct user_id
+- [x] 2.3 Authenticated POST /api/flashcards with valid body returns 201 + flashcard object — d872c94
+- [x] 2.4 Unauthenticated request returns 401 — d872c94
+- [x] 2.5 Missing required field returns 400 — d872c94
+- [x] 2.6 Row appears in Supabase Studio with correct user_id — d872c94
 
 ### Phase 3: GenerateView React Component
 
 #### Automated
 
-- [ ] 3.1 `npm run lint` passes on src/components/generate/
-- [ ] 3.2 `npx astro check` passes
+- [x] 3.1 `npm run lint` passes on src/components/generate/
+- [x] 3.2 `npx astro check` passes
 
 #### Manual
 
