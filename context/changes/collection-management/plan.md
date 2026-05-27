@@ -231,32 +231,32 @@ No schema migration needed. The `flashcards` table and all RLS policies were pro
 
 #### Automated
 
-- [x] 2.1 Input and Dialog components installed: `ls src/components/ui/input.tsx src/components/ui/dialog.tsx`
-- [x] 2.2 Type check passes: `npx astro check`
-- [x] 2.3 Linting passes: `npm run lint`
+- [x] 2.1 Input and Dialog components installed: `ls src/components/ui/input.tsx src/components/ui/dialog.tsx` — 64bcef4
+- [x] 2.2 Type check passes: `npx astro check` — 64bcef4
+- [x] 2.3 Linting passes: `npm run lint` — 64bcef4
 
 #### Manual
 
-- [x] 2.4 Loading skeletons appear, then list populates from API
-- [x] 2.5 Empty state shows "Generate flashcards" link to /generate
-- [x] 2.6 Add form validates: inline error for blank word or translation
-- [x] 2.7 Add form saves new flashcard; it appears at top of list
-- [x] 2.8 Edit mode shows pre-filled fields; Save persists changes
-- [x] 2.9 Cancel returns to view mode without changes
-- [x] 2.10 Delete button opens confirmation dialog
-- [x] 2.11 Confirm removes the row; Cancel does nothing
+- [x] 2.4 Loading skeletons appear, then list populates from API — 64bcef4
+- [x] 2.5 Empty state shows "Generate flashcards" link to /generate — 64bcef4
+- [x] 2.6 Add form validates: inline error for blank word or translation — 64bcef4
+- [x] 2.7 Add form saves new flashcard; it appears at top of list — 64bcef4
+- [x] 2.8 Edit mode shows pre-filled fields; Save persists changes — 64bcef4
+- [x] 2.9 Cancel returns to view mode without changes — 64bcef4
+- [x] 2.10 Delete button opens confirmation dialog — 64bcef4
+- [x] 2.11 Confirm removes the row; Cancel does nothing — 64bcef4
 
 ### Phase 3: Page, Navigation, and Route Protection
 
 #### Automated
 
-- [x] 3.1 Type check passes: `npx astro check`
-- [x] 3.2 Linting passes: `npm run lint`
-- [x] 3.3 Production build succeeds: `npm run build`
+- [x] 3.1 Type check passes: `npx astro check` — 343a15b
+- [x] 3.2 Linting passes: `npm run lint` — 343a15b
+- [x] 3.3 Production build succeeds: `npm run build` — 343a15b
 
 #### Manual
 
-- [x] 3.4 /collection redirects to /auth/signin when unauthenticated
-- [x] 3.5 Authenticated user accesses /collection without redirect
-- [x] 3.6 Topbar shows Dashboard | Collection | Sign out when logged in
-- [x] 3.7 End-to-end: add → edit inline → delete flow works correctly
+- [x] 3.4 /collection redirects to /auth/signin when unauthenticated — 343a15b
+- [x] 3.5 Authenticated user accesses /collection without redirect — 343a15b
+- [x] 3.6 Topbar shows Dashboard | Collection | Sign out when logged in — 343a15b
+- [x] 3.7 End-to-end: add → edit inline → delete flow works correctly — 343a15b

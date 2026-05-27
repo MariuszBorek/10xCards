@@ -1,9 +1,9 @@
 ---
 change_id: collection-management
 title: Collection management — manually add, browse, edit, and delete flashcards
-status: implementing
+status: implemented
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-28
 archived_at: null
 ---
 
