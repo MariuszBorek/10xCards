@@ -1,7 +1,7 @@
 ---
 change_id: anki-csv-export
 title: Export flashcard collection to Anki-compatible CSV
-status: implementing
+status: implemented
 created: 2026-05-28
 updated: 2026-05-28
 archived_at: null
