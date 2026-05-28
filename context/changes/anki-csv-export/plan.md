@@ -178,8 +178,8 @@ Add `handleExport` to `CollectionView.tsx` and render an "Export to Anki" button
 
 #### Automated
 
-- [x] 1.1 Lint passes: `npm run lint`
-- [x] 1.2 Type check passes: `npx astro check`
+- [x] 1.1 Lint passes: `npm run lint` — 48ff6a0
+- [x] 1.2 Type check passes: `npx astro check` — 48ff6a0
 
 #### Manual
 
@@ -192,8 +192,8 @@ Add `handleExport` to `CollectionView.tsx` and render an "Export to Anki" button
 
 #### Automated
 
-- [ ] 2.1 Lint passes: `npm run lint`
-- [ ] 2.2 Type check passes: `npx astro check`
+- [x] 2.1 Lint passes: `npm run lint`
+- [x] 2.2 Type check passes: `npx astro check`
 
 #### Manual
 

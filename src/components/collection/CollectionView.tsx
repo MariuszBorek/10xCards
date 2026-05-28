@@ -17,6 +17,9 @@ export function CollectionView() {
   const [addError, setAddError] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
 
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
+
   useEffect(() => {
     async function fetchFlashcards() {
       try {
@@ -78,6 +81,28 @@ export function CollectionView() {
     setFlashcards((prev) => prev.map((f) => (f.id === id ? json.flashcard : f)));
   }
 
+  async function handleExport() {
+    setExporting(true);
+    setExportError(null);
+    try {
+      const res = await fetch("/api/flashcards/export");
+      if (!res.ok) throw new Error("Export failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `anki-export-${new Date().toISOString().slice(0, 10)}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch {
+      setExportError("Export failed. Please try again.");
+    } finally {
+      setExporting(false);
+    }
+  }
+
   async function handleDelete(id: string) {
     const res = await fetch(`/api/flashcards/${id}`, { method: "DELETE" });
     if (!res.ok) throw new Error("Delete failed");
@@ -86,7 +111,18 @@ export function CollectionView() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
-      <h1 className="text-2xl font-bold">My Collection</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">My Collection</h1>
+        <Button
+          variant="outline"
+          onClick={() => void handleExport()}
+          disabled={loading || flashcards.length === 0 || exporting}
+          title={flashcards.length === 0 ? "No flashcards to export" : undefined}
+        >
+          {exporting ? "Exporting…" : "Export to Anki"}
+        </Button>
+      </div>
+      {exportError && <p className="text-sm text-red-600">{exportError}</p>}
 
       <div className="space-y-3 rounded-lg border p-4">
         <h2 className="font-medium">Add flashcard</h2>
