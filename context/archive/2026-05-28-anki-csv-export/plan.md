@@ -64,7 +64,7 @@ Create `src/pages/api/flashcards/export.ts` that authenticates the caller, queri
 - Supabase query: `supabase.from("flashcards").select("word, translation, context").order("created_at", { ascending: false })`.
 - Inline escape helper (not exported): replaces `\t`, `\n`, `\r` in a string with a space.
 - CSV body: first line is `#separator:tab`; each subsequent line is `escape(word)\t escape(translation)\t escape(context ?? "")`.
-- Response headers: `Content-Type: text/plain; charset=utf-8`, `Content-Disposition: attachment; filename="anki-export.txt"`.
+- Response headers: `Content-Type: text/plain; charset=utf-8`, `Content-Disposition: attachment; filename="anki-export-<YYYY-MM-DD>.txt"` (dated with the current UTC date).
 - On Supabase error: `500` with JSON error body (same pattern as `index.ts:24-26`).
 
 ### Success Criteria
@@ -76,7 +76,7 @@ Create `src/pages/api/flashcards/export.ts` that authenticates the caller, queri
 
 #### Manual Verification
 
-- `curl -b <session-cookie> http://localhost:4321/api/flashcards/export` returns `200` with `Content-Disposition: attachment; filename="anki-export.txt"` and `Content-Type: text/plain`.
+- `curl -b <session-cookie> http://localhost:4321/api/flashcards/export` returns `200` with `Content-Disposition: attachment; filename="anki-export-<YYYY-MM-DD>.txt"` and `Content-Type: text/plain`.
 - Response body first line is `#separator:tab`.
 - Each subsequent line contains exactly two tab characters (three columns).
 - A field value that contains a tab or newline is collapsed to a space (test with a manually inserted row in local Supabase).
@@ -108,7 +108,7 @@ Add `handleExport` to `CollectionView.tsx` and render an "Export to Anki" button
 
 **Intent**: Fetch `/api/flashcards/export`, convert the response to a Blob URL, inject a hidden `<a download>` element, click it, then clean up. Show an inline error message if the fetch fails.
 
-**Contract**: Async function (no parameters). Sets `exporting = true` / clears `exportError` on entry. On success: `res.blob()` → `URL.createObjectURL` → create `<a>` with `href` and `download="anki-export.txt"` → append to `document.body` → `.click()` → remove from DOM → `URL.revokeObjectURL`. On any error: `setExportError("Export failed. Please try again.")`. Sets `exporting = false` in `finally`.
+**Contract**: Async function (no parameters). Sets `exporting = true` / clears `exportError` on entry. On success: `res.blob()` → `URL.createObjectURL` → create `<a>` with `href` and `download="anki-export-<YYYY-MM-DD>.txt"` (dated with the current UTC date, matching the server's Content-Disposition) → append to `document.body` → `.click()` → remove from DOM → `URL.revokeObjectURL`. On any error: `setExportError("Export failed. Please try again.")`. Sets `exporting = false` in `finally`.
 
 #### 3. Header layout and export button
 
@@ -139,7 +139,7 @@ Add `handleExport` to `CollectionView.tsx` and render an "Export to Anki" button
 - Button is disabled (grayed out) while flashcards are loading.
 - Button is disabled when collection is empty; hovering shows the native tooltip "No flashcards to export".
 - Button shows "Exporting…" while the fetch is in progress.
-- Clicking the button on a non-empty collection triggers a file download named `anki-export.txt`.
+- Clicking the button on a non-empty collection triggers a file download named `anki-export-<YYYY-MM-DD>.txt` (e.g. `anki-export-2026-05-29.txt`).
 - Opening the downloaded file in a text editor shows: first line `#separator:tab`, subsequent lines with three tab-separated columns.
 - A flashcard with diacritics (e.g., `café`, `über`), commas, or quotes exports without corruption.
 - On simulated export failure (temporary server error), an error message appears below the header; button returns to active state.
