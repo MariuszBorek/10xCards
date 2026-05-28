@@ -36,11 +36,13 @@ export const GET: APIRoute = async (context) => {
   );
   const csv = ["#separator:tab", ...rows].join("\n");
 
+  const filename = `anki-export-${new Date().toISOString().slice(0, 10)}.txt`;
+
   return new Response(csv, {
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
-      "Content-Disposition": 'attachment; filename="anki-export.txt"',
+      "Content-Disposition": `attachment; filename="${filename}"`,
     },
   });
 };
