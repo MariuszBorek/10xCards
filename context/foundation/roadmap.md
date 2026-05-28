@@ -3,7 +3,7 @@ project: "10xCards"
 version: 1
 status: draft
 created: 2026-05-25
-updated: 2026-05-26
+updated: 2026-05-28
 prd_version: 1
 main_goal: speed
 top_blocker: time
@@ -32,7 +32,7 @@ Samouki uczący się języka obcego tracą godziny na ręczne przepisywanie sł�
 | F-01 | flashcard-schema      | (foundation) tabela fiszek z RLS wdrożona; izolacja danych per-użytkownik  | —             | FR-001, FR-002, FR-003         | ready    |
 | S-01 | ai-generation-flow    | wkleić tekst → AI generuje kandydatów → recenzja → zaakceptowane w kolekcji | F-01         | FR-004, FR-005, FR-006, US-01  | proposed |
 | S-02 | collection-management | ręcznie dodać fiszkę, przeglądać kolekcję, edytować i usunąć dowolną fiszkę | F-01         | FR-007, FR-008, FR-009, FR-010 | proposed |
-| S-03 | anki-csv-export       | pobrać CSV kolekcji importowalny do Anki bez modyfikacji                    | F-01         | FR-011, US-02                  | proposed |
+| S-03 | anki-csv-export       | pobrać CSV kolekcji importowalny do Anki bez modyfikacji                    | F-01         | FR-011, US-02                  | done     |
 
 ## Baseline
 
@@ -103,7 +103,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Unknowns:**
   - Konkretne kolumny CSV i escape rules dla diacritics/cudzysłowów/przecinków (Q7 PRD) — Owner: impl. Block: no.
 - **Risk:** Anki CSV format jest prosty, ale separator i escape corner-cases (np. słowo zawierające przecinek lub cudzysłów) mogą zaskoczyć — warto przeprowadzić ręczny round-trip test przed uznaniem slice za done
-- **Status:** proposed
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -144,3 +144,5 @@ Foundations below assume these are present and do NOT re-scaffold them.
 ## Done
 
 (Puste przy pierwszej generacji. `/10x-archive` dopisuje wpis tutaj — i zmienia `Status` danego elementu na `done` — gdy zmiana o pasującym `Change ID` zostaje zarchiwizowana.)
+
+- **S-03: zalogowany użytkownik może pobrać plik CSV zawierający wszystkie swoje fiszki w formacie Anki basic (słowo przód / tłumaczenie tył / opcjonalny kontekst); znaki specjalne (diakrytyki, cudzysłowy, przecinki) przechodzą round-trip do Anki poprawnie; pusta kolekcja pokazuje komunikat zamiast pustego pliku** — Archived 2026-05-28 → `context/archive/2026-05-28-anki-csv-export/`. Lesson: —.
