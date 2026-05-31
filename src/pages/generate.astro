@@ -1,8 +1,8 @@
 ---
-import Layout from "@/layouts/Layout.astro";
+import AppLayout from "@/layouts/AppLayout.astro";
 import { GenerateView } from "@/components/generate/GenerateView";
 ---
 
-<Layout title="Generate Flashcards">
+<AppLayout title="Generate Flashcards">
   <GenerateView client:load />
-</Layout>
+</AppLayout>
