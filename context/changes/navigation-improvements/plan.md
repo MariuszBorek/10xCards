@@ -222,23 +222,23 @@ No data or schema changes. Per-page background ownership must transfer in the sa
 
 #### Automated
 
-- [x] 1.1 Type-check passes: `npx astro check`
-- [x] 1.2 Lint passes: `npm run lint`
-- [x] 1.3 Build passes: `npm run build`
+- [x] 1.1 Type-check passes: `npx astro check` — 6a00818
+- [x] 1.2 Lint passes: `npm run lint` — 6a00818
+- [x] 1.3 Build passes: `npm run build` — 6a00818
 
 #### Manual
 
-- [x] 1.4 Home Topbar renders correctly with no brand element, no regressions
-- [x] 1.5 Authenticated Topbar shows Dashboard, Generate, Collection, email, Sign out
-- [x] 1.6 Link matching current URL is visibly highlighted
+- [x] 1.4 Home Topbar renders correctly with no brand element, no regressions — 6a00818
+- [x] 1.5 Authenticated Topbar shows Dashboard, Generate, Collection, email, Sign out — 6a00818
+- [x] 1.6 Link matching current URL is visibly highlighted — 6a00818
 
 ### Phase 2: Create AppLayout.astro
 
 #### Automated
 
-- [ ] 2.1 Type-check passes: `npx astro check`
-- [ ] 2.2 Lint passes: `npm run lint`
-- [ ] 2.3 Build passes: `npm run build`
+- [x] 2.1 Type-check passes: `npx astro check`
+- [x] 2.2 Lint passes: `npm run lint`
+- [x] 2.3 Build passes: `npm run build`
 
 #### Manual
 
