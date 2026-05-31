@@ -407,27 +407,27 @@ before applying (Phase 1 manual step).
 
 #### Automated
 
-- [x] 1.1 Dependency installs and lockfile updates (`npm install ts-fsrs`)
-- [x] 1.2 Migration applies cleanly against a fresh DB (`npx supabase db reset`)
-- [x] 1.3 Type check passes (`npx astro check`)
-- [x] 1.4 Lint passes (`npm run lint`)
+- [x] 1.1 Dependency installs and lockfile updates (`npm install ts-fsrs`) — 34d0a89
+- [x] 1.2 Migration applies cleanly against a fresh DB (`npx supabase db reset`) — 34d0a89
+- [x] 1.3 Type check passes (`npx astro check`) — 34d0a89
+- [x] 1.4 Lint passes (`npm run lint`) — 34d0a89
 
 #### Manual
 
-- [x] 1.5 Installed `ts-fsrs` `Card` interface verified 1:1 against the nine columns; `createEmptyCard()` defaults match column DEFAULTs
-- [x] 1.6 Existing `flashcards` rows show populated FSRS defaults in Supabase Studio
+- [x] 1.5 Installed `ts-fsrs` `Card` interface verified 1:1 against the nine columns; `createEmptyCard()` defaults match column DEFAULTs — 34d0a89
+- [x] 1.6 Existing `flashcards` rows show populated FSRS defaults in Supabase Studio — 34d0a89
 
 ### Phase 2: SRS Service Layer
 
 #### Automated
 
-- [ ] 2.1 Type check passes (`npx astro check`)
-- [ ] 2.2 Lint passes (`npm run lint`)
-- [ ] 2.3 Build passes (`npm run build`)
+- [x] 2.1 Type check passes (`npx astro check`)
+- [x] 2.2 Lint passes (`npm run lint`)
+- [x] 2.3 Build passes (`npm run build`)
 
 #### Manual
 
-- [ ] 2.4 `reviewCard` with each rating changes state sensibly; re-hydrated card feeds back into the scheduler without `Invalid Date`
+- [x] 2.4 `reviewCard` with each rating changes state sensibly; re-hydrated card feeds back into the scheduler without `Invalid Date`
 
 ### Phase 3: API Endpoints
 
