@@ -433,26 +433,26 @@ before applying (Phase 1 manual step).
 
 #### Automated
 
-- [x] 3.1 Type check passes (`npx astro check`)
-- [x] 3.2 Lint passes (`npm run lint`)
-- [x] 3.3 Build passes (`npm run build`)
+- [x] 3.1 Type check passes (`npx astro check`) — 09b624f
+- [x] 3.2 Lint passes (`npm run lint`) — 09b624f
+- [x] 3.3 Build passes (`npm run build`) — 09b624f
 
 #### Manual
 
-- [x] 3.4 `GET /api/flashcards/due` returns due cards with four preview labels each; `[]` when nothing due
-- [x] 3.5 `POST /api/flashcards/<id>/review` updates the card (later `due`); 400 invalid rating, 404 unknown id, 401 unauthenticated
+- [x] 3.4 `GET /api/flashcards/due` returns due cards with four preview labels each; `[]` when nothing due — 09b624f
+- [x] 3.5 `POST /api/flashcards/<id>/review` updates the card (later `due`); 400 invalid rating, 404 unknown id, 401 unauthenticated — 09b624f
 
 ### Phase 4: Review UI, Page, Nav & Middleware
 
 #### Automated
 
-- [ ] 4.1 Type check passes (`npx astro check`)
-- [ ] 4.2 Lint passes (`npm run lint`)
-- [ ] 4.3 Build passes (`npm run build`)
+- [x] 4.1 Type check passes (`npx astro check`)
+- [x] 4.2 Lint passes (`npm run lint`)
+- [x] 4.3 Build passes (`npm run build`)
 
 #### Manual
 
-- [ ] 4.4 **Nauka** nav link present and active on `/review`; logged-out `/review` redirects to sign-in
-- [ ] 4.5 Session walkthrough: word → reveal → four hinted buttons → advances full queue (due asc) → state persists across reload
-- [ ] 4.6 Empty/finished queue shows "all caught up" panel with reviewed count + working links
-- [ ] 4.7 No visual regressions on existing pages from the nav change
+- [x] 4.4 **Nauka** nav link present and active on `/review`; logged-out `/review` redirects to sign-in
+- [x] 4.5 Session walkthrough: word → reveal → four hinted buttons → advances full queue (due asc) → state persists across reload
+- [x] 4.6 Empty/finished queue shows "all caught up" panel with reviewed count + working links
+- [x] 4.7 No visual regressions on existing pages from the nav change
