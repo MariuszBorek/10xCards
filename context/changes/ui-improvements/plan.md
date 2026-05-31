@@ -282,28 +282,28 @@ None — no data, schema, or API changes. Fully reversible via `git revert`. No 
 
 #### Automated
 
-- [x] 3.1 Lint + type check passes: `npm run lint`
-- [x] 3.2 Production build succeeds: `npm run build`
-- [x] 3.3 Astro check passes: `npx astro check`
+- [x] 3.1 Lint + type check passes: `npm run lint` — 78b0da5
+- [x] 3.2 Production build succeeds: `npm run build` — 78b0da5
+- [x] 3.3 Astro check passes: `npx astro check` — 78b0da5
 
 #### Manual
 
-- [x] 3.4 `/generate` background and buttons match `/dashboard` and themed `/collection`
-- [x] 3.5 Idle, loading, and review states all legible on dark
-- [x] 3.6 Candidate pending / editing / accepted-success states read correctly; "Saved" still communicates success
-- [x] 3.7 Word-count warning and error notices legible on dark
-- [x] 3.8 No regression to generate / accept / edit / reject behavior
+- [x] 3.4 `/generate` background and buttons match `/dashboard` and themed `/collection` — 78b0da5
+- [x] 3.5 Idle, loading, and review states all legible on dark — 78b0da5
+- [x] 3.6 Candidate pending / editing / accepted-success states read correctly; "Saved" still communicates success — 78b0da5
+- [x] 3.7 Word-count warning and error notices legible on dark — 78b0da5
+- [x] 3.8 No regression to generate / accept / edit / reject behavior — 78b0da5
 
 ### Phase 4: Cross-Tab Consistency Sweep
 
 #### Automated
 
-- [ ] 4.1 Lint + type check passes: `npm run lint`
-- [ ] 4.2 Production build succeeds: `npm run build`
+- [x] 4.1 Lint + type check passes: `npm run lint`
+- [x] 4.2 Production build succeeds: `npm run build`
 
 #### Manual
 
-- [ ] 4.3 All tabs (`/`, `/dashboard`, `/auth/signin`, `/auth/signup`, `/collection`, `/generate`) show one coherent cosmic theme
-- [ ] 4.4 Previously-cosmic pages visually unchanged (no regression)
-- [ ] 4.5 Buttons use a consistent blue/glass/red vocabulary across the app
-- [ ] 4.6 No light-on-dark or dark-on-light fragments remain in any state
+- [x] 4.3 All tabs (`/`, `/dashboard`, `/auth/signin`, `/auth/signup`, `/collection`, `/generate`) show one coherent cosmic theme
+- [x] 4.4 Previously-cosmic pages visually unchanged (no regression)
+- [x] 4.5 Buttons use a consistent blue/glass/red vocabulary across the app
+- [x] 4.6 No light-on-dark or dark-on-light fragments remain in any state
