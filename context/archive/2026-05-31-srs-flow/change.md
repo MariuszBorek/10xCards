@@ -1,10 +1,10 @@
 ---
 change_id: srs-flow
 title: In-app SRS review flow powered by an external scheduling library
-status: impl_reviewed
+status: archived
 created: 2026-05-31
 updated: 2026-05-31
-archived_at: null
+archived_at: 2026-05-31T16:07:41Z
 ---
 
 ## Notes
