@@ -110,88 +110,86 @@ export function CollectionView() {
   }
 
   return (
-    <div className="bg-cosmic min-h-screen p-6">
-      <div className="mx-auto max-w-2xl space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-2xl font-bold text-transparent">
-            My Collection
-          </h1>
-          <Button
-            variant="cosmic-outline"
-            onClick={() => void handleExport()}
-            disabled={loading || flashcards.length === 0 || exporting}
-            title={flashcards.length === 0 ? "No flashcards to export" : undefined}
-          >
-            {exporting ? "Exporting…" : "Export to Anki"}
-          </Button>
-        </div>
-        {exportError && <p className="text-sm text-red-300">{exportError}</p>}
-
-        <div className="space-y-3 rounded-2xl border border-white/10 bg-white/10 p-4 text-white backdrop-blur-xl">
-          <h2 className="font-medium text-white">Add flashcard</h2>
-          <Input
-            value={word}
-            onChange={(e) => {
-              setWord(e.target.value);
-              if (addError) setAddError(null);
-            }}
-            placeholder="Word"
-            disabled={adding}
-            className="border-white/20 bg-white/5 text-white placeholder:text-white/40 focus-visible:border-white/40"
-          />
-          <Input
-            value={translation}
-            onChange={(e) => {
-              setTranslation(e.target.value);
-              if (addError) setAddError(null);
-            }}
-            placeholder="Translation"
-            disabled={adding}
-            className="border-white/20 bg-white/5 text-white placeholder:text-white/40 focus-visible:border-white/40"
-          />
-          <Textarea
-            value={context}
-            onChange={(e) => {
-              setContext(e.target.value);
-            }}
-            placeholder="Context (optional)"
-            rows={2}
-            disabled={adding}
-            className="border-white/20 bg-white/5 text-white placeholder:text-white/40 focus-visible:border-white/40"
-          />
-          {addError && <p className="text-sm text-red-300">{addError}</p>}
-          <Button variant="cosmic" onClick={() => void handleAdd()} disabled={adding}>
-            {adding ? "Adding…" : "Add"}
-          </Button>
-        </div>
-
-        {loading && (
-          <div className="space-y-3">
-            {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-20 w-full rounded-2xl bg-white/10" />
-            ))}
-          </div>
-        )}
-
-        {!loading && fetchError && <p className="text-sm text-red-300">{fetchError}</p>}
-
-        {!loading && !fetchError && flashcards.length === 0 && (
-          <div className="space-y-3 rounded-2xl border border-white/10 bg-white/10 p-6 text-center text-white backdrop-blur-xl">
-            <p className="text-white/70">Your collection is empty.</p>
-            <Button variant="cosmic-outline" asChild>
-              <a href="/generate">Generate flashcards with AI</a>
-            </Button>
-          </div>
-        )}
-
-        {!loading && flashcards.length > 0 && (
-          <div className="space-y-3">
-            {flashcards.map((f) => (
-              <FlashcardItem key={f.id} flashcard={f} onUpdate={handleUpdate} onDelete={handleDelete} />
-            ))}
-          </div>
-        )}
+    <div className="mx-auto max-w-2xl space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-2xl font-bold text-transparent">
+          My Collection
+        </h1>
+        <Button
+          variant="cosmic-outline"
+          onClick={() => void handleExport()}
+          disabled={loading || flashcards.length === 0 || exporting}
+          title={flashcards.length === 0 ? "No flashcards to export" : undefined}
+        >
+          {exporting ? "Exporting…" : "Export to Anki"}
+        </Button>
       </div>
+      {exportError && <p className="text-sm text-red-300">{exportError}</p>}
+
+      <div className="space-y-3 rounded-2xl border border-white/10 bg-white/10 p-4 text-white backdrop-blur-xl">
+        <h2 className="font-medium text-white">Add flashcard</h2>
+        <Input
+          value={word}
+          onChange={(e) => {
+            setWord(e.target.value);
+            if (addError) setAddError(null);
+          }}
+          placeholder="Word"
+          disabled={adding}
+          className="border-white/20 bg-white/5 text-white placeholder:text-white/40 focus-visible:border-white/40"
+        />
+        <Input
+          value={translation}
+          onChange={(e) => {
+            setTranslation(e.target.value);
+            if (addError) setAddError(null);
+          }}
+          placeholder="Translation"
+          disabled={adding}
+          className="border-white/20 bg-white/5 text-white placeholder:text-white/40 focus-visible:border-white/40"
+        />
+        <Textarea
+          value={context}
+          onChange={(e) => {
+            setContext(e.target.value);
+          }}
+          placeholder="Context (optional)"
+          rows={2}
+          disabled={adding}
+          className="border-white/20 bg-white/5 text-white placeholder:text-white/40 focus-visible:border-white/40"
+        />
+        {addError && <p className="text-sm text-red-300">{addError}</p>}
+        <Button variant="cosmic" onClick={() => void handleAdd()} disabled={adding}>
+          {adding ? "Adding…" : "Add"}
+        </Button>
+      </div>
+
+      {loading && (
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-20 w-full rounded-2xl bg-white/10" />
+          ))}
+        </div>
+      )}
+
+      {!loading && fetchError && <p className="text-sm text-red-300">{fetchError}</p>}
+
+      {!loading && !fetchError && flashcards.length === 0 && (
+        <div className="space-y-3 rounded-2xl border border-white/10 bg-white/10 p-6 text-center text-white backdrop-blur-xl">
+          <p className="text-white/70">Your collection is empty.</p>
+          <Button variant="cosmic-outline" asChild>
+            <a href="/generate">Generate flashcards with AI</a>
+          </Button>
+        </div>
+      )}
+
+      {!loading && flashcards.length > 0 && (
+        <div className="space-y-3">
+          {flashcards.map((f) => (
+            <FlashcardItem key={f.id} flashcard={f} onUpdate={handleUpdate} onDelete={handleDelete} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

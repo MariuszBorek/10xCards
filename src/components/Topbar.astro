@@ -1,19 +1,40 @@
 ---
+interface Props {
+  brand?: boolean;
+}
+
+const { brand = false } = Astro.props;
 const { user } = Astro.locals;
+const pathname = Astro.url.pathname;
+
+const linkBase = "transition-colors hover:text-purple-100 hover:underline";
+const normalizedPath = pathname.replace(/\/+$/, "") || "/";
+const linkClass = (href: string) =>
+  normalizedPath === href ? `${linkBase} font-semibold text-white underline` : `${linkBase} text-purple-300`;
 ---
 
 <div
-  class="mb-4 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80"
+  class="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80"
 >
   {
     user ? (
       <>
-        <span class="text-blue-100/70">{user.email}</span>
-        <div class="flex items-center gap-3">
-          <a href="/dashboard" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
+        <div class="flex min-w-0 items-center gap-3">
+          {brand && (
+            <a href="/" class="font-bold whitespace-nowrap text-white transition-colors hover:text-purple-100">
+              10xCards
+            </a>
+          )}
+          <span class="hidden truncate text-blue-100/70 sm:inline">{user.email}</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="/dashboard" class:list={[linkClass("/dashboard")]}>
             Dashboard
           </a>
-          <a href="/collection" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
+          <a href="/generate" class:list={[linkClass("/generate")]}>
+            Generate
+          </a>
+          <a href="/collection" class:list={[linkClass("/collection")]}>
             Collection
           </a>
           <form method="POST" action="/api/auth/signout">
@@ -25,12 +46,19 @@ const { user } = Astro.locals;
       </>
     ) : (
       <>
-        <span class="text-blue-100/70">Not signed in</span>
-        <div class="flex gap-3">
-          <a href="/auth/signin" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
+        <div class="flex min-w-0 items-center gap-3">
+          {brand && (
+            <a href="/" class="font-bold whitespace-nowrap text-white transition-colors hover:text-purple-100">
+              10xCards
+            </a>
+          )}
+          <span class="text-blue-100/70">Not signed in</span>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="/auth/signin" class:list={[linkClass("/auth/signin")]}>
             Sign in
           </a>
-          <a href="/auth/signup" class="text-purple-300 transition-colors hover:text-purple-100 hover:underline">
+          <a href="/auth/signup" class:list={[linkClass("/auth/signup")]}>
             Sign up
           </a>
         </div>
