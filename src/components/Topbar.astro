@@ -8,8 +8,9 @@ const { user } = Astro.locals;
 const pathname = Astro.url.pathname;
 
 const linkBase = "transition-colors hover:text-purple-100 hover:underline";
+const normalizedPath = pathname.replace(/\/+$/, "") || "/";
 const linkClass = (href: string) =>
-  pathname === href ? `${linkBase} font-semibold text-white underline` : `${linkBase} text-purple-300`;
+  normalizedPath === href ? `${linkBase} font-semibold text-white underline` : `${linkBase} text-purple-300`;
 ---
 
 <div
