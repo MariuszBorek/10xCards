@@ -1,10 +1,10 @@
 ---
 change_id: ui-improvements
 title: Spójny wygląd UI między zakładkami — jednolite tło i kolory przycisków
-status: impl_reviewed
+status: archived
 created: 2026-05-30
 updated: 2026-05-31
-archived_at: null
+archived_at: 2026-05-31T12:16:07Z
 ---
 
 ## Notes
