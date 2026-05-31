@@ -1,7 +1,7 @@
 ---
 change_id: navigation-improvements
 title: Add a consistent navigation bar to every page (collection, dashboard)
-status: implementing
+status: implemented
 created: 2026-05-31
 updated: 2026-05-31
 archived_at: null

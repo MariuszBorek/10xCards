@@ -242,20 +242,20 @@ No data or schema changes. Per-page background ownership must transfer in the sa
 
 #### Manual
 
-- [x] 2.4 Cosmic background renders with nav at top, no white strip above nav
+- [x] 2.4 Cosmic background renders with nav at top, no white strip above nav — 4d75143
 
 ### Phase 3: Migrate the three pages onto AppLayout
 
 #### Automated
 
-- [x] 3.1 Type-check passes: `npx astro check`
-- [x] 3.2 Lint passes: `npm run lint`
-- [x] 3.3 Build passes: `npm run build`
+- [x] 3.1 Type-check passes: `npx astro check` — 4d75143
+- [x] 3.2 Lint passes: `npm run lint` — 4d75143
+- [x] 3.3 Build passes: `npm run build` — 4d75143
 
 #### Manual
 
-- [x] 3.4 Each target page shows exactly one nav bar on cosmic background, no doubled bg / white strip / height glitch
-- [x] 3.5 Nav links navigate correctly, active page highlighted, email shows, Sign out works
-- [x] 3.6 Dashboard has no second sign-out button
-- [x] 3.7 Auth pages and home unchanged
-- [x] 3.8 Collection CRUD/export and Generate flows still work
+- [x] 3.4 Each target page shows exactly one nav bar on cosmic background, no doubled bg / white strip / height glitch — 4d75143
+- [x] 3.5 Nav links navigate correctly, active page highlighted, email shows, Sign out works — 4d75143
+- [x] 3.6 Dashboard has no second sign-out button — 4d75143
+- [x] 3.7 Auth pages and home unchanged — 4d75143
+- [x] 3.8 Collection CRUD/export and Generate flows still work — 4d75143
