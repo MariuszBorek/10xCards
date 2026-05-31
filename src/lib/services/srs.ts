@@ -75,6 +75,7 @@ export async function getDueCards(supabase: SupabaseClient, userId: string): Pro
     .from("flashcards")
     .select("*")
     .eq("user_id", userId)
+    .is("deleted_at", null)
     .lte("due", now.toISOString())
     .order("due", { ascending: true });
 
@@ -116,6 +117,7 @@ export async function reviewCard(
     .select("*")
     .eq("id", cardId)
     .eq("user_id", userId)
+    .is("deleted_at", null)
     .single<Flashcard>();
 
   if (loadError) {
@@ -124,16 +126,21 @@ export async function reviewCard(
 
   const { card: updated } = scheduler.next(rowToCard(row), now, RATING_MAP[rating]);
 
+  // Optimistic concurrency guard: `reps` increments on every review, so a concurrent
+  // write to the same card bumps it and this stale-read UPDATE matches zero rows.
+  // PGRST116 (.single() got no rows) therefore signals a lost-update conflict, not a
+  // server error — see lessons.md "Persisted read-modify-write state must guard against lost updates".
   const { data, error } = await supabase
     .from("flashcards")
     .update(cardToColumns(updated))
     .eq("id", cardId)
     .eq("user_id", userId)
+    .eq("reps", row.reps)
     .select()
     .single<Flashcard>();
 
   if (error) {
-    throw new Error("Failed to update flashcard");
+    throw new Error(error.code === "PGRST116" ? "Review conflict" : "Failed to update flashcard");
   }
 
   return data;

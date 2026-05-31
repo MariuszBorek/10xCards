@@ -51,6 +51,9 @@ export const POST: APIRoute = async (context) => {
     if (err instanceof Error && err.message === "Flashcard not found") {
       return new Response(JSON.stringify({ error: "Flashcard not found" }), { status: 404 });
     }
+    if (err instanceof Error && err.message === "Review conflict") {
+      return new Response(JSON.stringify({ error: "Review conflict" }), { status: 409 });
+    }
     return new Response(JSON.stringify({ error: "Failed to review flashcard" }), { status: 500 });
   }
 };

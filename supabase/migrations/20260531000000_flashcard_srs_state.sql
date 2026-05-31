@@ -17,3 +17,8 @@ ALTER TABLE flashcards
 
 -- Supports the "due now" review queue: WHERE user_id = ? AND due <= now() ORDER BY due ASC.
 CREATE INDEX idx_flashcards_due ON flashcards(user_id, due);
+
+-- (user_id, due) leads with user_id, so it also serves the plain user_id lookups
+-- (RLS filter + "list my cards") that idx_flashcards_user_id covered. Drop the now-redundant
+-- narrow index to cut write amplification on the review UPDATE path.
+DROP INDEX IF EXISTS idx_flashcards_user_id;
