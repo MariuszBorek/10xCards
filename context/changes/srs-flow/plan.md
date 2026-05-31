@@ -421,26 +421,26 @@ before applying (Phase 1 manual step).
 
 #### Automated
 
-- [x] 2.1 Type check passes (`npx astro check`)
-- [x] 2.2 Lint passes (`npm run lint`)
-- [x] 2.3 Build passes (`npm run build`)
+- [x] 2.1 Type check passes (`npx astro check`) — 592e37c
+- [x] 2.2 Lint passes (`npm run lint`) — 592e37c
+- [x] 2.3 Build passes (`npm run build`) — 592e37c
 
 #### Manual
 
-- [x] 2.4 `reviewCard` with each rating changes state sensibly; re-hydrated card feeds back into the scheduler without `Invalid Date`
+- [x] 2.4 `reviewCard` with each rating changes state sensibly; re-hydrated card feeds back into the scheduler without `Invalid Date` — 592e37c
 
 ### Phase 3: API Endpoints
 
 #### Automated
 
-- [ ] 3.1 Type check passes (`npx astro check`)
-- [ ] 3.2 Lint passes (`npm run lint`)
-- [ ] 3.3 Build passes (`npm run build`)
+- [x] 3.1 Type check passes (`npx astro check`)
+- [x] 3.2 Lint passes (`npm run lint`)
+- [x] 3.3 Build passes (`npm run build`)
 
 #### Manual
 
-- [ ] 3.4 `GET /api/flashcards/due` returns due cards with four preview labels each; `[]` when nothing due
-- [ ] 3.5 `POST /api/flashcards/<id>/review` updates the card (later `due`); 400 invalid rating, 404 unknown id, 401 unauthenticated
+- [x] 3.4 `GET /api/flashcards/due` returns due cards with four preview labels each; `[]` when nothing due
+- [x] 3.5 `POST /api/flashcards/<id>/review` updates the card (later `due`); 400 invalid rating, 404 unknown id, 401 unauthenticated
 
 ### Phase 4: Review UI, Page, Nav & Middleware
 
