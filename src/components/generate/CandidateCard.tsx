@@ -20,23 +20,26 @@ export function CandidateCard({ candidate, status, saving, onAccept, onReject, o
 
   if (status === "accepted") {
     return (
-      <Card className="border-green-200 bg-green-50">
+      <Card className="border-emerald-400/30 bg-emerald-400/10 text-white backdrop-blur-xl">
         <CardContent className="pt-4">
-          <p className="font-medium text-green-800">{candidate.word}</p>
-          <p className="text-sm text-green-600">{candidate.translation}</p>
-          {candidate.context && <p className="mt-1 text-xs text-green-500 italic">{candidate.context}</p>}
-          <p className="mt-2 text-xs text-green-500">Saved</p>
+          <p className="font-medium text-white">{candidate.word}</p>
+          <p className="text-sm text-white/70">{candidate.translation}</p>
+          {candidate.context && <p className="mt-1 text-xs text-emerald-200/70 italic">{candidate.context}</p>}
+          <p className="mt-2 text-xs font-medium text-emerald-300">✓ Saved</p>
         </CardContent>
       </Card>
     );
   }
 
+  const editInputClass =
+    "w-full rounded border border-white/20 bg-white/5 px-2 py-1 text-sm text-white placeholder:text-white/40 focus-visible:border-white/40 focus-visible:outline-none";
+
   if (editing) {
     return (
-      <Card>
+      <Card className="border-white/10 bg-white/10 text-white backdrop-blur-xl">
         <CardContent className="space-y-2 pt-4">
           <input
-            className="w-full rounded border px-2 py-1 text-sm"
+            className={editInputClass}
             value={word}
             onChange={(e) => {
               setWord(e.target.value);
@@ -44,7 +47,7 @@ export function CandidateCard({ candidate, status, saving, onAccept, onReject, o
             placeholder="Word"
           />
           <input
-            className="w-full rounded border px-2 py-1 text-sm"
+            className={editInputClass}
             value={translation}
             onChange={(e) => {
               setTranslation(e.target.value);
@@ -52,7 +55,7 @@ export function CandidateCard({ candidate, status, saving, onAccept, onReject, o
             placeholder="Translation"
           />
           <input
-            className="w-full rounded border px-2 py-1 text-sm"
+            className={editInputClass}
             value={context}
             onChange={(e) => {
               setContext(e.target.value);
@@ -61,6 +64,7 @@ export function CandidateCard({ candidate, status, saving, onAccept, onReject, o
           />
           <div className="flex gap-2">
             <Button
+              variant="cosmic"
               size="sm"
               disabled={saving || !word.trim() || !translation.trim()}
               onClick={() => {
@@ -71,7 +75,7 @@ export function CandidateCard({ candidate, status, saving, onAccept, onReject, o
             </Button>
             <Button
               size="sm"
-              variant="ghost"
+              variant="cosmic-ghost"
               onClick={() => {
                 setEditing(false);
               }}
@@ -85,25 +89,25 @@ export function CandidateCard({ candidate, status, saving, onAccept, onReject, o
   }
 
   return (
-    <Card>
+    <Card className="border-white/10 bg-white/10 text-white backdrop-blur-xl">
       <CardContent className="pt-4">
-        <p className="font-medium">{candidate.word}</p>
-        <p className="text-muted-foreground text-sm">{candidate.translation}</p>
-        {candidate.context && <p className="text-muted-foreground mt-1 text-xs italic">{candidate.context}</p>}
+        <p className="font-medium text-white">{candidate.word}</p>
+        <p className="text-sm text-white/70">{candidate.translation}</p>
+        {candidate.context && <p className="mt-1 text-xs text-white/60 italic">{candidate.context}</p>}
         <div className="mt-3 flex gap-2">
-          <Button size="sm" disabled={saving} onClick={onAccept}>
+          <Button variant="cosmic" size="sm" disabled={saving} onClick={onAccept}>
             {saving ? "Saving…" : "Accept"}
           </Button>
           <Button
             size="sm"
-            variant="outline"
+            variant="cosmic-outline"
             onClick={() => {
               setEditing(true);
             }}
           >
             Edit
           </Button>
-          <Button size="sm" variant="ghost" onClick={onReject}>
+          <Button size="sm" variant="cosmic-ghost" onClick={onReject}>
             Reject
           </Button>
         </div>

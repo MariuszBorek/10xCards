@@ -266,33 +266,33 @@ None — no data, schema, or API changes. Fully reversible via `git revert`. No 
 
 #### Automated
 
-- [x] 2.1 Lint + type check passes: `npm run lint`
-- [x] 2.2 Production build succeeds: `npm run build`
-- [x] 2.3 Astro check passes: `npx astro check`
+- [x] 2.1 Lint + type check passes: `npm run lint` — 5370772
+- [x] 2.2 Production build succeeds: `npm run build` — 5370772
+- [x] 2.3 Astro check passes: `npx astro check` — 5370772
 
 #### Manual
 
-- [x] 2.4 `/collection` background and buttons match `/dashboard`
-- [x] 2.5 Add-form, list cards, and edit mode legible on dark
-- [x] 2.6 Delete dialog renders dark with legible text and correct buttons
-- [x] 2.7 Skeletons, empty-state, and error messages read correctly on dark
-- [x] 2.8 No regression to add / edit / delete / export behavior
+- [x] 2.4 `/collection` background and buttons match `/dashboard` — 5370772
+- [x] 2.5 Add-form, list cards, and edit mode legible on dark — 5370772
+- [x] 2.6 Delete dialog renders dark with legible text and correct buttons — 5370772
+- [x] 2.7 Skeletons, empty-state, and error messages read correctly on dark — 5370772
+- [x] 2.8 No regression to add / edit / delete / export behavior — 5370772
 
 ### Phase 3: Theme the Generate View
 
 #### Automated
 
-- [ ] 3.1 Lint + type check passes: `npm run lint`
-- [ ] 3.2 Production build succeeds: `npm run build`
-- [ ] 3.3 Astro check passes: `npx astro check`
+- [x] 3.1 Lint + type check passes: `npm run lint`
+- [x] 3.2 Production build succeeds: `npm run build`
+- [x] 3.3 Astro check passes: `npx astro check`
 
 #### Manual
 
-- [ ] 3.4 `/generate` background and buttons match `/dashboard` and themed `/collection`
-- [ ] 3.5 Idle, loading, and review states all legible on dark
-- [ ] 3.6 Candidate pending / editing / accepted-success states read correctly; "Saved" still communicates success
-- [ ] 3.7 Word-count warning and error notices legible on dark
-- [ ] 3.8 No regression to generate / accept / edit / reject behavior
+- [x] 3.4 `/generate` background and buttons match `/dashboard` and themed `/collection`
+- [x] 3.5 Idle, loading, and review states all legible on dark
+- [x] 3.6 Candidate pending / editing / accepted-success states read correctly; "Saved" still communicates success
+- [x] 3.7 Word-count warning and error notices legible on dark
+- [x] 3.8 No regression to generate / accept / edit / reject behavior
 
 ### Phase 4: Cross-Tab Consistency Sweep
 

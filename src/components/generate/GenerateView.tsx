@@ -85,77 +85,82 @@ export function GenerateView() {
   const visibleCandidates = candidates.filter((c) => c.status !== "rejected");
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6 p-6">
-      <h1 className="text-2xl font-bold">Generate Flashcards</h1>
+    <div className="bg-cosmic min-h-screen p-6">
+      <div className="mx-auto max-w-2xl space-y-6">
+        <h1 className="bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-2xl font-bold text-transparent">
+          Generate Flashcards
+        </h1>
 
-      <div className="space-y-2">
-        <Textarea
-          placeholder="Paste foreign language text here…"
-          value={inputText}
-          onChange={(e) => {
-            setInputText(e.target.value);
-            if (inputError) setInputError(null);
-          }}
-          rows={6}
-          disabled={phase === "loading"}
-        />
-        {inputError && <p className="text-sm text-red-600">{inputError}</p>}
-        {wordCount > 300 && (
-          <p className="text-sm text-amber-600">
-            Long text ({wordCount} words) — generation may be slower or produce fewer results.
-          </p>
-        )}
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <Button onClick={() => void handleGenerate()} disabled={phase === "loading"}>
-          {phase === "loading" ? "Generating…" : "Generate"}
-        </Button>
-      </div>
-
-      {phase === "loading" && (
-        <div className="space-y-3">
-          {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-24 w-full rounded-lg" />
-          ))}
+        <div className="space-y-2">
+          <Textarea
+            placeholder="Paste foreign language text here…"
+            value={inputText}
+            onChange={(e) => {
+              setInputText(e.target.value);
+              if (inputError) setInputError(null);
+            }}
+            rows={6}
+            disabled={phase === "loading"}
+            className="border-white/20 bg-white/5 text-white placeholder:text-white/40 focus-visible:border-white/40"
+          />
+          {inputError && <p className="text-sm text-red-300">{inputError}</p>}
+          {wordCount > 300 && (
+            <p className="text-sm text-amber-300">
+              Long text ({wordCount} words) — generation may be slower or produce fewer results.
+            </p>
+          )}
+          {error && <p className="text-sm text-red-300">{error}</p>}
+          <Button variant="cosmic" onClick={() => void handleGenerate()} disabled={phase === "loading"}>
+            {phase === "loading" ? "Generating…" : "Generate"}
+          </Button>
         </div>
-      )}
 
-      {phase === "review" && visibleCandidates.length === 0 && (
-        <div className="space-y-3 rounded-lg border p-6 text-center">
-          <p className="text-muted-foreground">No flashcard candidates found for this text.</p>
-          <div className="flex justify-center gap-3">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setPhase("idle");
-                setCandidates([]);
-              }}
-            >
-              Try again
-            </Button>
-            <Button variant="ghost" disabled>
-              Add manually
-            </Button>
+        {phase === "loading" && (
+          <div className="space-y-3">
+            {[1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} className="h-24 w-full rounded-2xl bg-white/10" />
+            ))}
           </div>
-        </div>
-      )}
+        )}
 
-      {phase === "review" && visibleCandidates.length > 0 && (
-        <div className="space-y-3">
-          {visibleCandidates.map((item) => (
-            <CandidateCard
-              key={item.clientId}
-              candidate={{ word: item.word, translation: item.translation, context: item.context }}
-              status={item.status}
-              saving={item.saving}
-              onAccept={() => void handleAccept(item.clientId, item)}
-              onReject={() => {
-                handleReject(item.clientId);
-              }}
-              onSave={(updated) => void handleAccept(item.clientId, updated)}
-            />
-          ))}
-        </div>
-      )}
+        {phase === "review" && visibleCandidates.length === 0 && (
+          <div className="space-y-3 rounded-2xl border border-white/10 bg-white/10 p-6 text-center text-white backdrop-blur-xl">
+            <p className="text-white/70">No flashcard candidates found for this text.</p>
+            <div className="flex justify-center gap-3">
+              <Button
+                variant="cosmic-outline"
+                onClick={() => {
+                  setPhase("idle");
+                  setCandidates([]);
+                }}
+              >
+                Try again
+              </Button>
+              <Button variant="cosmic-ghost" disabled>
+                Add manually
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {phase === "review" && visibleCandidates.length > 0 && (
+          <div className="space-y-3">
+            {visibleCandidates.map((item) => (
+              <CandidateCard
+                key={item.clientId}
+                candidate={{ word: item.word, translation: item.translation, context: item.context }}
+                status={item.status}
+                saving={item.saving}
+                onAccept={() => void handleAccept(item.clientId, item)}
+                onReject={() => {
+                  handleReject(item.clientId);
+                }}
+                onSave={(updated) => void handleAccept(item.clientId, updated)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
