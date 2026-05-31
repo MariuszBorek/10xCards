@@ -298,12 +298,12 @@ None — no data, schema, or API changes. Fully reversible via `git revert`. No 
 
 #### Automated
 
-- [x] 4.1 Lint + type check passes: `npm run lint`
-- [x] 4.2 Production build succeeds: `npm run build`
+- [x] 4.1 Lint + type check passes: `npm run lint` — 152887e
+- [x] 4.2 Production build succeeds: `npm run build` — 152887e
 
 #### Manual
 
-- [x] 4.3 All tabs (`/`, `/dashboard`, `/auth/signin`, `/auth/signup`, `/collection`, `/generate`) show one coherent cosmic theme
-- [x] 4.4 Previously-cosmic pages visually unchanged (no regression)
-- [x] 4.5 Buttons use a consistent blue/glass/red vocabulary across the app
-- [x] 4.6 No light-on-dark or dark-on-light fragments remain in any state
+- [x] 4.3 All tabs (`/`, `/dashboard`, `/auth/signin`, `/auth/signup`, `/collection`, `/generate`) show one coherent cosmic theme — 152887e
+- [x] 4.4 Previously-cosmic pages visually unchanged (no regression) — 152887e
+- [x] 4.5 Buttons use a consistent blue/glass/red vocabulary across the app — 152887e
+- [x] 4.6 No light-on-dark or dark-on-light fragments remain in any state — 152887e
