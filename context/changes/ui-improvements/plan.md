@@ -253,30 +253,30 @@ None — no data, schema, or API changes. Fully reversible via `git revert`. No 
 
 #### Automated
 
-- [x] 1.1 Type checking passes: `npm run lint`
-- [x] 1.2 Production build succeeds: `npm run build`
-- [x] 1.3 Formatting clean: `npm run format`
+- [x] 1.1 Type checking passes: `npm run lint` — e60fa8d
+- [x] 1.2 Production build succeeds: `npm run build` — e60fa8d
+- [x] 1.3 Formatting clean: `npm run format` — e60fa8d
 
 #### Manual
 
-- [x] 1.4 No visual change on any existing page (no consumer of new variants yet)
-- [x] 1.5 New variants render intended colors when spot-checked
+- [x] 1.4 No visual change on any existing page (no consumer of new variants yet) — e60fa8d
+- [x] 1.5 New variants render intended colors when spot-checked — e60fa8d
 
 ### Phase 2: Theme the Collection View
 
 #### Automated
 
-- [ ] 2.1 Lint + type check passes: `npm run lint`
-- [ ] 2.2 Production build succeeds: `npm run build`
-- [ ] 2.3 Astro check passes: `npx astro check`
+- [x] 2.1 Lint + type check passes: `npm run lint`
+- [x] 2.2 Production build succeeds: `npm run build`
+- [x] 2.3 Astro check passes: `npx astro check`
 
 #### Manual
 
-- [ ] 2.4 `/collection` background and buttons match `/dashboard`
-- [ ] 2.5 Add-form, list cards, and edit mode legible on dark
-- [ ] 2.6 Delete dialog renders dark with legible text and correct buttons
-- [ ] 2.7 Skeletons, empty-state, and error messages read correctly on dark
-- [ ] 2.8 No regression to add / edit / delete / export behavior
+- [x] 2.4 `/collection` background and buttons match `/dashboard`
+- [x] 2.5 Add-form, list cards, and edit mode legible on dark
+- [x] 2.6 Delete dialog renders dark with legible text and correct buttons
+- [x] 2.7 Skeletons, empty-state, and error messages read correctly on dark
+- [x] 2.8 No regression to add / edit / delete / export behavior
 
 ### Phase 3: Theme the Generate View
 

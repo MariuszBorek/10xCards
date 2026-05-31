@@ -76,17 +76,17 @@ export function FlashcardItem({ flashcard, onUpdate, onDelete }: Props) {
   }
 
   return (
-    <Card>
+    <Card className="border-white/10 bg-white/10 text-white backdrop-blur-xl">
       <CardContent className="p-4">
         {mode === "view" ? (
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0 flex-1 space-y-1">
-              <p className="font-medium">{flashcard.word}</p>
-              <p className="text-muted-foreground">{flashcard.translation}</p>
-              {flashcard.context && <p className="text-muted-foreground text-sm">{flashcard.context}</p>}
+              <p className="font-medium text-white">{flashcard.word}</p>
+              <p className="text-white/70">{flashcard.translation}</p>
+              {flashcard.context && <p className="text-sm text-white/60">{flashcard.context}</p>}
             </div>
             <div className="flex shrink-0 gap-2">
-              <Button variant="outline" size="sm" onClick={handleEdit}>
+              <Button variant="cosmic-outline" size="sm" onClick={handleEdit}>
                 Edit
               </Button>
               <Button
@@ -109,6 +109,7 @@ export function FlashcardItem({ flashcard, onUpdate, onDelete }: Props) {
               }}
               placeholder="Word"
               disabled={saving}
+              className="border-white/20 bg-white/5 text-white placeholder:text-white/40 focus-visible:border-white/40"
             />
             <Input
               value={translation}
@@ -117,6 +118,7 @@ export function FlashcardItem({ flashcard, onUpdate, onDelete }: Props) {
               }}
               placeholder="Translation"
               disabled={saving}
+              className="border-white/20 bg-white/5 text-white placeholder:text-white/40 focus-visible:border-white/40"
             />
             <Textarea
               value={context}
@@ -126,33 +128,34 @@ export function FlashcardItem({ flashcard, onUpdate, onDelete }: Props) {
               placeholder="Context (optional)"
               rows={2}
               disabled={saving}
+              className="border-white/20 bg-white/5 text-white placeholder:text-white/40 focus-visible:border-white/40"
             />
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && <p className="text-sm text-red-300">{error}</p>}
             <div className="flex gap-2">
-              <Button size="sm" onClick={() => void handleSave()} disabled={saving}>
+              <Button variant="cosmic" size="sm" onClick={() => void handleSave()} disabled={saving}>
                 {saving ? "Saving…" : "Save"}
               </Button>
-              <Button variant="outline" size="sm" onClick={handleCancel} disabled={saving}>
+              <Button variant="cosmic-ghost" size="sm" onClick={handleCancel} disabled={saving}>
                 Cancel
               </Button>
             </div>
           </div>
         )}
 
-        {error && mode === "view" && <p className="mt-2 text-sm text-red-600">{error}</p>}
+        {error && mode === "view" && <p className="mt-2 text-sm text-red-300">{error}</p>}
       </CardContent>
 
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <DialogContent>
+        <DialogContent className="border-white/10 bg-[#0f1529]/95 text-white backdrop-blur-xl">
           <DialogHeader>
-            <DialogTitle>Delete flashcard?</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-white">Delete flashcard?</DialogTitle>
+            <DialogDescription className="text-white/70">
               This will permanently remove &ldquo;{flashcard.word}&rdquo;. This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button
-              variant="outline"
+              variant="cosmic-outline"
               onClick={() => {
                 setDeleteOpen(false);
               }}
