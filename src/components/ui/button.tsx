@@ -18,7 +18,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
         cosmic: "bg-blue-500 text-white shadow-xs hover:bg-blue-400",
-        "cosmic-outline": "border border-white/20 bg-white/10 text-white hover:bg-white/20",
+        "cosmic-outline": "border border-white/20 bg-white/10 text-white shadow-xs hover:bg-white/20",
         "cosmic-ghost": "text-white/80 hover:bg-white/10 hover:text-white",
       },
       size: {

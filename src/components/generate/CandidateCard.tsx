@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import type { FlashcardCandidate } from "@/types";
 
 interface CandidateCardProps {
@@ -32,13 +33,13 @@ export function CandidateCard({ candidate, status, saving, onAccept, onReject, o
   }
 
   const editInputClass =
-    "w-full rounded border border-white/20 bg-white/5 px-2 py-1 text-sm text-white placeholder:text-white/40 focus-visible:border-white/40 focus-visible:outline-none";
+    "border-white/20 bg-white/5 text-white placeholder:text-white/40 focus-visible:border-white/40";
 
   if (editing) {
     return (
       <Card className="border-white/10 bg-white/10 text-white backdrop-blur-xl">
         <CardContent className="space-y-2 pt-4">
-          <input
+          <Input
             className={editInputClass}
             value={word}
             onChange={(e) => {
@@ -46,7 +47,7 @@ export function CandidateCard({ candidate, status, saving, onAccept, onReject, o
             }}
             placeholder="Word"
           />
-          <input
+          <Input
             className={editInputClass}
             value={translation}
             onChange={(e) => {
@@ -54,7 +55,7 @@ export function CandidateCard({ candidate, status, saving, onAccept, onReject, o
             }}
             placeholder="Translation"
           />
-          <input
+          <Input
             className={editInputClass}
             value={context}
             onChange={(e) => {
