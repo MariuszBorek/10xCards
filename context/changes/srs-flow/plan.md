@@ -446,13 +446,13 @@ before applying (Phase 1 manual step).
 
 #### Automated
 
-- [x] 4.1 Type check passes (`npx astro check`)
-- [x] 4.2 Lint passes (`npm run lint`)
-- [x] 4.3 Build passes (`npm run build`)
+- [x] 4.1 Type check passes (`npx astro check`) — 41b25d2
+- [x] 4.2 Lint passes (`npm run lint`) — 41b25d2
+- [x] 4.3 Build passes (`npm run build`) — 41b25d2
 
 #### Manual
 
-- [x] 4.4 **Nauka** nav link present and active on `/review`; logged-out `/review` redirects to sign-in
-- [x] 4.5 Session walkthrough: word → reveal → four hinted buttons → advances full queue (due asc) → state persists across reload
-- [x] 4.6 Empty/finished queue shows "all caught up" panel with reviewed count + working links
-- [x] 4.7 No visual regressions on existing pages from the nav change
+- [x] 4.4 **Nauka** nav link present and active on `/review`; logged-out `/review` redirects to sign-in — 41b25d2
+- [x] 4.5 Session walkthrough: word → reveal → four hinted buttons → advances full queue (due asc) → state persists across reload — 41b25d2
+- [x] 4.6 Empty/finished queue shows "all caught up" panel with reviewed count + working links — 41b25d2
+- [x] 4.7 No visual regressions on existing pages from the nav change — 41b25d2
