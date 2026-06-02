@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createServerClient, serializeCookieHeader } from "@supabase/ssr";
 
 // The app's own clients are untyped (no generated DB schema) — query rows are
 // `any`, and the app types results manually against `@/types` (see srs.ts).
@@ -105,6 +106,41 @@ export async function signedInClient(email: string, password: string): Promise<T
     throw new Error(`signInWithPassword failed for ${email}: ${error.message}`);
   }
   return client;
+}
+
+/**
+ * Sign a user in through a `@supabase/ssr` server client backed by an in-memory
+ * cookie jar, then serialize the persisted session into a `Cookie` header string.
+ *
+ * This is the non-obvious contract the handler/middleware tests reuse: the real
+ * route handlers build their client via `createServerClient(headers, cookies)`
+ * and read the session ONLY from the request's `Cookie` header. There is no
+ * other way to hand a handler an authenticated session. Values are run through
+ * `serializeCookieHeader` (URL-encodes) so they round-trip cleanly through the
+ * handler's `parseCookieHeader` read, even for chunked/base64 session cookies.
+ */
+export async function signedInCookieHeader(email: string, password: string): Promise<string> {
+  const jar = new Map<string, string>();
+  const client = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    cookies: {
+      getAll() {
+        return [...jar.entries()].map(([name, value]) => ({ name, value }));
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) => jar.set(name, value));
+      },
+    },
+  });
+
+  const { error } = await client.auth.signInWithPassword({ email, password });
+  if (error) {
+    throw new Error(`signedInCookieHeader sign-in failed for ${email}: ${error.message}`);
+  }
+  if (jar.size === 0) {
+    throw new Error(`signedInCookieHeader: no session cookies were persisted for ${email}`);
+  }
+
+  return [...jar.entries()].map(([name, value]) => serializeCookieHeader(name, value, {})).join("; ");
 }
 
 /** Delete a seeded user (CASCADE drops their flashcards). Call in afterAll. */

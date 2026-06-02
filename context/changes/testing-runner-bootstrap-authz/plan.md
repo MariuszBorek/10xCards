@@ -353,26 +353,26 @@ No schema migrations. `.env.example` gains `SUPABASE_SERVICE_ROLE_KEY`; contribu
 
 #### Automated
 
-- [x] 2.1 RLS suite passes: B denied SELECT/UPDATE/DELETE of A's row and INSERT-as-A
-- [x] 2.2 Test confirms B's session is authenticated before asserting denial
-- [x] 2.3 `npm run lint` passes
+- [x] 2.1 RLS suite passes: B denied SELECT/UPDATE/DELETE of A's row and INSERT-as-A — 8fd3d0e
+- [x] 2.2 Test confirms B's session is authenticated before asserting denial — 8fd3d0e
+- [x] 2.3 `npm run lint` passes — 8fd3d0e
 
 #### Manual
 
-- [x] 2.4 Weakening one policy in a scratch migration makes the matching assertion fail (revert after)
+- [x] 2.4 Weakening one policy in a scratch migration makes the matching assertion fail (revert after) — 8fd3d0e
 
 ### Phase 3: Endpoint authorization tests (Risk #1)
 
 #### Automated
 
-- [ ] 3.1 Service-layer suite passes: B cannot read/review A's card; A can read/review own
-- [ ] 3.2 Handler suite passes: GET list as B returns only B's rows
-- [ ] 3.3 `npm run lint` passes
-- [ ] 3.4 `npx astro check` passes
+- [x] 3.1 Service-layer suite passes: B cannot read/review A's card; A can read/review own
+- [x] 3.2 Handler suite passes: GET list as B returns only B's rows
+- [x] 3.3 `npm run lint` passes
+- [x] 3.4 `npx astro check` passes
 
 #### Manual
 
-- [ ] 3.5 Handler test fails if B's session cookie is swapped for A's
+- [x] 3.5 Handler test fails if B's session cookie is swapped for A's
 
 ### Phase 4: Middleware / API auth gating tests (Risk #6)
 
