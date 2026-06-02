@@ -68,6 +68,24 @@ const astroConfig = tseslint.config({
   },
 });
 
+// Integration tests drive an untyped Supabase client (no generated DB types),
+// so query results are `any`. Relax the type-aware "unsafe" rules and allow
+// console (skip messaging) + non-null assertions (fixtures) for test code only,
+// so test ergonomics never leak `any` tolerance into app source.
+const testConfig = tseslint.config({
+  files: ["test/**/*.ts"],
+  rules: {
+    "no-console": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/no-unnecessary-condition": "off",
+  },
+});
+
 export default tseslint.config(
   includeIgnoreFile(gitignorePath),
   baseConfig,
@@ -75,5 +93,6 @@ export default tseslint.config(
   eslintPluginAstro.configs["flat/recommended"],
   ...eslintPluginAstro.configs["flat/jsx-a11y-recommended"],
   astroConfig,
+  testConfig,
   eslintPluginPrettier,
 );
