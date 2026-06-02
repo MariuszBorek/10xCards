@@ -337,29 +337,29 @@ No schema migrations. `.env.example` gains `SUPABASE_SERVICE_ROLE_KEY`; contribu
 
 #### Automated
 
-- [x] 1.1 vitest.config.ts exists and `npm test` discovers the suite
-- [x] 1.2 `npm test` smoke test passes against a running local Supabase
-- [x] 1.3 `npm run lint` passes
-- [x] 1.4 `npx astro check` passes
-- [x] 1.5 Suite skips with a clear message when local Supabase is unreachable
+- [x] 1.1 vitest.config.ts exists and `npm test` discovers the suite — 9ecf680
+- [x] 1.2 `npm test` smoke test passes against a running local Supabase — 9ecf680
+- [x] 1.3 `npm run lint` passes — 9ecf680
+- [x] 1.4 `npx astro check` passes — 9ecf680
+- [x] 1.5 Suite skips with a clear message when local Supabase is unreachable — 9ecf680
 
 #### Manual
 
-- [x] 1.6 `npx supabase start` then `npm test` runs green from a clean checkout after copying keys
-- [x] 1.7 `.env.example` documents `SUPABASE_SERVICE_ROLE_KEY` and the copy step
-- [x] 1.8 No orphaned `auth.users` remain after a normal run
+- [x] 1.6 `npx supabase start` then `npm test` runs green from a clean checkout after copying keys — 9ecf680
+- [x] 1.7 `.env.example` documents `SUPABASE_SERVICE_ROLE_KEY` and the copy step — 9ecf680
+- [x] 1.8 No orphaned `auth.users` remain after a normal run — 9ecf680
 
 ### Phase 2: RLS backstop tests (Risk #2)
 
 #### Automated
 
-- [ ] 2.1 RLS suite passes: B denied SELECT/UPDATE/DELETE of A's row and INSERT-as-A
-- [ ] 2.2 Test confirms B's session is authenticated before asserting denial
-- [ ] 2.3 `npm run lint` passes
+- [x] 2.1 RLS suite passes: B denied SELECT/UPDATE/DELETE of A's row and INSERT-as-A
+- [x] 2.2 Test confirms B's session is authenticated before asserting denial
+- [x] 2.3 `npm run lint` passes
 
 #### Manual
 
-- [ ] 2.4 Weakening one policy in a scratch migration makes the matching assertion fail (revert after)
+- [x] 2.4 Weakening one policy in a scratch migration makes the matching assertion fail (revert after)
 
 ### Phase 3: Endpoint authorization tests (Risk #1)
 
