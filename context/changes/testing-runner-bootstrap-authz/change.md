@@ -1,7 +1,7 @@
 ---
 change_id: testing-runner-bootstrap-authz
 title: Test rollout Phase 1 — runner bootstrap + authorization/RLS coverage
-status: implementing
+status: implemented
 created: 2026-06-01
 updated: 2026-06-02
 archived_at: null

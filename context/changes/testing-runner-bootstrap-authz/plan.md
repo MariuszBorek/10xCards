@@ -391,10 +391,10 @@ No schema migrations. `.env.example` gains `SUPABASE_SERVICE_ROLE_KEY`; contribu
 
 #### Automated
 
-- [x] 5.1 lint/format passes on edited markdown
-- [x] 5.2 test-plan §6.1/§6.2/§6.4 no longer read "TBD — see §3 Phase 1"
+- [x] 5.1 lint/format passes on edited markdown — 621cdf2
+- [x] 5.2 test-plan §6.1/§6.2/§6.4 no longer read "TBD — see §3 Phase 1" — 621cdf2
 
 #### Manual
 
-- [x] 5.3 Cookbook recipes are accurate enough for a new contributor to follow
-- [x] 5.4 `lessons.md` entry reads clearly and references correct file:lines
+- [x] 5.3 Cookbook recipes are accurate enough for a new contributor to follow — 621cdf2
+- [x] 5.4 `lessons.md` entry reads clearly and references correct file:lines — 621cdf2
