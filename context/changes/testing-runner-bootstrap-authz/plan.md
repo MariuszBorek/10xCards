@@ -378,23 +378,23 @@ No schema migrations. `.env.example` gains `SUPABASE_SERVICE_ROLE_KEY`; contribu
 
 #### Automated
 
-- [x] 4.1 API-gating suite passes: unauthenticated → 401, no data
-- [x] 4.2 Middleware suite passes: unauthenticated page → redirect; authenticated → pass-through
-- [x] 4.3 Test documents `/api/*` is outside `PROTECTED_ROUTES`
-- [x] 4.4 `npm run lint` passes
+- [x] 4.1 API-gating suite passes: unauthenticated → 401, no data — 7e19b9c
+- [x] 4.2 Middleware suite passes: unauthenticated page → redirect; authenticated → pass-through — 7e19b9c
+- [x] 4.3 Test documents `/api/*` is outside `PROTECTED_ROUTES` — 7e19b9c
+- [x] 4.4 `npm run lint` passes — 7e19b9c
 
 #### Manual
 
-- [x] 4.5 Removing the in-handler auth check makes the API-401 test fail (revert after)
+- [x] 4.5 Removing the in-handler auth check makes the API-401 test fail (revert after) — 7e19b9c
 
 ### Phase 5: Cookbook + lessons + plan sync
 
 #### Automated
 
-- [ ] 5.1 lint/format passes on edited markdown
-- [ ] 5.2 test-plan §6.1/§6.2/§6.4 no longer read "TBD — see §3 Phase 1"
+- [x] 5.1 lint/format passes on edited markdown
+- [x] 5.2 test-plan §6.1/§6.2/§6.4 no longer read "TBD — see §3 Phase 1"
 
 #### Manual
 
-- [ ] 5.3 Cookbook recipes are accurate enough for a new contributor to follow
-- [ ] 5.4 `lessons.md` entry reads clearly and references correct file:lines
+- [x] 5.3 Cookbook recipes are accurate enough for a new contributor to follow
+- [x] 5.4 `lessons.md` entry reads clearly and references correct file:lines

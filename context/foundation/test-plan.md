@@ -6,7 +6,7 @@
 >
 > Refresh: re-run `/10x-test-plan --refresh` when stale (see §8).
 >
-> Last updated: 2026-06-01 (Phase 1 change opened; Risk #7 — AI output-safety — added)
+> Last updated: 2026-06-02 (Phase 1 complete — runner + authz/RLS coverage shipped; §6.1/§6.2/§6.4 cookbook filled)
 
 ## 1. Strategy
 
@@ -86,7 +86,7 @@ orchestrator updates Status as artifacts appear on disk.
 
 | # | Phase name | Goal (one line) | Risks covered | Test types | Status | Change folder |
 |---|------------|-----------------|----------------|------------|--------|---------------|
-| 1 | Runner bootstrap + authorization/RLS coverage | Stand up the integration runner against local Supabase and prove cross-account isolation at the app and DB layers plus auth gating | #1, #2, #6 | unit + integration | change opened | context/changes/testing-runner-bootstrap-authz/ |
+| 1 | Runner bootstrap + authorization/RLS coverage | Stand up the integration runner against local Supabase and prove cross-account isolation at the app and DB layers plus auth gating | #1, #2, #6 | unit + integration | complete | context/changes/testing-runner-bootstrap-authz/ |
 | 2 | Generation, persistence & output-safety integrity | Defend the value path: no silent loss on accept, transient input never persists, AI failure/empty/zero-candidate paths surface cleanly, and untrusted model output is neutralized before render and CSV export | #3, #4, #5, #7 | unit + integration | not started | — |
 | 3 | Quality-gates wiring | Lock the floor in CI (lint, typecheck, unit+integration) plus one e2e on paste→generate→accept→export | cross-cutting | gates + e2e | not started | — |
 
@@ -156,11 +156,20 @@ relevant rollout phase ships; before that, the sub-section reads
 
 ### 6.1 Adding a unit test
 
-- TBD — see §3 Phase 1 (runner bootstrap establishes location, naming, and run command).
+- **Runner**: Vitest, configured in `vitest.config.ts` via Astro's `getViteConfig()` (NOT bare `defineConfig`) so the `@/*` alias and `astro:` virtual modules (`astro:env/server`, `astro:middleware`) resolve exactly as in the app. `test.environment` is `"node"` (Astro v6 guidance for SSR/endpoint code — jsdom is wrong here). `globals: true`, so `describe`/`it`/`expect` need no import (though existing tests still import them explicitly).
+- **Run command**: `npm test` (`vitest run`, one-shot) or `npm run test:watch` (`vitest`, watch loop).
+- **Location & naming**: pure unit tests live next to nothing in particular — `include` globs are `test/**/*.test.ts` and `src/**/*.test.ts`. Use `*.test.ts`. Group by concern under `test/` (e.g. `test/authz/`, `test/rls/`).
+- **Pure unit example**: the middleware page-gating test (`test/authz/middleware-gating.test.ts`) is the model — it constructs a fake `APIContext`, calls the real `onRequest`, and asserts the redirect/`next()` outcome with no DB. No seeding, no Supabase reachability gate; it runs unconditionally.
 
 ### 6.2 Adding an integration test
 
-- TBD — see §3 Phase 1 (cross-account authorization/RLS pattern: seed two users, assert user B cannot reach user A's rows at the app and DB layers).
+The cross-account spine. Every integration test seeds **two** users and proves user B cannot reach user A's rows. Use the helpers in `test/helpers/supabase.ts` — do NOT build clients from `src/lib/supabase.ts` (it needs Astro cookies + `astro:env`).
+
+- **Gate on reachability**: open the suite with `const reachable = await isSupabaseReachable();` (top-level `await` works in Vitest ESM) and `describe.skipIf(!reachable)(...)`. This skips with a clear console message — instead of failing — when `SUPABASE_URL` / `SUPABASE_KEY` / `SUPABASE_SERVICE_ROLE_KEY` are unset or local Supabase is down. Run `npx supabase start` and copy the three keys into `.env` (see `.env.example`).
+- **Seed & teardown**: `seedUser()` (admin API, auto-confirmed, per-run nonce email) in `beforeAll`; `deleteUser(id)` in `afterAll` (CASCADE drops the user's flashcards — no orphans). A crashed run orphans `auth.users`; recover with `npx supabase db reset`.
+- **Assert through a signed-in client**: `signedInClient(email, password)` returns an anon client that has done `signInWithPassword`, so its JWT carries `auth.uid()` to PostgREST and RLS is exercised exactly as in production. **B must be authenticated yet still denied** — an unauthenticated client trivially sees zero rows, which is a false pass for "B cannot see A". `test/rls/flashcards-rls.test.ts` is the canonical example (SELECT/UPDATE/DELETE/INSERT-as-A all denied for an authenticated B).
+- **Service-layer variant**: pass a `signedInClient` + `userId` straight into a service function (`getDueCards`, `reviewCard`) and assert it never crosses accounts — see `test/authz/srs-service.test.ts`. Cleanest seam (no cookie/workerd coupling).
+- **Keep data minimal** (1–2 rows/user) and prefer per-run unique emails over `db reset` to keep the watch loop fast.
 
 ### 6.3 Adding an e2e test
 
@@ -168,7 +177,12 @@ relevant rollout phase ships; before that, the sub-section reads
 
 ### 6.4 Adding a test for a new API endpoint
 
-- TBD — see §3 Phase 1. Expected pattern: an integration test that exercises the route handler against local Supabase with a seeded authenticated user, asserting both the response shape AND the ownership/side-effect (a second user must be denied). Mock only the external HTTP edge (OpenRouter).
+Exercise the **real route handler** (its exported `GET`/`POST`/etc.) against local Supabase — this catches session-wiring regressions a service-layer test would miss. The non-obvious contract is how to hand a handler an authenticated session: handlers build their client via `createServerClient(headers, cookies)` and read the session **only** from the request's `Cookie` header.
+
+- **Build an authenticated context**: `signedInCookieHeader(email, password)` (in `test/helpers/supabase.ts`) signs a user in through an in-memory `@supabase/ssr` cookie jar and serializes the session into a `Cookie` header string. Pass it to `makeApiContext({ cookieHeader })` (in `test/helpers/handler.ts`), which returns the minimal `APIContext` (`request`, `cookies` stub, `params`, `url`) the handlers actually read. Then `const res = await GET(context);`.
+- **Assert ownership, not just non-emptiness**: seed rows for both A and B; with B's context, assert the body contains **only B's rows and none of A's**. A test that only checks "non-empty" passes even if the handler leaks A's data — see `test/authz/flashcards-handler.test.ts`.
+- **Unauthenticated path**: omit `cookieHeader` (`makeApiContext({})`) → assert `res.status === 401` and an error body, no rows. Middleware does **not** cover `/api/*` (see the lesson in `lessons.md`), so each handler self-gates with `getUser()` → 401; this test pins that gate. See `test/authz/api-gating.test.ts`.
+- Mock only the external HTTP edge (OpenRouter) when the endpoint calls it; never mock the Supabase data layer (that would let the ownership check pass without running).
 
 ### 6.5 Adding a test for the generation path
 
@@ -178,6 +192,9 @@ relevant rollout phase ships; before that, the sub-section reads
 
 (Optional. After each phase lands, `/10x-implement` appends a 2–3 line note
 here capturing anything surprising the phase taught.)
+
+- **Phase 1 (runner bootstrap + authz/RLS)**: The Cloudflare Astro adapter injects `@cloudflare/vite-plugin`, which aborts Vitest startup by validating Worker-only constraints against the `"node"` test env. `vitest.config.ts` strips that one plugin (by name match on `"cloudflare"`) after `getViteConfig()` resolves; every other Astro plugin, including the virtual-module resolvers, stays. Handlers run as plain Node functions in tests — no workerd.
+- The four RLS-sole endpoints (`list/update/delete/export`) carry no app-layer `user_id` filter — RLS is their only backstop. This is filed as a lesson (`lessons.md`); tests assert the cross-account **outcome**, never the query shape (mirroring would pass against the gap).
 
 ## 7. What We Deliberately Don't Test
 
