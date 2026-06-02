@@ -365,27 +365,27 @@ No schema migrations. `.env.example` gains `SUPABASE_SERVICE_ROLE_KEY`; contribu
 
 #### Automated
 
-- [x] 3.1 Service-layer suite passes: B cannot read/review A's card; A can read/review own
-- [x] 3.2 Handler suite passes: GET list as B returns only B's rows
-- [x] 3.3 `npm run lint` passes
-- [x] 3.4 `npx astro check` passes
+- [x] 3.1 Service-layer suite passes: B cannot read/review A's card; A can read/review own — 1de98a2
+- [x] 3.2 Handler suite passes: GET list as B returns only B's rows — 1de98a2
+- [x] 3.3 `npm run lint` passes — 1de98a2
+- [x] 3.4 `npx astro check` passes — 1de98a2
 
 #### Manual
 
-- [x] 3.5 Handler test fails if B's session cookie is swapped for A's
+- [x] 3.5 Handler test fails if B's session cookie is swapped for A's — 1de98a2
 
 ### Phase 4: Middleware / API auth gating tests (Risk #6)
 
 #### Automated
 
-- [ ] 4.1 API-gating suite passes: unauthenticated → 401, no data
-- [ ] 4.2 Middleware suite passes: unauthenticated page → redirect; authenticated → pass-through
-- [ ] 4.3 Test documents `/api/*` is outside `PROTECTED_ROUTES`
-- [ ] 4.4 `npm run lint` passes
+- [x] 4.1 API-gating suite passes: unauthenticated → 401, no data
+- [x] 4.2 Middleware suite passes: unauthenticated page → redirect; authenticated → pass-through
+- [x] 4.3 Test documents `/api/*` is outside `PROTECTED_ROUTES`
+- [x] 4.4 `npm run lint` passes
 
 #### Manual
 
-- [ ] 4.5 Removing the in-handler auth check makes the API-401 test fail (revert after)
+- [x] 4.5 Removing the in-handler auth check makes the API-401 test fail (revert after)
 
 ### Phase 5: Cookbook + lessons + plan sync
 
