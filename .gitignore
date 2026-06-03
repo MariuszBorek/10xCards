@@ -40,7 +40,7 @@ pnpm-debug.log*
 .pnpm-debug.log*
 
 # Misc
-.claude/
+skills/
 .env.test
 
 # from 10x-astro-starter
