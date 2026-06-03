@@ -41,6 +41,7 @@ pnpm-debug.log*
 
 # Misc
 skills/
+.claude/settings.local.json
 .env.test
 
 # from 10x-astro-starter
