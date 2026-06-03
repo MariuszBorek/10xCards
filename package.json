@@ -9,7 +9,9 @@
     "astro": "astro",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "typecheck": "astro check",
     "format": "prettier --write .",
+    "prepare": "husky",
     "test": "vitest run",
     "test:watch": "vitest"
   },
