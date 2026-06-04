@@ -1,7 +1,7 @@
 ---
 change_id: testing-generation-integrity
 title: Generation, persistence & output-safety integrity tests (rollout Phase 2)
-status: implementing
+status: implemented
 created: 2026-06-03
 updated: 2026-06-04
 archived_at: null

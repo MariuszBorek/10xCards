@@ -414,24 +414,24 @@ No schema migration. The #4 forced-failure deliberately avoids a new CHECK const
 
 #### Automated
 
-- [x] 4.1 Typecheck passes: `npx astro check`
-- [x] 4.2 Lint passes: `npm run lint`
-- [x] 4.3 CSV unit test passes unconditionally: `npm test`
-- [x] 4.4 Leading `=`/`+`/`-`/`@`/tab asserted neutralized; benign fields round-trip
+- [x] 4.1 Typecheck passes: `npx astro check` — f42660e
+- [x] 4.2 Lint passes: `npm run lint` — f42660e
+- [x] 4.3 CSV unit test passes unconditionally: `npm test` — f42660e
+- [x] 4.4 Leading `=`/`+`/`-`/`@`/tab asserted neutralized; benign fields round-trip — f42660e
 
 #### Manual
 
-- [x] 4.5 Export of a `=`-leading word opens as literal text in a spreadsheet/Anki import
-- [x] 4.6 Benign export unchanged (`#separator:tab` intact)
+- [x] 4.5 Export of a `=`-leading word opens as literal text in a spreadsheet/Anki import — f42660e
+- [x] 4.6 Benign export unchanged (`#separator:tab` intact) — f42660e
 
 ### Phase 5: Cookbook + status sync
 
 #### Automated
 
-- [ ] 5.1 Full suite green: `npm test`
-- [ ] 5.2 Lint + typecheck clean: `npm run lint` && `npx astro check`
-- [ ] 5.3 §6.5 no longer reads "TBD"; §3 row 2 Status updated
+- [x] 5.1 Full suite green: `npm test`
+- [x] 5.2 Lint + typecheck clean: `npm run lint` && `npx astro check`
+- [x] 5.3 §6.5 no longer reads "TBD"; §3 row 2 Status updated
 
 #### Manual
 
-- [ ] 5.4 A contributor can follow §6.5 to add a generation-path test without re-deriving the seams
+- [x] 5.4 A contributor can follow §6.5 to add a generation-path test without re-deriving the seams
