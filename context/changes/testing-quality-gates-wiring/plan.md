@@ -474,9 +474,9 @@ verification, a quick human read-through of the edited §5/§6.3 confirms accura
 
 #### Manual
 
-- [x] 1.6 Pushed PR shows the `quality` job running typecheck + unit steps, both green
-- [x] 1.7 Introducing a type error turns `quality` red on `astro check`
-- [x] 1.8 Introducing a failing unit assertion turns `quality` red on `npm test`
+- [x] 1.6 Pushed PR shows the `quality` job running typecheck + unit steps, both green — aaf3281
+- [x] 1.7 Introducing a type error turns `quality` red on `astro check` — aaf3281
+- [x] 1.8 Introducing a failing unit assertion turns `quality` red on `npm test` — aaf3281
 
 ### Phase 2: Supabase-backed integration heavy gate
 
@@ -490,9 +490,9 @@ verification, a quick human read-through of the edited §5/§6.3 confirms accura
 
 #### Manual
 
-- [x] 2.6 Pushed PR shows the `integration` job running gated suites green
-- [x] 2.7 Dropping/blanking a Supabase secret turns the job red on the guard step (not green-with-skips)
-- [x] 2.8 Breaking an RLS policy turns the job red on the cross-account test
+- [x] 2.6 Pushed PR shows the `integration` job running gated suites green — aaf3281
+- [x] 2.7 Dropping/blanking a Supabase secret turns the job red on the guard step (not green-with-skips) — aaf3281
+- [x] 2.8 Breaking an RLS policy turns the job red on the cross-account test — aaf3281
 
 ### Phase 3: Critical-flow e2e
 
@@ -505,22 +505,22 @@ verification, a quick human read-through of the edited §5/§6.3 confirms accura
 
 #### Manual
 
-- [x] 3.5 Pushed PR shows the e2e step running in the heavy job, green
-- [x] 3.6 Breaking the value path turns the heavy job red on the e2e step
-- [x] 3.7 On forced failure, the Playwright report artifact is attached
-- [x] 3.8 Accepted row is cleaned up — re-run leaves no residue
+- [x] 3.5 Pushed PR shows the e2e step running in the heavy job, green — aaf3281
+- [x] 3.6 Breaking the value path turns the heavy job red on the e2e step — aaf3281
+- [x] 3.7 On forced failure, the Playwright report artifact is attached — aaf3281
+- [x] 3.8 Accepted row is cleaned up — re-run leaves no residue — aaf3281
 
 ### Phase 4: Backport test-plan.md corrections
 
 #### Automated
 
-- [x] 4.1 False §5 claim gone: `grep -n "typecheck already run in CI" context/foundation/test-plan.md` returns nothing
-- [x] 4.2 §6.3 no longer reads TBD
-- [x] 4.3 §3 Phase 3 Status reads `complete`
-- [x] 4.4 Markdown formats cleanly: `npm run format`
+- [x] 4.1 False §5 claim gone: `grep -n "typecheck already run in CI" context/foundation/test-plan.md` returns nothing — aaf3281
+- [x] 4.2 §6.3 no longer reads TBD — aaf3281
+- [x] 4.3 §3 Phase 3 Status reads `complete` — aaf3281
+- [x] 4.4 Markdown formats cleanly: `npm run format` — aaf3281
 
 #### Manual
 
-- [x] 4.5 §5 accurately describes which gates run where after this phase
-- [x] 4.6 §6.3 gives a contributor enough to write a new e2e without re-deriving the pattern
-- [x] 4.7 Phase 3 row + §6.6 reflect what shipped
+- [x] 4.5 §5 accurately describes which gates run where after this phase — aaf3281
+- [x] 4.6 §6.3 gives a contributor enough to write a new e2e without re-deriving the pattern — aaf3281
+- [x] 4.7 Phase 3 row + §6.6 reflect what shipped — aaf3281
