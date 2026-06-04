@@ -385,30 +385,30 @@ No schema migration. The #4 forced-failure deliberately avoids a new CHECK const
 
 #### Automated
 
-- [x] 2.1 Typecheck passes: `npx astro check`
-- [x] 2.2 Lint passes: `npm run lint`
-- [x] 2.3 Service + route tests pass: `npm test`
-- [x] 2.4 Oversized input returns 400 (route test)
-- [x] 2.5 Fetch-stub failure branches return clean outcomes with no hang (service test)
+- [x] 2.1 Typecheck passes: `npx astro check` — 6ef0ada
+- [x] 2.2 Lint passes: `npm run lint` — 6ef0ada
+- [x] 2.3 Service + route tests pass: `npm test` — 6ef0ada
+- [x] 2.4 Oversized input returns 400 (route test) — 6ef0ada
+- [x] 2.5 Fetch-stub failure branches return clean outcomes with no hang (service test) — 6ef0ada
 
 #### Manual
 
-- [x] 2.6 With local Supabase up, the generate-route suite runs (not skipped) and is green
-- [x] 2.7 Manual oversized paste yields an explanatory server error
+- [x] 2.6 With local Supabase up, the generate-route suite runs (not skipped) and is green — 6ef0ada
+- [x] 2.7 Manual oversized paste yields an explanatory server error — 6ef0ada
 
 ### Phase 3: Persistence integrity (#4)
 
 #### Automated
 
-- [ ] 3.1 Typecheck passes: `npx astro check`
-- [ ] 3.2 Lint passes: `npm run lint`
-- [ ] 3.3 Round-trip + rejection tests pass: `npm test`
-- [ ] 3.4 Round-trip asserts exactly-N membership and owner scoping
+- [x] 3.1 Typecheck passes: `npx astro check`
+- [x] 3.2 Lint passes: `npm run lint`
+- [x] 3.3 Round-trip + rejection tests pass: `npm test`
+- [x] 3.4 Round-trip asserts exactly-N membership and owner scoping
 
 #### Manual
 
-- [ ] 3.5 With local Supabase up, the persistence suite runs (not skipped) and is green
-- [ ] 3.6 Breaking the handler's error branch (local experiment) makes the rejection intent observable; reverted
+- [x] 3.5 With local Supabase up, the persistence suite runs (not skipped) and is green
+- [x] 3.6 Breaking the handler's error branch (local experiment) makes the rejection intent observable; reverted
 
 ### Phase 4: Output safety — CSV (#7)
 
