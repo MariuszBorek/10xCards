@@ -474,9 +474,9 @@ verification, a quick human read-through of the edited §5/§6.3 confirms accura
 
 #### Manual
 
-- [ ] 1.6 Pushed PR shows the `quality` job running typecheck + unit steps, both green
-- [ ] 1.7 Introducing a type error turns `quality` red on `astro check`
-- [ ] 1.8 Introducing a failing unit assertion turns `quality` red on `npm test`
+- [x] 1.6 Pushed PR shows the `quality` job running typecheck + unit steps, both green
+- [x] 1.7 Introducing a type error turns `quality` red on `astro check`
+- [x] 1.8 Introducing a failing unit assertion turns `quality` red on `npm test`
 
 ### Phase 2: Supabase-backed integration heavy gate
 
@@ -490,37 +490,37 @@ verification, a quick human read-through of the edited §5/§6.3 confirms accura
 
 #### Manual
 
-- [ ] 2.6 Pushed PR shows the `integration` job running gated suites green
-- [ ] 2.7 Dropping/blanking a Supabase secret turns the job red on the guard step (not green-with-skips)
-- [ ] 2.8 Breaking an RLS policy turns the job red on the cross-account test
+- [x] 2.6 Pushed PR shows the `integration` job running gated suites green
+- [x] 2.7 Dropping/blanking a Supabase secret turns the job red on the guard step (not green-with-skips)
+- [x] 2.8 Breaking an RLS policy turns the job red on the cross-account test
 
 ### Phase 3: Critical-flow e2e
 
 #### Automated
 
-- [x] 3.1 Spec passes locally with `OPENROUTER_MOCK=true` + local Supabase: `npm run e2e` exits 0
-- [x] 3.2 Spec uses only role/label/text locators + wait-for-state (no `waitForTimeout`, no CSS/testid)
-- [x] 3.3 Download assertion fires; filename matches the date pattern
-- [x] 3.4 Linting passes on the new spec: `npm run lint`
+- [x] 3.1 Spec passes locally with `OPENROUTER_MOCK=true` + local Supabase: `npm run e2e` exits 0 — 7590c91
+- [x] 3.2 Spec uses only role/label/text locators + wait-for-state (no `waitForTimeout`, no CSS/testid) — 7590c91
+- [x] 3.3 Download assertion fires; filename matches the date pattern — 7590c91
+- [x] 3.4 Linting passes on the new spec: `npm run lint` — 7590c91
 
 #### Manual
 
-- [ ] 3.5 Pushed PR shows the e2e step running in the heavy job, green
-- [ ] 3.6 Breaking the value path turns the heavy job red on the e2e step
-- [ ] 3.7 On forced failure, the Playwright report artifact is attached
-- [ ] 3.8 Accepted row is cleaned up — re-run leaves no residue
+- [x] 3.5 Pushed PR shows the e2e step running in the heavy job, green
+- [x] 3.6 Breaking the value path turns the heavy job red on the e2e step
+- [x] 3.7 On forced failure, the Playwright report artifact is attached
+- [x] 3.8 Accepted row is cleaned up — re-run leaves no residue
 
 ### Phase 4: Backport test-plan.md corrections
 
 #### Automated
 
-- [ ] 4.1 False §5 claim gone: `grep -n "typecheck already run in CI" context/foundation/test-plan.md` returns nothing
-- [ ] 4.2 §6.3 no longer reads TBD
-- [ ] 4.3 §3 Phase 3 Status reads `complete`
-- [ ] 4.4 Markdown formats cleanly: `npm run format`
+- [x] 4.1 False §5 claim gone: `grep -n "typecheck already run in CI" context/foundation/test-plan.md` returns nothing
+- [x] 4.2 §6.3 no longer reads TBD
+- [x] 4.3 §3 Phase 3 Status reads `complete`
+- [x] 4.4 Markdown formats cleanly: `npm run format`
 
 #### Manual
 
-- [ ] 4.5 §5 accurately describes which gates run where after this phase
-- [ ] 4.6 §6.3 gives a contributor enough to write a new e2e without re-deriving the pattern
-- [ ] 4.7 Phase 3 row + §6.6 reflect what shipped
+- [x] 4.5 §5 accurately describes which gates run where after this phase
+- [x] 4.6 §6.3 gives a contributor enough to write a new e2e without re-deriving the pattern
+- [x] 4.7 Phase 3 row + §6.6 reflect what shipped

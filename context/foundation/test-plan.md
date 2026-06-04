@@ -6,7 +6,7 @@
 >
 > Refresh: re-run `/10x-test-plan --refresh` when stale (see §8).
 >
-> Last updated: 2026-06-04 (Phase 2 complete — generation, persistence & output-safety integrity shipped; #5 source gaps + CSV formula-injection fixed; §6.5 cookbook filled, §6.6 note added)
+> Last updated: 2026-06-04 (Phase 3 complete — quality-gates wiring shipped: fast `quality` job (lint/typecheck/build/unit) + heavy `integration` job (local Supabase + gated suites + critical-flow e2e) with a CI fail-fast guard; §5 typecheck claim corrected, §6.3 e2e cookbook filled, §6.6 note added)
 
 ## 1. Strategy
 
@@ -84,11 +84,11 @@ Each row is a discrete rollout phase that will open its own change folder
 via `/10x-new`. Status moves left-to-right through the values below; the
 orchestrator updates Status as artifacts appear on disk.
 
-| #   | Phase name                                        | Goal (one line)                                                                                                                                                                                                | Risks covered  | Test types         | Status      | Change folder                                   |
-| --- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------ | ----------- | ----------------------------------------------- |
-| 1   | Runner bootstrap + authorization/RLS coverage     | Stand up the integration runner against local Supabase and prove cross-account isolation at the app and DB layers plus auth gating                                                                             | #1, #2, #6     | unit + integration | complete    | context/changes/testing-runner-bootstrap-authz/ |
-| 2   | Generation, persistence & output-safety integrity | Defend the value path: no silent loss on accept, transient input never persists, AI failure/empty/zero-candidate paths surface cleanly, and untrusted model output is neutralized before render and CSV export | #3, #4, #5, #7 | unit + integration | complete    | context/changes/testing-generation-integrity/   |
-| 3   | Quality-gates wiring                              | Lock the floor in CI (lint, typecheck, unit+integration) plus one e2e on paste→generate→accept→export                                                                                                          | cross-cutting  | gates + e2e        | not started | —                                               |
+| #   | Phase name                                        | Goal (one line)                                                                                                                                                                                                | Risks covered  | Test types         | Status   | Change folder                                   |
+| --- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------ | -------- | ----------------------------------------------- |
+| 1   | Runner bootstrap + authorization/RLS coverage     | Stand up the integration runner against local Supabase and prove cross-account isolation at the app and DB layers plus auth gating                                                                             | #1, #2, #6     | unit + integration | complete | context/changes/testing-runner-bootstrap-authz/ |
+| 2   | Generation, persistence & output-safety integrity | Defend the value path: no silent loss on accept, transient input never persists, AI failure/empty/zero-candidate paths surface cleanly, and untrusted model output is neutralized before render and CSV export | #3, #4, #5, #7 | unit + integration | complete | context/changes/testing-generation-integrity/   |
+| 3   | Quality-gates wiring                              | Lock the floor in CI (lint, typecheck, unit+integration) plus one e2e on paste→generate→accept→export                                                                                                          | cross-cutting  | gates + e2e        | complete | context/changes/testing-quality-gates-wiring/   |
 
 **Status vocabulary** (fixed — parser literals): `not started` →
 `change opened` → `researched` → `planned` → `implementing` → `complete`.
@@ -146,8 +146,14 @@ phase lands; before that, the gate is `planned`.
 | visual diff (deterministic)                          | CI on PR             | optional                   | rendering regressions (low priority — cosmetic UI is negative space, §7) |
 | pre-prod smoke                                       | between merge + prod | optional                   | Cloudflare/workerd environment-specific failures                         |
 
-lint + typecheck already run in CI (`.github/workflows/ci.yml`). The
-unit+integration and e2e gates are wired by the named rollout phases.
+lint runs in CI; typecheck (`astro check`), the unit+integration gates, and
+the e2e gate are wired by rollout Phase 3 (this change). The fast `quality`
+job carries lint + typecheck + build + the unconditional unit tests; a
+separate heavy `integration` job stands up local Supabase via the CLI, writes
+`.env` from the local keys (`supabase status -o env`), and runs the gated
+integration suites + the critical-flow e2e. A CI fail-fast guard
+(`npm run test:ci-guard`) asserts the Supabase env is present before the suites
+run, so the gate cannot pass while silently skipping.
 
 ## 6. Cookbook Patterns
 
@@ -174,7 +180,15 @@ The cross-account spine. Every integration test seeds **two** users and proves u
 
 ### 6.3 Adding an e2e test
 
-- TBD — see §3 Phase 3 (paste→generate→accept→export critical flow).
+Reserve e2e for the genuinely browser-level risk — a real file download, an SSR navigation, or a chain across auth → routing → API → DB → render that no cheaper layer can prove whole. Everything else stays at integration/unit (cost × signal). The canonical examples are `tests/e2e/critical-flow.spec.ts` (the paste→generate→accept→export value path) and `tests/e2e/seed.spec.ts` (Risk #4 silent-loss); copy their conventions exactly.
+
+- **Authenticate via `storageState`, never the sign-in UI.** A one-time `setup` project (`tests/e2e/auth.setup.ts`) seeds a fresh per-run user with the service-role helper (`test/helpers/supabase.ts`), signs in, and writes a storageState file; `auth.teardown.ts` CASCADE-deletes the user after the run. Specs start already logged in via `test.use({ storageState: "tests/e2e/.auth/<name>.json" })`. **Give each spec its own seeded user** (`critical-flow.spec.ts` uses `.auth/critical-flow.json`, not the shared `user.json`) so under `fullyParallel` two specs never share a collection — a fresh user's empty collection means exactly one "Delete" button, so cleanup needs no fragile scoping.
+- **Deterministic generation: `OPENROUTER_MOCK=true` in `.env`.** The mock lives **server-side** (`src/lib/services/generate.ts`), so `page.route()` cannot intercept it — it must be set in the env the dev server reads. With it on, the first mock candidate is always `"ephemeral"`, so assertions can bind to a known word. No OpenRouter secret is needed.
+- **Wait for state, never `page.waitForTimeout`.** Two gotchas this repo hit: (1) a `client:load` island with no on-load fetch has nothing to anchor hydration on, and `fill` writes the DOM value directly so it "sticks" even pre-hydration — gate instead on a behavioral, network-free signal (click Generate while empty, `expect(...).toPass()` until the client validation message renders), then proceed. (2) For a list that hydrates from a `useEffect` GET, anchor on `page.waitForResponse((res) => res.url().includes("/api/flashcards") && res.request().method() === "GET")` before asserting rows — the seed/critical-flow hydration gate.
+- **Locators: role/label/text only.** `getByRole("textbox", { name: "…" })` (placeholder supplies the accessible name where there is no `<label>`), `getByRole("button", { name: "…" })`. Use `{ exact: true }` to bind to a word node and not its context sentence. Scope the confirm to its dialog (`getByRole("dialog", { name: "Delete flashcard?" })`) so you click the dialog's Delete, not the card's. Never CSS/testid/XPath.
+- **Capture a real download.** `const downloadPromise = page.waitForEvent("download");` before the click, then assert both the dated filename (`/^anki-export-\d{4}-\d{2}-\d{2}\.txt$/`) **and** the file contents (`fs.readFileSync(await download.path(), "utf8")` contains the saved word) — so a broken accept/persist/export turns the test red, not merely absent.
+- **Cleanup + risk-tied name.** Delete the row(s) the test created and assert `toBeHidden()`; per-run-user isolation keeps re-runs residue-free. Bump `test.setTimeout` (e.g. `60_000`) for the value path — astro dev compiles several SSR routes on first hit.
+- **CI**: the e2e runs in the heavy `integration` job after `npm test`, reusing its `supabase start` + `.env`. Playwright starts its own dev server (`reuseExistingServer:false` under CI, `retries:2`); on failure the HTML report uploads as the `playwright-report` artifact.
 
 ### 6.4 Adding a test for a new API endpoint
 
@@ -205,6 +219,7 @@ here capturing anything surprising the phase taught.)
 - **Phase 1 (runner bootstrap + authz/RLS)**: The Cloudflare Astro adapter injects `@cloudflare/vite-plugin`, which aborts Vitest startup by validating Worker-only constraints against the `"node"` test env. `vitest.config.ts` strips that one plugin (by name match on `"cloudflare"`) after `getViteConfig()` resolves; every other Astro plugin, including the virtual-module resolvers, stays. Handlers run as plain Node functions in tests — no workerd.
 - The four RLS-sole endpoints (`list/update/delete/export`) carry no app-layer `user_id` filter — RLS is their only backstop. This is filed as a lesson (`lessons.md`); tests assert the cross-account **outcome**, never the query shape (mirroring would pass against the gap).
 - **Phase 2 (generation, persistence & output-safety integrity)**: `OPENROUTER_MOCK` is **inlined from `.env` at vite-config time**, so `vi.stubEnv` can't flip mock mode — the failure-branch tests had to mock `astro:env/server` with a `vi.hoisted()` toggle getter to reach the stubbed global fetch (see §6.5). The #4 "failed write → 500" path turned out to have **no handler-reachable constraint**: zod + a fixed `user_id` close every trippable violation, so the rejection is proven at the DB via RLS `WITH CHECK` and the handler's error→500 translation rests on code inspection + the success round-trip. Phase 2 also closed three real source gaps the tests would otherwise have only documented — an oversized-input zod `.max()` guard + `AbortSignal.timeout` on the OpenRouter fetch + a guarded envelope parse — and fixed the live CSV formula-injection vulnerability via the extracted `anki-export.ts` serializer.
+- **Phase 3 (quality-gates wiring)**: CI was lint + build only — **no test gate at all** — so the §5 claim that CI already covered typecheck was wrong (corrected this phase). Two surprises shaped the wiring. (1) A naive `npm test` in CI is **green-but-hollow**: the integration suites `skipIf(!isSupabaseReachable())`, which returns `false` (never throws) when env is missing, so 7 of 10 files skip and `vitest run` still exits 0 — the entire authz/RLS/persistence spine. The fix is a CI fail-fast guard (`npm run test:ci-guard`) that asserts `hasTestEnv()` under `CI` and exits non-zero before the suites run, so a dropped secret is a red build, not a silent hole. (2) Both harnesses read secrets from a **`.env` file**, not bare process env (Vitest `loadEnv`, the e2e dev server `process.loadEnvFile`), so the heavy job must **materialize `.env`** from `supabase status -o env` — local `supabase start` keys are the well-known dev keys, so no rotatable `SUPABASE_SERVICE_ROLE_KEY` secret is needed. Gates split by cost: a fast `quality` job (lint/typecheck/build/unit, no Supabase) and a heavy `integration` job (one `supabase start` shared by the gated suites + the critical-flow e2e).
 
 ## 7. What We Deliberately Don't Test
 
