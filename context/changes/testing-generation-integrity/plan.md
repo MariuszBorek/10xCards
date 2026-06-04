@@ -428,10 +428,10 @@ No schema migration. The #4 forced-failure deliberately avoids a new CHECK const
 
 #### Automated
 
-- [x] 5.1 Full suite green: `npm test`
-- [x] 5.2 Lint + typecheck clean: `npm run lint` && `npx astro check`
-- [x] 5.3 §6.5 no longer reads "TBD"; §3 row 2 Status updated
+- [x] 5.1 Full suite green: `npm test` — eaa981c
+- [x] 5.2 Lint + typecheck clean: `npm run lint` && `npx astro check` — eaa981c
+- [x] 5.3 §6.5 no longer reads "TBD"; §3 row 2 Status updated — eaa981c
 
 #### Manual
 
-- [x] 5.4 A contributor can follow §6.5 to add a generation-path test without re-deriving the seams
+- [x] 5.4 A contributor can follow §6.5 to add a generation-path test without re-deriving the seams — eaa981c
