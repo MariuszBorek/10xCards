@@ -56,3 +56,18 @@ jobs:
       - name: Fail-fast env guard
         run: npm run test:ci-guard
       - run: npm test
+      # Browser-level critical-flow gate (paste→generate→accept→export). Reuses the
+      # Supabase + .env (OPENROUTER_MOCK=true) already materialized above; Playwright
+      # starts its own dev server (reuseExistingServer:false under CI) and seeds a fresh
+      # per-spec user via auth.setup. Blocking on every PR + push to main.
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+      # On failure, keep the HTML report + traces so a flake can be debugged without rerun.
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

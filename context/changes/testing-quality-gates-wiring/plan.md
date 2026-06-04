@@ -482,11 +482,11 @@ verification, a quick human read-through of the edited §5/§6.3 confirms accura
 
 #### Automated
 
-- [x] 2.1 Gated suites RUN (not skip) with local Supabase + `.env`: `npm test` reports them passed, not skipped
-- [x] 2.2 Fail-fast guard exits non-zero when `CI=1` and a Supabase var is unset
-- [x] 2.3 Guard is a no-op locally without `CI` (exits 0)
-- [x] 2.4 Migrations apply cleanly: `npx supabase db reset` succeeds, table + RLS policies exist
-- [x] 2.5 Full suite passes against local Supabase: `npm test` exits 0 with no skipped gated suites
+- [x] 2.1 Gated suites RUN (not skip) with local Supabase + `.env`: `npm test` reports them passed, not skipped — 876ff9e
+- [x] 2.2 Fail-fast guard exits non-zero when `CI=1` and a Supabase var is unset — 876ff9e
+- [x] 2.3 Guard is a no-op locally without `CI` (exits 0) — 876ff9e
+- [x] 2.4 Migrations apply cleanly: `npx supabase db reset` succeeds, table + RLS policies exist — 876ff9e
+- [x] 2.5 Full suite passes against local Supabase: `npm test` exits 0 with no skipped gated suites — 876ff9e
 
 #### Manual
 
@@ -498,10 +498,10 @@ verification, a quick human read-through of the edited §5/§6.3 confirms accura
 
 #### Automated
 
-- [ ] 3.1 Spec passes locally with `OPENROUTER_MOCK=true` + local Supabase: `npm run e2e` exits 0
-- [ ] 3.2 Spec uses only role/label/text locators + wait-for-state (no `waitForTimeout`, no CSS/testid)
-- [ ] 3.3 Download assertion fires; filename matches the date pattern
-- [ ] 3.4 Linting passes on the new spec: `npm run lint`
+- [x] 3.1 Spec passes locally with `OPENROUTER_MOCK=true` + local Supabase: `npm run e2e` exits 0
+- [x] 3.2 Spec uses only role/label/text locators + wait-for-state (no `waitForTimeout`, no CSS/testid)
+- [x] 3.3 Download assertion fires; filename matches the date pattern
+- [x] 3.4 Linting passes on the new spec: `npm run lint`
 
 #### Manual
 

@@ -1,22 +1,24 @@
 /**
  * Auth setup project — runs ONCE before the E2E specs (see playwright.config.ts).
  *
- * It seeds a fresh, confirmed user via the service-role admin API (reusing the
- * same `test/helpers/supabase.ts` seeding spine the integration suite uses), signs
- * that user in through the app's own endpoint, and saves the session so every spec
- * starts already authenticated — the "authenticate without the UI" rule. A fresh
- * per-run user also keeps each spec isolated: it begins with an empty collection.
+ * It seeds fresh, confirmed users via the service-role admin API (reusing the same
+ * `test/helpers/supabase.ts` seeding spine the integration suite uses), signs each in
+ * through the app's own endpoint, and saves the session so every spec starts already
+ * authenticated — the "authenticate without the UI" rule.
+ *
+ * One seeded user PER SPEC that mutates the shared collection. Specs run fullyParallel,
+ * so two specs sharing one user would see each other's rows in the same collection
+ * (e.g. two "Delete" buttons → a strict-mode flake). A dedicated user per spec keeps
+ * each one starting from an empty collection and fully independent.
  */
-import { test as setup, expect } from "@playwright/test";
+import { test as setup, expect, type APIRequestContext } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 import { seedUser, hasTestEnv } from "../../test/helpers/supabase";
 
-const authFile = "tests/e2e/.auth/user.json";
-const seedRecordFile = "tests/e2e/.auth/seed-user.json";
 const BASE_URL = process.env.E2E_BASE_URL ?? "http://localhost:4321";
 
-setup("authenticate", async ({ request }) => {
+async function seedAndPersistSession(request: APIRequestContext, authFile: string, seedRecordFile: string) {
   if (!hasTestEnv()) {
     throw new Error(
       "E2E auth setup needs SUPABASE_URL / SUPABASE_KEY / SUPABASE_SERVICE_ROLE_KEY. " +
@@ -42,10 +44,24 @@ setup("authenticate", async ({ request }) => {
   expect(res.status(), "sign-in should respond with a redirect").toBe(302);
   expect(res.headers().location, "successful sign-in redirects to /").toBe("/");
 
-  // Persist the authenticated session for every dependent project.
+  // Persist the authenticated session for the dependent specs.
   fs.mkdirSync(path.dirname(authFile), { recursive: true });
   await request.storageState({ path: authFile });
 
   // Record the seeded user id so the cleanup (teardown) project can delete it.
   fs.writeFileSync(seedRecordFile, JSON.stringify({ id: user.id }));
+}
+
+// Default session — used by seed.spec.ts (and any spec that doesn't override storageState).
+setup("authenticate", async ({ request }) => {
+  await seedAndPersistSession(request, "tests/e2e/.auth/user.json", "tests/e2e/.auth/seed-user.json");
+});
+
+// Dedicated session for the critical-flow spec, so it never shares a collection with seed.spec.ts.
+setup("authenticate critical-flow user", async ({ request }) => {
+  await seedAndPersistSession(
+    request,
+    "tests/e2e/.auth/critical-flow.json",
+    "tests/e2e/.auth/seed-user-critical-flow.json",
+  );
 });
