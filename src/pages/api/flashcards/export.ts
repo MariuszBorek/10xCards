@@ -1,12 +1,13 @@
 import type { APIRoute } from "astro";
 import { createClient } from "@/lib/supabase";
-import type { Flashcard } from "@/types";
+import { buildAnkiTsv } from "@/lib/services/anki-export";
 
 export const prerender = false;
 
-function escapeField(value: string): string {
-  return value.replace(/[\t\n\r]/g, " ");
-}
+// Render-XSS deferral (#7): the collection/candidate render sink is intentionally
+// untested for this phase — it has no raw-HTML path (every field is escaped JSX
+// text), so it is non-reachable, and a DOM test waits until DOM infra exists for
+// another reason. Rationale recorded in context/foundation/test-plan.md §6.5.
 
 export const GET: APIRoute = async (context) => {
   const supabase = createClient(context.request.headers, context.cookies);
@@ -31,10 +32,7 @@ export const GET: APIRoute = async (context) => {
     return new Response(JSON.stringify({ error: "Failed to fetch flashcards" }), { status: 500 });
   }
 
-  const rows = (data as Pick<Flashcard, "word" | "translation" | "context">[]).map(
-    (f) => `${escapeField(f.word)}\t${escapeField(f.translation)}\t${escapeField(f.context ?? "")}`,
-  );
-  const csv = ["#separator:tab", ...rows].join("\n");
+  const csv = buildAnkiTsv(data);
 
   const filename = `anki-export-${new Date().toISOString().slice(0, 10)}.txt`;
 

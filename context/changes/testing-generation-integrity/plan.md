@@ -400,29 +400,29 @@ No schema migration. The #4 forced-failure deliberately avoids a new CHECK const
 
 #### Automated
 
-- [x] 3.1 Typecheck passes: `npx astro check`
-- [x] 3.2 Lint passes: `npm run lint`
-- [x] 3.3 Round-trip + rejection tests pass: `npm test`
-- [x] 3.4 Round-trip asserts exactly-N membership and owner scoping
+- [x] 3.1 Typecheck passes: `npx astro check` — afaf561
+- [x] 3.2 Lint passes: `npm run lint` — afaf561
+- [x] 3.3 Round-trip + rejection tests pass: `npm test` — afaf561
+- [x] 3.4 Round-trip asserts exactly-N membership and owner scoping — afaf561
 
 #### Manual
 
-- [x] 3.5 With local Supabase up, the persistence suite runs (not skipped) and is green
-- [x] 3.6 Breaking the handler's error branch (local experiment) makes the rejection intent observable; reverted
+- [x] 3.5 With local Supabase up, the persistence suite runs (not skipped) and is green — afaf561
+- [x] 3.6 Breaking the handler's error branch (local experiment) makes the rejection intent observable; reverted — afaf561
 
 ### Phase 4: Output safety — CSV (#7)
 
 #### Automated
 
-- [ ] 4.1 Typecheck passes: `npx astro check`
-- [ ] 4.2 Lint passes: `npm run lint`
-- [ ] 4.3 CSV unit test passes unconditionally: `npm test`
-- [ ] 4.4 Leading `=`/`+`/`-`/`@`/tab asserted neutralized; benign fields round-trip
+- [x] 4.1 Typecheck passes: `npx astro check`
+- [x] 4.2 Lint passes: `npm run lint`
+- [x] 4.3 CSV unit test passes unconditionally: `npm test`
+- [x] 4.4 Leading `=`/`+`/`-`/`@`/tab asserted neutralized; benign fields round-trip
 
 #### Manual
 
-- [ ] 4.5 Export of a `=`-leading word opens as literal text in a spreadsheet/Anki import
-- [ ] 4.6 Benign export unchanged (`#separator:tab` intact)
+- [x] 4.5 Export of a `=`-leading word opens as literal text in a spreadsheet/Anki import
+- [x] 4.6 Benign export unchanged (`#separator:tab` intact)
 
 ### Phase 5: Cookbook + status sync
 
