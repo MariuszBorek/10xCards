@@ -31,6 +31,14 @@ out/
 coverage/
 .nyc_output/
 
+# Playwright (E2E)
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+tests/e2e/.auth/
+.playwright-cli/
+
 # Logs
 *.log
 npm-debug.log*
@@ -42,6 +50,7 @@ pnpm-debug.log*
 # Misc
 skills/
 .claude/settings.local.json
+.claude/scheduled_tasks.lock
 .env.test
 
 # from 10x-astro-starter
