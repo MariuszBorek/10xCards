@@ -373,28 +373,28 @@ No schema migration. The #4 forced-failure deliberately avoids a new CHECK const
 
 #### Automated
 
-- [x] 1.1 Typecheck passes: `npx astro check`
-- [x] 1.2 Lint passes: `npm run lint`
-- [x] 1.3 Existing handler tests still pass (GET call sites unaffected): `npm test`
+- [x] 1.1 Typecheck passes: `npx astro check` — 4cba375
+- [x] 1.2 Lint passes: `npm run lint` — 4cba375
+- [x] 1.3 Existing handler tests still pass (GET call sites unaffected): `npm test` — 4cba375
 
 #### Manual
 
-- [x] 1.4 A POST through the extended `makeApiContext` reaches a handler and the body is readable
+- [x] 1.4 A POST through the extended `makeApiContext` reaches a handler and the body is readable — 4cba375
 
 ### Phase 2: Generation path integrity (#3 + #5)
 
 #### Automated
 
-- [ ] 2.1 Typecheck passes: `npx astro check`
-- [ ] 2.2 Lint passes: `npm run lint`
-- [ ] 2.3 Service + route tests pass: `npm test`
-- [ ] 2.4 Oversized input returns 400 (route test)
-- [ ] 2.5 Fetch-stub failure branches return clean outcomes with no hang (service test)
+- [x] 2.1 Typecheck passes: `npx astro check`
+- [x] 2.2 Lint passes: `npm run lint`
+- [x] 2.3 Service + route tests pass: `npm test`
+- [x] 2.4 Oversized input returns 400 (route test)
+- [x] 2.5 Fetch-stub failure branches return clean outcomes with no hang (service test)
 
 #### Manual
 
-- [ ] 2.6 With local Supabase up, the generate-route suite runs (not skipped) and is green
-- [ ] 2.7 Manual oversized paste yields an explanatory server error
+- [x] 2.6 With local Supabase up, the generate-route suite runs (not skipped) and is green
+- [x] 2.7 Manual oversized paste yields an explanatory server error
 
 ### Phase 3: Persistence integrity (#4)
 

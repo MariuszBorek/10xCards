@@ -39,7 +39,13 @@ export function GenerateView() {
       });
 
       if (!res.ok) {
-        throw new Error("Generation failed");
+        // Surface the server's explanatory message (e.g. the oversized-input
+        // 400) instead of a generic fallback; fall back only if the body is
+        // missing/non-JSON.
+        const body = (await res.json().catch(() => null)) as { error?: string } | null;
+        setError(body?.error ?? "Something went wrong. Please try again.");
+        setPhase("idle");
+        return;
       }
 
       const json = (await res.json()) as { candidates: FlashcardCandidate[] };

@@ -39,6 +39,10 @@ export async function generateFlashcardCandidates(input: string): Promise<Flashc
       temperature: 0.3,
       response_format: { type: "json_object" },
     }),
+    // Application-level deadline so a hung upstream fails cleanly (the route's
+    // catch → 500) instead of leaving the UI stuck in `loading` forever. Sized
+    // for an LLM call, not the 2s health-probe value.
+    signal: AbortSignal.timeout(30_000),
   });
 
   if (!response.ok) {
@@ -48,7 +52,14 @@ export async function generateFlashcardCandidates(input: string): Promise<Flashc
   interface OpenRouterResponse {
     choices?: { message?: { content?: string } }[];
   }
-  const data = (await response.json()) as OpenRouterResponse;
+  // A 200 with a non-JSON envelope degrades to zero candidates rather than an
+  // unhandled throw — same clean outcome as the inner content-parse fallback.
+  let data: OpenRouterResponse;
+  try {
+    data = (await response.json()) as OpenRouterResponse;
+  } catch {
+    return [];
+  }
   const content: string = data.choices?.[0]?.message?.content ?? "{}";
 
   try {
