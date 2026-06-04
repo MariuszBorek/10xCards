@@ -17,14 +17,14 @@ No test infrastructure exists at all (no Vitest, no config, no `test/` dir). RLS
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) | Source |
-| --- | --- | --- | --- |
-| RLS-sole endpoint gap | Test-only; file the gap | Keep Phase 1 a pure test rollout — no behavior change in a test PR; the direct-DB test pins the backstop | Plan |
-| Endpoint coverage seam | RLS test + one representative handler | Cost×signal — one handler test catches session-wiring without 4× cookie plumbing | Plan |
-| RLS exercise path | Signed-in anon client (PostgREST) | Mirrors the exact production SSR path (JWT → PostgREST → `auth.uid()`) | Plan |
-| Test isolation | Per-run unique emails + teardown | Reruns never collide without a slow full DB reset | Plan |
-| Test credentials | `.env.example` + `process.env` | One documented source, matches existing `.env` pattern, CI-injectable | Plan |
-| Oracle framing | Assert the cross-account outcome, never query shape | Mirroring the implementation would pass against the RLS-sole gap | Research |
+| Decision               | Choice                                              | Why (1 sentence)                                                                                         | Source   |
+| ---------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------- |
+| RLS-sole endpoint gap  | Test-only; file the gap                             | Keep Phase 1 a pure test rollout — no behavior change in a test PR; the direct-DB test pins the backstop | Plan     |
+| Endpoint coverage seam | RLS test + one representative handler               | Cost×signal — one handler test catches session-wiring without 4× cookie plumbing                         | Plan     |
+| RLS exercise path      | Signed-in anon client (PostgREST)                   | Mirrors the exact production SSR path (JWT → PostgREST → `auth.uid()`)                                   | Plan     |
+| Test isolation         | Per-run unique emails + teardown                    | Reruns never collide without a slow full DB reset                                                        | Plan     |
+| Test credentials       | `.env.example` + `process.env`                      | One documented source, matches existing `.env` pattern, CI-injectable                                    | Plan     |
+| Oracle framing         | Assert the cross-account outcome, never query shape | Mirroring the implementation would pass against the RLS-sole gap                                         | Research |
 
 ## Scope
 
@@ -38,13 +38,13 @@ Environment first, then risk suites in cost×signal order. The spine is a two-us
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
-| 1. Runner bootstrap | Vitest config, scripts, env, two-user seeding harness, smoke test | Cookie/`astro:env` resolution in tests; orphaned seed users |
-| 2. RLS backstop (#2) | B denied SELECT/UPDATE/DELETE/INSERT on A's row | False pass if B isn't actually authenticated |
-| 3. Endpoint authz (#1) | Service tests for due/review + one list-handler test | Mirroring the query shape instead of asserting outcome |
-| 4. Auth gating (#6) | API 401 + middleware page-redirect; `/api/*` gap documented | Testing only the page layer and missing the API surface |
-| 5. Cookbook + lessons | §6 recipes filled, RLS-sole gap filed, §3 status advanced | Recipes too thin to be reusable |
+| Phase                  | What it delivers                                                  | Key risk                                                    |
+| ---------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------- |
+| 1. Runner bootstrap    | Vitest config, scripts, env, two-user seeding harness, smoke test | Cookie/`astro:env` resolution in tests; orphaned seed users |
+| 2. RLS backstop (#2)   | B denied SELECT/UPDATE/DELETE/INSERT on A's row                   | False pass if B isn't actually authenticated                |
+| 3. Endpoint authz (#1) | Service tests for due/review + one list-handler test              | Mirroring the query shape instead of asserting outcome      |
+| 4. Auth gating (#6)    | API 401 + middleware page-redirect; `/api/*` gap documented       | Testing only the page layer and missing the API surface     |
+| 5. Cookbook + lessons  | §6 recipes filled, RLS-sole gap filed, §3 status advanced         | Recipes too thin to be reusable                             |
 
 **Prerequisites:** Docker + `npx supabase start` running; local URL/anon/service_role keys copied into `.env`.
 **Estimated effort:** ~2–3 sessions across 5 phases (Phase 1 is the bulk of the setup).

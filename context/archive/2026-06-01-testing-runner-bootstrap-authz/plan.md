@@ -9,7 +9,7 @@ Stand up the integration test runner (Vitest) from zero against local Supabase, 
 - **No test infrastructure exists.** `package.json` scripts are `dev/build/preview/astro/lint/lint:fix/format` only; no `vitest`/`msw`/`jsdom` in devDeps, no `vitest.config.*`, no `*.test.*`/`*.spec.*`, no `test/` directory. `overrides` pins `vite: ^7.3.2` (compatible with Vitest 4.x).
 - **RLS is sound and complete.** `flashcards` has four granular per-operation policies, all `auth.uid() = user_id`, in the create migration (`supabase/migrations/20260527000000_flashcard_schema.sql:13-27`). The second migration adds FSRS columns and deliberately no new policies.
 - **App-layer ownership is asymmetric.** `create`, `due`, `review` enforce ownership in app code (`insert({ user_id })` / `.eq("user_id", userId)`). `list`, `update`, `delete`, `export` carry **no** app-layer `user_id` filter — RLS is their sole backstop. They do not leak while RLS holds; the risk is single-point-of-failure.
-- **Middleware guards pages, not APIs.** `PROTECTED_ROUTES = ["/dashboard","/generate","/review","/collection"]`, matched by `startsWith` (`src/middleware.ts:4,18`). No `/api/*` entry — every flashcard endpoint self-guards with its own `getUser()` → 401. Middleware also fails *open* when Supabase env is absent.
+- **Middleware guards pages, not APIs.** `PROTECTED_ROUTES = ["/dashboard","/generate","/review","/collection"]`, matched by `startsWith` (`src/middleware.ts:4,18`). No `/api/*` entry — every flashcard endpoint self-guards with its own `getUser()` → 401. Middleware also fails _open_ when Supabase env is absent.
 - **Service layer is the cleanest test seam.** `getDueCards(supabase, userId)` (`src/lib/services/srs.ts:71`) and `reviewCard(supabase, userId, cardId, rating)` (`srs.ts:107`) take a ready signed-in client + userId — no cookie/workerd coupling.
 - **Local Supabase is test-ready.** `supabase/config.toml`: API on `54321`, DB on `54322`, `[auth] enable_confirmations = false` (line 209) — so `signUp` → immediate `signInWithPassword` works with no email step. No `supabase/seed.sql` exists (seed programmatically). `SUPABASE_SERVICE_ROLE_KEY` is **not** in `.env.example` yet.
 - **OpenRouter has a built-in mock seam.** `generateFlashcardCandidates` returns `MOCK_CANDIDATES` when `OPENROUTER_MOCK === "true"` (`src/lib/services/generate.ts:25-28`). Not exercised in this phase (generation is Phase 2 of the rollout).
@@ -17,6 +17,7 @@ Stand up the integration test runner (Vitest) from zero against local Supabase, 
 ## Desired End State
 
 `npm test` runs a Vitest suite against a running local Supabase that:
+
 - proves user B cannot SELECT/UPDATE/DELETE user A's flashcard row at the DB layer, and cannot INSERT a row owned by A (Risk #2);
 - proves the due/review service paths and a representative list endpoint never cross accounts (Risk #1);
 - proves an unauthenticated request to a protected API endpoint returns 401 with no data, and a protected page-prefix redirects to `/auth/signin` (Risk #6);
@@ -52,7 +53,7 @@ The two-user model is the spine: a `service_role` admin client seeds users A and
 
 - **Timing & lifecycle**: `auth.users` persists across runs unless the DB is reset. Seed with a per-run unique email nonce (sourced from an env var or `process.pid`/`process.hrtime` set in `setup.ts` — not from a banned `Date.now()` in any workflow context) and tear users down in `afterAll` via `admin.auth.admin.deleteUser(id)` (CASCADE drops their flashcards). A crashed run orphans users → periodic `npx supabase db reset` is the recovery, documented in the cookbook.
 - **Config**: use `getViteConfig()` from `astro/config`, not bare `defineConfig` — otherwise `@/*` and `astro:env/server` fail to resolve in tests. Set `test.environment: "node"` (Astro v6 guidance; jsdom is wrong for SSR/endpoint tests).
-- **State sequencing**: per-user anon clients must `signInWithPassword` *before* any asserted query; the anon client carries the session JWT that RLS reads. A query on an unauthenticated anon client sees zero rows (no `auth.uid()`), which would be a false pass for "B cannot see A" — so tests must assert B *is signed in* yet still denied.
+- **State sequencing**: per-user anon clients must `signInWithPassword` _before_ any asserted query; the anon client carries the session JWT that RLS reads. A query on an unauthenticated anon client sees zero rows (no `auth.uid()`), which would be a false pass for "B cannot see A" — so tests must assert B _is signed in_ yet still denied.
 
 ## Phase 1: Runner bootstrap & two-user seeding harness
 
@@ -85,6 +86,7 @@ Install and configure Vitest, add scripts and test env, and build the seeding ha
 **Intent**: Provide reusable helpers to seed two isolated users and obtain a signed-in anon client per user, plus teardown. This is the pattern Phases 2–4 and rollout Phase 2 reuse.
 
 **Contract**: a plain `@supabase/supabase-js` client built directly (NOT `src/lib/supabase.ts`, which needs Astro cookies). Helpers expose roughly:
+
 - `adminClient()` → service_role client (`{ auth: { persistSession: false } }`).
 - `seedUser(email?, password?)` → creates a user via `admin.auth.admin.createUser({ email, password, email_confirm: true })`, returns `{ id, email, password }`; default email carries a per-run nonce.
 - `signedInClient(email, password)` → anon client after `signInWithPassword`; the asserted-operations client.
@@ -134,11 +136,12 @@ Exercise the four `flashcards` RLS policies directly with user B's signed-in cre
 **Intent**: Prove every operation's policy denies cross-account access, asserting the observable outcome (no rows / no mutation), derived from the PRD isolation guardrail and the policy definitions — not from any handler's query.
 
 **Contract**: seed users A and B; insert a row owned by A (via A's signed-in client or admin). With **B's signed-in anon client**:
+
 - SELECT of A's row id → returns zero rows.
 - UPDATE of A's row id → affects zero rows (returned data empty / no change observed via A re-reading).
 - DELETE of A's row id → affects zero rows (A's row still present when A re-reads).
 - INSERT with `user_id = A.id` → rejected by the `insert_own` WITH CHECK.
-Each assertion confirms B *is authenticated* (sign-in succeeded) yet still denied — guarding against the false pass where an unauthenticated client trivially sees nothing.
+  Each assertion confirms B _is authenticated_ (sign-in succeeded) yet still denied — guarding against the false pass where an unauthenticated client trivially sees nothing.
 
 ### Success Criteria:
 
@@ -171,9 +174,10 @@ Prove the application paths never cross accounts: the due/review service functio
 **Intent**: Prove `getDueCards` and `reviewCard` scope to the passed `userId` and that B cannot mutate or read A's card through them.
 
 **Contract**: seed A and B, seed a due card owned by A. With B's signed-in client:
+
 - `getDueCards(clientB, B.id)` → does not include A's card.
 - `reviewCard(clientB, B.id, <A's cardId>, rating)` → throws "Flashcard not found" (the `.eq("user_id")` + RLS combination yields no row).
-Also a positive path: A's own due card is returned by `getDueCards(clientA, A.id)` and reviewable by A.
+  Also a positive path: A's own due card is returned by `getDueCards(clientA, A.id)` and reviewable by A.
 
 #### 2. Representative handler test
 
