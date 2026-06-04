@@ -1,10 +1,10 @@
 ---
 change_id: testing-quality-gates-wiring
 title: Quality-gates wiring — lock CI gates for Phase 1–2 protections + critical-flow e2e
-status: impl_reviewed
+status: archived
 created: 2026-06-04
 updated: 2026-06-04
-archived_at: null
+archived_at: 2026-06-04T17:09:42Z
 ---
 
 ## Notes
