@@ -24,3 +24,35 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Stand up local Supabase (applies supabase/migrations/, incl. RLS policies)
+      # and materialize env. The anon/service-role keys are the well-known LOCAL
+      # dev keys, so we read them from `supabase status` output rather than from a
+      # rotatable repository secret — no SUPABASE_SERVICE_ROLE_KEY secret needed.
+      - name: Start local Supabase
+        run: npx supabase start
+      # Write keys to BOTH .env (vitest loadEnv / playwright loadEnvFile read it)
+      # AND $GITHUB_ENV (the fail-fast guard and later steps read process.env).
+      - name: Materialize env from local Supabase keys
+        run: |
+          eval "$(npx supabase status -o env)"
+          {
+            echo "SUPABASE_URL=$API_URL"
+            echo "SUPABASE_KEY=$ANON_KEY"
+            echo "SUPABASE_SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY"
+            echo "OPENROUTER_MOCK=true"
+          } | tee .env >> "$GITHUB_ENV"
+      # Fail-fast: if any of the three Supabase vars is missing under CI, exit
+      # non-zero BEFORE the suites run, so the gate cannot pass while skipping.
+      - name: Fail-fast env guard
+        run: npm run test:ci-guard
+      - run: npm test

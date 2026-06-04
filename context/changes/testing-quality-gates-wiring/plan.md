@@ -466,11 +466,11 @@ verification, a quick human read-through of the edited §5/§6.3 confirms accura
 
 #### Automated
 
-- [x] 1.1 Lint passes: `npm run lint`
-- [x] 1.2 Typecheck passes: `npx astro check`
-- [x] 1.3 Unit tests pass locally with no Supabase env: `npm test` (gated suites skip, three unconditional files run)
-- [x] 1.4 Build passes: `npm run build`
-- [x] 1.5 Workflow file is valid YAML / parses
+- [x] 1.1 Lint passes: `npm run lint` — 8602954
+- [x] 1.2 Typecheck passes: `npx astro check` — 8602954
+- [x] 1.3 Unit tests pass locally with no Supabase env: `npm test` (gated suites skip, three unconditional files run) — 8602954
+- [x] 1.4 Build passes: `npm run build` — 8602954
+- [x] 1.5 Workflow file is valid YAML / parses — 8602954
 
 #### Manual
 
@@ -482,11 +482,11 @@ verification, a quick human read-through of the edited §5/§6.3 confirms accura
 
 #### Automated
 
-- [ ] 2.1 Gated suites RUN (not skip) with local Supabase + `.env`: `npm test` reports them passed, not skipped
-- [ ] 2.2 Fail-fast guard exits non-zero when `CI=1` and a Supabase var is unset
-- [ ] 2.3 Guard is a no-op locally without `CI` (exits 0)
-- [ ] 2.4 Migrations apply cleanly: `npx supabase db reset` succeeds, table + RLS policies exist
-- [ ] 2.5 Full suite passes against local Supabase: `npm test` exits 0 with no skipped gated suites
+- [x] 2.1 Gated suites RUN (not skip) with local Supabase + `.env`: `npm test` reports them passed, not skipped
+- [x] 2.2 Fail-fast guard exits non-zero when `CI=1` and a Supabase var is unset
+- [x] 2.3 Guard is a no-op locally without `CI` (exits 0)
+- [x] 2.4 Migrations apply cleanly: `npx supabase db reset` succeeds, table + RLS policies exist
+- [x] 2.5 Full suite passes against local Supabase: `npm test` exits 0 with no skipped gated suites
 
 #### Manual
 
