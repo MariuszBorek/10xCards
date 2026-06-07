@@ -6,10 +6,10 @@ import type { DueCard, ReviewRating } from "@/types";
 type Phase = "loading" | "reviewing" | "empty" | "done";
 
 const RATINGS: { rating: ReviewRating; label: string }[] = [
-  { rating: "again", label: "Znowu" },
-  { rating: "hard", label: "Trudne" },
-  { rating: "good", label: "Dobrze" },
-  { rating: "easy", label: "Łatwe" },
+  { rating: "again", label: "Again" },
+  { rating: "hard", label: "Hard" },
+  { rating: "good", label: "Good" },
+  { rating: "easy", label: "Easy" },
 ];
 
 export function ReviewSession() {
@@ -34,7 +34,7 @@ export function ReviewSession() {
           setPhase("reviewing");
         }
       } catch {
-        setError("Nie udało się wczytać sesji nauki. Odśwież stronę.");
+        setError("Failed to load the study session. Refresh the page.");
       }
     }
     void load();
@@ -62,7 +62,7 @@ export function ReviewSession() {
         setRevealed(false);
       }
     } catch {
-      setError("Nie udało się zapisać oceny. Spróbuj ponownie.");
+      setError("Failed to save the rating. Try again.");
     } finally {
       setSubmitting(false);
     }
@@ -71,7 +71,7 @@ export function ReviewSession() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <h1 className="bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-2xl font-bold text-transparent">
-        Nauka
+        Study
       </h1>
 
       {phase === "loading" && !error && <Skeleton className="h-64 w-full rounded-2xl bg-white/10" />}
@@ -81,7 +81,7 @@ export function ReviewSession() {
       {phase === "reviewing" && (
         <div className="space-y-4">
           <p className="text-sm text-white/50">
-            Fiszka {index + 1} z {cards.length}
+            Card {index + 1} of {cards.length}
           </p>
 
           <div className="space-y-5 rounded-2xl border border-white/10 bg-white/10 p-8 text-center text-white backdrop-blur-xl">
@@ -99,7 +99,7 @@ export function ReviewSession() {
                   setRevealed(true);
                 }}
               >
-                Pokaż odpowiedź
+                Show answer
               </Button>
             )}
           </div>
@@ -127,18 +127,18 @@ export function ReviewSession() {
 
       {(phase === "empty" || phase === "done") && (
         <div className="space-y-4 rounded-2xl border border-white/10 bg-white/10 p-8 text-center text-white backdrop-blur-xl">
-          <p className="text-xl font-semibold">Wszystko powtórzone! 🎉</p>
+          <p className="text-xl font-semibold">All caught up! 🎉</p>
           <p className="text-white/70">
             {phase === "done"
-              ? `Powtórzono ${reviewed} ${reviewed === 1 ? "fiszkę" : "fiszek"}. Brak kolejnych na teraz.`
-              : "Nie masz teraz żadnych fiszek do powtórki."}
+              ? `Reviewed ${reviewed} ${reviewed === 1 ? "card" : "cards"}. Nothing else is due right now.`
+              : "You have no cards due for review right now."}
           </p>
           <div className="flex justify-center gap-3">
             <Button variant="cosmic" asChild>
-              <a href="/generate">Generuj fiszki</a>
+              <a href="/generate">Generate flashcards</a>
             </Button>
             <Button variant="cosmic-outline" asChild>
-              <a href="/collection">Moja kolekcja</a>
+              <a href="/collection">My collection</a>
             </Button>
           </div>
         </div>
