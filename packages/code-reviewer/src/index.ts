@@ -1,9 +1,6 @@
-import { generateText, Output } from "ai";
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { DEFAULT_MODEL, loadEnv, resolveApiKey } from "./config.ts";
-import { ReviewSchema } from "./schemas/review.ts";
+import { DEFAULT_MODEL, loadEnv } from "./config.ts";
 import type { Review } from "./schemas/review.ts";
-import { REVIEW_INSTRUCTIONS, buildReviewPrompt } from "./prompts/review.ts";
+import { reviewCode } from "./agent/reviewer.ts";
 
 /**
  * Entry point for the AI-powered code reviewer.
@@ -20,36 +17,8 @@ loadEnv();
 // the barrel; the full public-surface cleanup lands in Phase 3.
 export { ReviewFindingSchema, ReviewSchema } from "./schemas/review.ts";
 export type { Review, ReviewFinding } from "./schemas/review.ts";
-
-export interface ReviewCodeOptions {
-  /** The source code to review. */
-  code: string;
-  /** Optional language hint (e.g. "typescript") to focus the review. */
-  language?: string;
-  /** OpenRouter model id. Defaults to `OPENROUTER_MODEL` env or claude-sonnet-4.6. */
-  model?: string;
-  /** OpenRouter API key. Defaults to the `OPENROUTER_API_KEY` env var. */
-  apiKey?: string;
-}
-
-/**
- * Review a snippet of code and return a zod-validated, structured report.
- */
-export async function reviewCode(options: ReviewCodeOptions): Promise<Review> {
-  const apiKey = resolveApiKey(options.apiKey);
-
-  const openrouter = createOpenRouter({ apiKey });
-  const model = options.model ?? DEFAULT_MODEL;
-
-  const { output } = await generateText({
-    model: openrouter(model),
-    system: REVIEW_INSTRUCTIONS,
-    prompt: buildReviewPrompt(options.code, options.language),
-    output: Output.object({ schema: ReviewSchema }),
-  });
-
-  return output;
-}
+export { reviewCode, createReviewAgent } from "./agent/reviewer.ts";
+export type { ReviewCodeOptions } from "./agent/reviewer.ts";
 
 /** Pretty-print a review to the console. */
 function printReview(review: Review): void {

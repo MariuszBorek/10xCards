@@ -251,24 +251,24 @@ None — single model call per review, unchanged from current behavior.
 
 #### Automated
 
-- [x] 1.1 Type checking passes: `npm run typecheck`
-- [x] 1.2 Demo still runs and prints a review: `npm run dev`
+- [x] 1.1 Type checking passes: `npm run typecheck` — 422abc9
+- [x] 1.2 Demo still runs and prints a review: `npm run dev` — 422abc9
 
 #### Manual
 
-- [x] 1.3 New files contain schema/prompt/config logic verbatim; nothing changed
+- [x] 1.3 New files contain schema/prompt/config logic verbatim; nothing changed — 422abc9
 
 ### Phase 2: Agent Module on ToolLoopAgent
 
 #### Automated
 
-- [ ] 2.1 Type checking passes: `npm run typecheck`
-- [ ] 2.2 Demo runs end-to-end against OpenRouter and prints a structured review: `npm run dev`
+- [x] 2.1 Type checking passes: `npm run typecheck`
+- [x] 2.2 Demo runs end-to-end against OpenRouter and prints a structured review: `npm run dev`
 
 #### Manual
 
-- [ ] 2.3 Demo output materially equivalent to pre-refactor behavior
-- [ ] 2.4 `createReviewAgent()` returns a usable agent yielding `{ output }` matching `ReviewSchema`
+- [x] 2.3 Demo output materially equivalent to pre-refactor behavior
+- [x] 2.4 `createReviewAgent()` returns a usable agent yielding `{ output }` matching `ReviewSchema`
 
 ### Phase 3: CLI + Barrel Wiring
 
