@@ -1,6 +1,9 @@
 import { generateText, Output } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { z } from "zod";
+import { DEFAULT_MODEL, loadEnv, resolveApiKey } from "./config.ts";
+import { ReviewSchema } from "./schemas/review.ts";
+import type { Review } from "./schemas/review.ts";
+import { REVIEW_INSTRUCTIONS, buildReviewPrompt } from "./prompts/review.ts";
 
 /**
  * Entry point for the AI-powered code reviewer.
@@ -11,30 +14,12 @@ import { z } from "zod";
  */
 
 // Node 22 loads `.env` natively — no `dotenv` dependency needed.
-try {
-  process.loadEnvFile();
-} catch {
-  // No .env file present; rely on the ambient environment instead.
-}
+loadEnv();
 
-const DEFAULT_MODEL = process.env.OPENROUTER_MODEL ?? "anthropic/claude-sonnet-4.6";
-
-/** A single issue surfaced during review. */
-export const ReviewFindingSchema = z.object({
-  severity: z.enum(["critical", "high", "medium", "low", "info"]).describe("How serious the finding is."),
-  title: z.string().describe("A short, specific summary of the issue."),
-  detail: z.string().describe("Explanation of the problem and why it matters."),
-  suggestion: z.string().describe("Concrete recommendation to resolve it."),
-  line: z.number().nullable().describe("1-based line number if the issue maps to one, else null."),
-});
-export type ReviewFinding = z.infer<typeof ReviewFindingSchema>;
-
-/** The full structured result of a code review. */
-export const ReviewSchema = z.object({
-  summary: z.string().describe("A 1-3 sentence overall assessment."),
-  findings: z.array(ReviewFindingSchema).describe("All issues found, most severe first."),
-});
-export type Review = z.infer<typeof ReviewSchema>;
+// Re-export the foundational modules so existing imports keep resolving from
+// the barrel; the full public-surface cleanup lands in Phase 3.
+export { ReviewFindingSchema, ReviewSchema } from "./schemas/review.ts";
+export type { Review, ReviewFinding } from "./schemas/review.ts";
 
 export interface ReviewCodeOptions {
   /** The source code to review. */
@@ -51,23 +36,15 @@ export interface ReviewCodeOptions {
  * Review a snippet of code and return a zod-validated, structured report.
  */
 export async function reviewCode(options: ReviewCodeOptions): Promise<Review> {
-  const apiKey = options.apiKey ?? process.env.OPENROUTER_API_KEY;
-  if (!apiKey) {
-    throw new Error("Missing OpenRouter API key. Set OPENROUTER_API_KEY in your environment or .env file.");
-  }
+  const apiKey = resolveApiKey(options.apiKey);
 
   const openrouter = createOpenRouter({ apiKey });
   const model = options.model ?? DEFAULT_MODEL;
 
-  const languageLine = options.language ? `Language: ${options.language}\n` : "";
-
   const { output } = await generateText({
     model: openrouter(model),
-    system:
-      "You are a meticulous senior software engineer performing a code review. " +
-      "Focus on correctness, security, performance, and maintainability. " +
-      "Be specific and actionable; do not invent issues when the code is sound.",
-    prompt: `${languageLine}Review the following code:\n\n\`\`\`\n${options.code}\n\`\`\``,
+    system: REVIEW_INSTRUCTIONS,
+    prompt: buildReviewPrompt(options.code, options.language),
     output: Output.object({ schema: ReviewSchema }),
   });
 
