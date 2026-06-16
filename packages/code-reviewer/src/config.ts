@@ -7,7 +7,18 @@
  */
 
 /** Default OpenRouter model id (overridable via `OPENROUTER_MODEL`). */
-export const DEFAULT_MODEL = process.env.OPENROUTER_MODEL ?? "anthropic/claude-sonnet-4.6";
+export const DEFAULT_MODEL = "anthropic/claude-sonnet-4.6";
+
+/**
+ * Resolve the OpenRouter model id from an explicit argument, the
+ * `OPENROUTER_MODEL` env var, or `DEFAULT_MODEL`.
+ *
+ * Read at call time (like {@link resolveApiKey}) so a `.env` override loaded by
+ * an entrypoint after import still takes effect.
+ */
+export function resolveModel(explicit?: string): string {
+  return explicit ?? process.env.OPENROUTER_MODEL ?? DEFAULT_MODEL;
+}
 
 /**
  * Load `.env` into `process.env` (Node 22 native — no `dotenv` dependency).

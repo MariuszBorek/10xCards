@@ -1,4 +1,4 @@
-import { DEFAULT_MODEL, loadEnv } from "./config.ts";
+import { loadEnv, resolveModel } from "./config.ts";
 import type { Review } from "./schemas/review.ts";
 import { reviewCode } from "./agent/reviewer.ts";
 
@@ -33,7 +33,8 @@ async function main(): Promise<void> {
   return a / b;
 }`;
 
-  console.log(`Reviewing sample code with model: ${DEFAULT_MODEL}`);
+  // Resolve after loadEnv() so an `.env` OPENROUTER_MODEL override is reflected.
+  console.log(`Reviewing sample code with model: ${resolveModel()}`);
   const review = await reviewCode({ code: sample, language: "javascript" });
   printReview(review);
 }

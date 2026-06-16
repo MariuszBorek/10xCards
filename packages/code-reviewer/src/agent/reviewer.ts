@@ -1,6 +1,6 @@
 import { ToolLoopAgent, Output } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { DEFAULT_MODEL, resolveApiKey } from "../config.ts";
+import { resolveApiKey, resolveModel } from "../config.ts";
 import { ReviewSchema } from "../schemas/review.ts";
 import type { Review } from "../schemas/review.ts";
 import { REVIEW_INSTRUCTIONS, buildReviewPrompt } from "../prompts/review.ts";
@@ -27,7 +27,7 @@ export interface ReviewCodeOptions {
 export function createReviewAgent(config?: { model?: string; apiKey?: string }) {
   const apiKey = resolveApiKey(config?.apiKey);
   const openrouter = createOpenRouter({ apiKey });
-  const model = config?.model ?? DEFAULT_MODEL;
+  const model = resolveModel(config?.model);
 
   return new ToolLoopAgent({
     model: openrouter(model),
