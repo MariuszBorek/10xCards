@@ -262,23 +262,23 @@ None — single model call per review, unchanged from current behavior.
 
 #### Automated
 
-- [x] 2.1 Type checking passes: `npm run typecheck`
-- [x] 2.2 Demo runs end-to-end against OpenRouter and prints a structured review: `npm run dev`
+- [x] 2.1 Type checking passes: `npm run typecheck` — 50177a1
+- [x] 2.2 Demo runs end-to-end against OpenRouter and prints a structured review: `npm run dev` — 50177a1
 
 #### Manual
 
-- [x] 2.3 Demo output materially equivalent to pre-refactor behavior
-- [x] 2.4 `createReviewAgent()` returns a usable agent yielding `{ output }` matching `ReviewSchema`
+- [x] 2.3 Demo output materially equivalent to pre-refactor behavior — 50177a1
+- [x] 2.4 `createReviewAgent()` returns a usable agent yielding `{ output }` matching `ReviewSchema` — 50177a1
 
 ### Phase 3: CLI + Barrel Wiring
 
 #### Automated
 
-- [ ] 3.1 Type checking passes: `npm run typecheck`
-- [ ] 3.2 CLI demo runs and prints findings: `npm run dev`
-- [ ] 3.3 `index.ts` has no top-level side effects on import
+- [x] 3.1 Type checking passes: `npm run typecheck`
+- [x] 3.2 CLI demo runs and prints findings: `npm run dev`
+- [x] 3.3 `index.ts` has no top-level side effects on import
 
 #### Manual
 
-- [ ] 3.4 Final module tree matches the plan
-- [ ] 3.5 README example is accurate
+- [x] 3.4 Final module tree matches the plan
+- [x] 3.5 README example is accurate

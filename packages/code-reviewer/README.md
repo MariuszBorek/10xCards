@@ -14,18 +14,33 @@ cp .env.example .env   # then add your OPENROUTER_API_KEY
 ## Usage
 
 ```bash
-npm run dev        # runs the demo review in src/index.ts
+npm run dev        # runs the demo review in src/cli.ts
 npm run typecheck  # tsc --noEmit
 ```
 
 As a library:
 
 ```ts
-import { reviewCode } from "./src/index.ts";
+import { reviewCode, createReviewAgent } from "@10xcards/code-reviewer";
 
+// One-shot review:
 const review = await reviewCode({ code: "...", language: "typescript" });
 console.log(review.summary, review.findings);
+
+// Or build a reusable, structured-output agent:
+const agent = createReviewAgent();
+const { output } = await agent.generate({ prompt: "Review: ..." });
 ```
+
+The package root (`src/index.ts`) is a side-effect-free barrel — importing it
+loads no `.env` and runs no demo. Module layout:
+
+- `config.ts` — env/config (`DEFAULT_MODEL`, `loadEnv`, `resolveApiKey`)
+- `schemas/review.ts` — zod schemas + inferred types
+- `prompts/review.ts` — review instructions + prompt builder
+- `agent/reviewer.ts` — `createReviewAgent` + `reviewCode`
+- `cli.ts` — the demo entrypoint (`npm run dev`)
+- `index.ts` — public API barrel
 
 ## Configuration
 

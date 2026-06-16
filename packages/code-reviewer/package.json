@@ -6,8 +6,8 @@
   "description": "AI-powered code reviewer built on the AI SDK + OpenRouter",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "tsx src/index.ts",
-    "start": "tsx src/index.ts",
+    "dev": "tsx src/cli.ts",
+    "start": "tsx src/cli.ts",
     "typecheck": "tsc --noEmit"
   },
   "engines": {
