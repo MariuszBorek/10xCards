@@ -274,11 +274,11 @@ None — single model call per review, unchanged from current behavior.
 
 #### Automated
 
-- [x] 3.1 Type checking passes: `npm run typecheck`
-- [x] 3.2 CLI demo runs and prints findings: `npm run dev`
-- [x] 3.3 `index.ts` has no top-level side effects on import
+- [x] 3.1 Type checking passes: `npm run typecheck` — b70164b
+- [x] 3.2 CLI demo runs and prints findings: `npm run dev` — b70164b
+- [x] 3.3 `index.ts` has no top-level side effects on import — b70164b
 
 #### Manual
 
-- [x] 3.4 Final module tree matches the plan
-- [x] 3.5 README example is accurate
+- [x] 3.4 Final module tree matches the plan — b70164b
+- [x] 3.5 README example is accurate — b70164b
