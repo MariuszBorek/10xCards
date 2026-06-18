@@ -571,26 +571,26 @@ on a throwaway branch/PR before considering the change done.
 
 #### Automated
 
-- [x] 1.1 Type checking passes: `npm run typecheck`
-- [x] 1.2 Linting passes: `npm run lint`
-- [x] 1.3 `ReviewSchema` accepts valid 7-score+verdict and rejects out-of-range score
+- [x] 1.1 Type checking passes: `npm run typecheck` — 1847dac
+- [x] 1.2 Linting passes: `npm run lint` — 1847dac
+- [x] 1.3 `ReviewSchema` accepts valid 7-score+verdict and rejects out-of-range score — 1847dac
 
 #### Manual
 
-- [x] 1.4 Prompt contains all 7 criteria with 1–10 anchors + explicit min-threshold verdict rule
+- [x] 1.4 Prompt contains all 7 criteria with 1–10 anchors + explicit min-threshold verdict rule — 1847dac
 
 ### Phase 2: CLI Input/Output + Mock Mode
 
 #### Automated
 
-- [ ] 2.1 Type checking passes: `npm run typecheck`
-- [ ] 2.2 Linting passes: `npm run lint`
-- [ ] 2.3 Mock CLI run emits a single parseable `{ verdict, summary, scores }` and exits 0 with no API key
+- [x] 2.1 Type checking passes: `npm run typecheck`
+- [x] 2.2 Linting passes: `npm run lint`
+- [x] 2.3 Mock CLI run emits a single parseable `{ verdict, summary, scores }` and exits 0 with no API key
 
 #### Manual
 
-- [ ] 2.4 Fail-marker diff → `verdict: "failed"`; clean diff → `"passed"`
-- [ ] 2.5 stdout contains only JSON (logging on stderr)
+- [x] 2.4 Fail-marker diff → `verdict: "failed"`; clean diff → `"passed"`
+- [x] 2.5 stdout contains only JSON (logging on stderr)
 
 ### Phase 3: Vitest Unit Tests
 

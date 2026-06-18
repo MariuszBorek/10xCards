@@ -1,8 +1,20 @@
+import type { ReviewScores } from "../schemas/review.ts";
+
 /**
  * Prompts for the code reviewer, extracted as a named instruction constant and
  * a pure user-prompt builder so they can be reused by the agent and a future
  * eval without duplicating wording.
  */
+
+/**
+ * Maximum number of characters in the assembled user prompt (title + body +
+ * diff + scaffolding). Bounds per-review token cost; when exceeded, the diff —
+ * never the title/body — is truncated with a visible marker.
+ */
+export const MAX_PROMPT_CHARS = 100_000;
+
+/** Visible marker appended to a diff that was cut to fit {@link MAX_PROMPT_CHARS}. */
+export const TRUNCATION_MARKER = "\n…[truncated]";
 
 /**
  * System instructions for the reviewer (the agent's `instructions`). Carries the
@@ -49,25 +61,51 @@ export interface ReviewPromptInput {
   title: string;
   /** The PR description/body (may be empty). */
   body?: string;
-  /** The unified diff to review (assumed already size-bounded by the caller). */
+  /** The unified diff to review (truncated here if the prompt would exceed the cap). */
   diff: string;
 }
 
 /**
  * Build the user prompt for a single PR review from its title, body, and diff.
- * Pure: applies no size guard of its own — pass an already-bounded diff.
+ *
+ * Applies the {@link MAX_PROMPT_CHARS} guard: if the assembled prompt would
+ * exceed the cap, the diff (never the title/body) is truncated and a visible
+ * {@link TRUNCATION_MARKER} is appended, so a huge PR can't blow up token cost.
  */
 export function buildReviewPrompt({ title, body, diff }: ReviewPromptInput): string {
   const bodySection = body && body.trim().length > 0 ? body.trim() : "(no description provided)";
-  return [
-    `PR title: ${title}`,
-    "",
-    "PR description:",
-    bodySection,
-    "",
-    "Unified diff under review:",
-    "```diff",
-    diff,
-    "```",
-  ].join("\n");
+  const assemble = (d: string) =>
+    [
+      `PR title: ${title}`,
+      "",
+      "PR description:",
+      bodySection,
+      "",
+      "Unified diff under review:",
+      "```diff",
+      d,
+      "```",
+    ].join("\n");
+
+  const full = assemble(diff);
+  if (full.length <= MAX_PROMPT_CHARS) {
+    return full;
+  }
+
+  // Overhead = everything except the diff body; size the diff to what remains.
+  const overhead = assemble("").length + TRUNCATION_MARKER.length;
+  const budget = Math.max(0, MAX_PROMPT_CHARS - overhead);
+  return assemble(diff.slice(0, budget) + TRUNCATION_MARKER);
+}
+
+/**
+ * Derive the min-threshold verdict from a set of scores: `"failed"` if ANY
+ * criterion scores below 5, otherwise `"passed"`.
+ *
+ * Pure mirror of the rubric rule stated in {@link REVIEW_INSTRUCTIONS}. The CLI
+ * uses it as a consistency guard against the model's own `verdict`; it never
+ * overrides the emitted verdict.
+ */
+export function deriveVerdict(scores: ReviewScores): "passed" | "failed" {
+  return Object.values(scores).some((s) => s < 5) ? "failed" : "passed";
 }

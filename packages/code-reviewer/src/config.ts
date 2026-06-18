@@ -21,6 +21,16 @@ export function resolveModel(explicit?: string): string {
 }
 
 /**
+ * Whether the reviewer should use its deterministic offline mock instead of a
+ * live OpenRouter call. Reviewer-owned toggle (the Astro app reads the same
+ * `OPENROUTER_MOCK` env var independently). Read at call time like the other
+ * resolvers so an `.env` value loaded by an entrypoint after import is honored.
+ */
+export function isMockEnabled(): boolean {
+  return process.env.OPENROUTER_MOCK === "true";
+}
+
+/**
  * Load `.env` into `process.env` (Node 22 native — no `dotenv` dependency).
  *
  * Must be called explicitly by an entrypoint; never runs at import time.
