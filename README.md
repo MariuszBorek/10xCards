@@ -170,6 +170,14 @@ Set `SUPABASE_URL` and `SUPABASE_KEY` as secrets in your Cloudflare dashboard or
 
 GitHub Actions runs lint + build on every push and PR to `master`. Configure `SUPABASE_URL` and `SUPABASE_KEY` as repository secrets in GitHub for the build step.
 
+### AI PR code review
+
+`.github/workflows/ai-code-review.yml` runs an LLM review on every PR to `main`. It posts a single comment (edited in place on re-runs) with the 7 criterion scores, a verdict, and a summary, then applies exactly one of the `ai-cr:passed` / `ai-cr:failed` labels.
+
+- **Secret**: add `OPENROUTER_API_KEY` as a repository secret. Without it (or on a fork PR, which has no secrets), the review is **skipped gracefully** — it posts a "skipped for fork PR" note and the check stays green, so the workflow is safe to merge before the secret is configured.
+- **Labels**: `ai-cr:passed` (green) / `ai-cr:failed` (red) are applied automatically; `ai-cr:review` is a manual **retry trigger** — add it to a PR to re-run the review. The workflow removes `ai-cr:review` at the end of every run so it can be re-added to trigger again.
+- An OpenRouter/API error yields a neutral "review unavailable" comment with **no** pass/fail label, so outages don't block merges.
+
 ## License
 
 MIT

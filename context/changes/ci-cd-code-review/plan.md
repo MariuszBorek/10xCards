@@ -608,7 +608,7 @@ on a throwaway branch/PR before considering the change done.
 
 #### Automated
 
-- [x] 4.1 Action YAML is syntactically valid
+- [x] 4.1 Action YAML is syntactically valid — d3780d1
 
 #### Manual
 
@@ -619,8 +619,8 @@ on a throwaway branch/PR before considering the change done.
 
 #### Automated
 
-- [ ] 5.1 Workflow YAML parses
-- [ ] 5.2 `npm run typecheck` / `npm run lint` still pass
+- [x] 5.1 Workflow YAML parses
+- [x] 5.2 `npm run typecheck` / `npm run lint` still pass
 
 #### Manual
 

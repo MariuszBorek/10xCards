@@ -1,0 +1,143 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+    branches: [main]
+
+# Least privilege: read the code, write the PR comment + labels.
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+# Rapid pushes only review the latest diff; cancel superseded runs so they don't
+# race on the single comment / labels.
+concurrency:
+  group: ai-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    # Run on opened/synchronize/reopened always; on a `labeled` event run ONLY
+    # when the added label is `ai-cr:review` (ignore unrelated label changes).
+    if: github.event.action != 'labeled' || github.event.label.name == 'ai-cr:review'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # Pull the server-computed diff (one API call) into a file. Using `gh pr
+      # diff` sidesteps the fork/shallow-checkout `git merge-base` gotcha, and a
+      # file (vs an inline arg) dodges arg-length/escaping limits.
+      - name: Fetch PR diff
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr diff "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" > pr.diff
+
+      # Data-only LLM review. Empty key (fork PR / secret unset) → skipped=true.
+      - name: AI review
+        id: review
+        uses: ./.github/actions/ai-review
+        with:
+          openrouter-api-key: ${{ secrets.OPENROUTER_API_KEY }}
+          diff-file: pr.diff
+          pr-title: ${{ github.event.pull_request.title }}
+          pr-body: ${{ github.event.pull_request.body }}
+
+      # Idempotent comment: find the marked comment and edit it in place, else
+      # create it. Covers all four states (skip / neutral-error / passed / failed).
+      - name: Upsert review comment
+        uses: actions/github-script@v7
+        env:
+          SKIPPED: ${{ steps.review.outputs.skipped }}
+          VERDICT: ${{ steps.review.outputs.verdict }}
+          SUMMARY: ${{ steps.review.outputs.summary }}
+          SCORES: ${{ steps.review.outputs.scores }}
+          ERROR: ${{ steps.review.outputs.error }}
+        with:
+          script: |
+            const marker = '<!-- ai-code-review -->';
+            const skipped = process.env.SKIPPED === 'true';
+            const verdict = process.env.VERDICT || '';
+            const summary = process.env.SUMMARY || '';
+            const scoresRaw = process.env.SCORES || '';
+            const error = process.env.ERROR || '';
+
+            let body;
+            if (skipped) {
+              body = `${marker}\n### 🤖 AI Code Review\n\n_AI review skipped for fork PR (no secrets available)._`;
+            } else if (!verdict) {
+              const detail = error ? `\n\n\`\`\`\n${error}\n\`\`\`` : '';
+              body = `${marker}\n### 🤖 AI Code Review\n\n⚠️ **Review unavailable** — the reviewer could not complete, so no pass/fail label was applied.${detail}`;
+            } else {
+              const icon = verdict === 'passed' ? '✅' : '❌';
+              const labels = {
+                correctness: 'Correctness',
+                security: 'Security',
+                errorHandling: 'Error handling',
+                readability: 'Readability',
+                testCoverage: 'Test coverage',
+                performance: 'Performance',
+                consistency: 'Consistency',
+              };
+              let table = '';
+              try {
+                const scores = JSON.parse(scoresRaw || '{}');
+                const rows = Object.entries(labels)
+                  .filter(([k]) => k in scores)
+                  .map(([k, label]) => `| ${label} | ${scores[k]}/10 |`)
+                  .join('\n');
+                if (rows) table = `\n\n| Criterion | Score |\n| --- | --- |\n${rows}`;
+              } catch (e) {
+                table = '';
+              }
+              body = `${marker}\n### 🤖 AI Code Review\n\n${icon} **Verdict: ${verdict.toUpperCase()}**${table}\n\n${summary}`;
+            }
+
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number,
+            });
+            const existing = comments.find((c) => c.body && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
+
+      # Apply the verdict label and remove its opposite atomically. Skipped on a
+      # fork skip or a neutral (verdict-less) outcome — those get no label.
+      - name: Apply verdict label
+        if: steps.review.outputs.skipped != 'true' && (steps.review.outputs.verdict == 'passed' || steps.review.outputs.verdict == 'failed')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          VERDICT: ${{ steps.review.outputs.verdict }}
+        run: |
+          set -euo pipefail
+          # Ensure the labels exist (idempotent; --force updates color if present).
+          gh label create "ai-cr:passed" --color 2EA043 --description "AI review passed" --force
+          gh label create "ai-cr:failed" --color D73A49 --description "AI review failed" --force
+          gh label create "ai-cr:review" --color 0969DA --description "Re-run AI review" --force
+          if [ "$VERDICT" = "passed" ]; then
+            gh pr edit "$PR" --add-label "ai-cr:passed" --remove-label "ai-cr:failed"
+          else
+            gh pr edit "$PR" --add-label "ai-cr:failed" --remove-label "ai-cr:passed"
+          fi
+
+      # MUST always run: the `labeled` trigger fires on the add-transition, so
+      # removing `ai-cr:review` is what makes re-adding it trigger another run.
+      - name: Clear retry label
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+        run: gh pr edit "$PR" --remove-label "ai-cr:review" || true
