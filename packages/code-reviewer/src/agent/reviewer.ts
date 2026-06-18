@@ -43,7 +43,10 @@ export async function reviewCode(options: ReviewCodeOptions): Promise<Review> {
   const agent = createReviewAgent({ model: options.model, apiKey: options.apiKey });
 
   const { output } = await agent.generate({
-    prompt: buildReviewPrompt(options.code, options.language),
+    prompt: buildReviewPrompt({
+      title: options.language ? `Code review (${options.language})` : "Code review",
+      diff: options.code,
+    }),
   });
 
   return output;

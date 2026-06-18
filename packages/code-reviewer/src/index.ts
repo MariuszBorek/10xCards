@@ -7,5 +7,5 @@
 
 export { reviewCode, createReviewAgent } from "./agent/reviewer.ts";
 export type { ReviewCodeOptions } from "./agent/reviewer.ts";
-export { ReviewFindingSchema, ReviewSchema } from "./schemas/review.ts";
-export type { Review, ReviewFinding } from "./schemas/review.ts";
+export { ReviewSchema, ReviewScoresSchema } from "./schemas/review.ts";
+export type { Review, ReviewScores } from "./schemas/review.ts";

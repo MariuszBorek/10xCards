@@ -11,16 +11,10 @@ import { reviewCode } from "./agent/reviewer.ts";
 
 /** Pretty-print a review to the console. */
 function printReview(review: Review): void {
-  console.log(`\nSummary: ${review.summary}\n`);
-  if (review.findings.length === 0) {
-    console.log("No issues found. ✅");
-    return;
-  }
-  for (const f of review.findings) {
-    const where = f.line === null ? "" : ` (line ${f.line})`;
-    console.log(`[${f.severity.toUpperCase()}] ${f.title}${where}`);
-    console.log(`  ${f.detail}`);
-    console.log(`  → ${f.suggestion}\n`);
+  console.log(`\nVerdict: ${review.verdict.toUpperCase()}`);
+  console.log(`Summary: ${review.summary}\n`);
+  for (const [criterion, value] of Object.entries(review.scores)) {
+    console.log(`  ${criterion}: ${value}/10`);
   }
 }
 
