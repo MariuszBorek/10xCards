@@ -583,26 +583,26 @@ on a throwaway branch/PR before considering the change done.
 
 #### Automated
 
-- [x] 2.1 Type checking passes: `npm run typecheck`
-- [x] 2.2 Linting passes: `npm run lint`
-- [x] 2.3 Mock CLI run emits a single parseable `{ verdict, summary, scores }` and exits 0 with no API key
+- [x] 2.1 Type checking passes: `npm run typecheck` — c3fb5a1
+- [x] 2.2 Linting passes: `npm run lint` — c3fb5a1
+- [x] 2.3 Mock CLI run emits a single parseable `{ verdict, summary, scores }` and exits 0 with no API key — c3fb5a1
 
 #### Manual
 
-- [x] 2.4 Fail-marker diff → `verdict: "failed"`; clean diff → `"passed"`
-- [x] 2.5 stdout contains only JSON (logging on stderr)
+- [x] 2.4 Fail-marker diff → `verdict: "failed"`; clean diff → `"passed"` — c3fb5a1
+- [x] 2.5 stdout contains only JSON (logging on stderr) — c3fb5a1
 
 ### Phase 3: Vitest Unit Tests
 
 #### Automated
 
-- [ ] 3.1 All tests pass: `npm test`
-- [ ] 3.2 Type checking passes: `npm run typecheck`
-- [ ] 3.3 Linting passes: `npm run lint`
+- [x] 3.1 All tests pass: `npm test`
+- [x] 3.2 Type checking passes: `npm run typecheck`
+- [x] 3.3 Linting passes: `npm run lint`
 
 #### Manual
 
-- [ ] 3.4 Test names read as a clear contract spec for the CLI/JSON interface
+- [x] 3.4 Test names read as a clear contract spec for the CLI/JSON interface
 
 ### Phase 4: Composite Action
 
