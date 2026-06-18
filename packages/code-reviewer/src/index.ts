@@ -8,7 +8,15 @@
 export { reviewCode, reviewPullRequest, createReviewAgent } from "./agent/reviewer.ts";
 export type { ReviewCodeOptions, ReviewPullRequestOptions } from "./agent/reviewer.ts";
 export { buildMockReview, MOCK_FAIL_MARKER } from "./agent/mock-review.ts";
-export { ReviewSchema, ReviewScoresSchema } from "./schemas/review.ts";
+export {
+  ReviewSchema,
+  ReviewScoresSchema,
+  ReviewWireSchema,
+  clampScores,
+  CRITERIA,
+  MIN_SCORE,
+  MAX_SCORE,
+} from "./schemas/review.ts";
 export type { Review, ReviewScores } from "./schemas/review.ts";
 export {
   REVIEW_INSTRUCTIONS,

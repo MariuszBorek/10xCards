@@ -1,7 +1,7 @@
 import { ToolLoopAgent, Output } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { isMockEnabled, resolveApiKey, resolveModel } from "../config.ts";
-import { ReviewSchema } from "../schemas/review.ts";
+import { ReviewSchema, ReviewWireSchema, clampScores } from "../schemas/review.ts";
 import type { Review } from "../schemas/review.ts";
 import { REVIEW_INSTRUCTIONS, buildReviewPrompt } from "../prompts/review.ts";
 import { buildMockReview } from "./mock-review.ts";
@@ -47,8 +47,19 @@ export function createReviewAgent(config?: { model?: string; apiKey?: string }) 
   return new ToolLoopAgent({
     model: openrouter(model),
     instructions: REVIEW_INSTRUCTIONS,
-    output: Output.object({ schema: ReviewSchema }),
+    // Send the provider-safe wire schema (no numeric bounds). The raw output is
+    // clamped + strict-validated by `finalizeReview` before it reaches callers.
+    output: Output.object({ schema: ReviewWireSchema }),
   });
+}
+
+/**
+ * Turn raw wire-schema output into a strict, contract-valid {@link Review}:
+ * clamp each score into the 1–10 range (the wire schema carries no bounds), then
+ * parse through {@link ReviewSchema} so callers always get a validated result.
+ */
+function finalizeReview(output: Review): Review {
+  return ReviewSchema.parse({ ...output, scores: clampScores(output.scores) });
 }
 
 /**
@@ -64,7 +75,7 @@ export async function reviewCode(options: ReviewCodeOptions): Promise<Review> {
     }),
   });
 
-  return output;
+  return finalizeReview(output);
 }
 
 /**
@@ -91,5 +102,5 @@ export async function reviewPullRequest(options: ReviewPullRequestOptions): Prom
     }),
   });
 
-  return output;
+  return finalizeReview(output);
 }
