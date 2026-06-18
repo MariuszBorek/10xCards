@@ -596,19 +596,19 @@ on a throwaway branch/PR before considering the change done.
 
 #### Automated
 
-- [x] 3.1 All tests pass: `npm test`
-- [x] 3.2 Type checking passes: `npm run typecheck`
-- [x] 3.3 Linting passes: `npm run lint`
+- [x] 3.1 All tests pass: `npm test` — b4d9c87
+- [x] 3.2 Type checking passes: `npm run typecheck` — b4d9c87
+- [x] 3.3 Linting passes: `npm run lint` — b4d9c87
 
 #### Manual
 
-- [x] 3.4 Test names read as a clear contract spec for the CLI/JSON interface
+- [x] 3.4 Test names read as a clear contract spec for the CLI/JSON interface — b4d9c87
 
 ### Phase 4: Composite Action
 
 #### Automated
 
-- [ ] 4.1 Action YAML is syntactically valid
+- [x] 4.1 Action YAML is syntactically valid
 
 #### Manual
 

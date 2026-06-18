@@ -1,0 +1,99 @@
+name: "AI PR Review"
+description: >-
+  Run the LLM code reviewer against a PR diff (data-only: reads the diff as
+  text, never executes PR code, no GITHUB_TOKEN) and expose the
+  verdict/scores/summary as step outputs. The calling workflow owns all
+  comment/label side-effects. Assumes the caller has already run
+  checkout + setup-node + `npm ci`.
+
+inputs:
+  openrouter-api-key:
+    description: >-
+      OpenRouter API key. When empty (e.g. a fork PR with no secrets) the
+      review is skipped: the action sets `skipped=true` and exits 0.
+    required: false
+    default: ""
+  diff-file:
+    description: "Path to a file containing the PR diff to review."
+    required: true
+  pr-title:
+    description: "PR title."
+    required: false
+    default: ""
+  pr-body:
+    description: "PR body."
+    required: false
+    default: ""
+  model:
+    description: "Optional OpenRouter model override (sets OPENROUTER_MODEL)."
+    required: false
+    default: ""
+
+outputs:
+  skipped:
+    description: "true when the review was skipped (no API key)."
+    value: ${{ steps.review.outputs.skipped }}
+  verdict:
+    description: "passed | failed | empty (empty = neutral: skipped or infra error)."
+    value: ${{ steps.review.outputs.verdict }}
+  summary:
+    description: "Human-readable review summary."
+    value: ${{ steps.review.outputs.summary }}
+  scores:
+    description: "Compact JSON object of the 7 criterion scores (empty object when none)."
+    value: ${{ steps.review.outputs.scores }}
+  error:
+    description: "Error message when the review was unavailable; empty otherwise."
+    value: ${{ steps.review.outputs.error }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: review
+      shell: bash
+      env:
+        # Inputs are forwarded through env (never interpolated into the script
+        # body) so a crafted PR title/body cannot inject shell.
+        OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
+        OPENROUTER_MODEL: ${{ inputs.model }}
+        PR_TITLE: ${{ inputs.pr-title }}
+        PR_BODY: ${{ inputs.pr-body }}
+        DIFF_FILE: ${{ inputs.diff-file }}
+      run: |
+        set -euo pipefail
+
+        # No key (fork PR / secret unset) → skip gracefully, never fail the check.
+        if [ -z "${OPENROUTER_API_KEY}" ]; then
+          echo "No OpenRouter API key provided — skipping AI review." >&2
+          echo "skipped=true" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+        echo "skipped=false" >> "$GITHUB_OUTPUT"
+
+        # Data-only LLM call. The CLI always exits 0: a clean review prints
+        # {verdict,summary,scores}; an infra/LLM error prints {verdict:null,error}.
+        json="$(npx tsx packages/code-reviewer/src/cli.ts \
+          --title "$PR_TITLE" \
+          --body "$PR_BODY" \
+          --diff-file "$DIFF_FILE")"
+
+        echo "Reviewer JSON: ${json}" >&2
+
+        verdict="$(printf '%s' "$json" | jq -r '.verdict // ""')"
+        summary="$(printf '%s' "$json" | jq -r '.summary // ""')"
+        scores="$(printf '%s' "$json" | jq -c '.scores // {}')"
+        error="$(printf '%s' "$json" | jq -r '.error // ""')"
+
+        # Single-line values via key=value; multi-line summary/error via heredoc.
+        echo "verdict=${verdict}" >> "$GITHUB_OUTPUT"
+        echo "scores=${scores}" >> "$GITHUB_OUTPUT"
+        {
+          echo "summary<<__EOF__"
+          echo "${summary}"
+          echo "__EOF__"
+        } >> "$GITHUB_OUTPUT"
+        {
+          echo "error<<__EOF__"
+          echo "${error}"
+          echo "__EOF__"
+        } >> "$GITHUB_OUTPUT"
