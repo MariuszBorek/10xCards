@@ -72,10 +72,14 @@ runs:
 
         # Data-only LLM call. The CLI always exits 0: a clean review prints
         # {verdict,summary,scores}; an infra/LLM error prints {verdict:null,error}.
+        # The CLI emits its machine-readable JSON as the FINAL stdout line and
+        # routes all human/debug logging to stderr, so take only the last line:
+        # this keeps parsing robust even when the reviewed PR adds stray stdout
+        # output to the reviewer code this action runs.
         json="$(npx tsx packages/code-reviewer/src/cli.ts \
           --title "$PR_TITLE" \
           --body "$PR_BODY" \
-          --diff-file "$DIFF_FILE")"
+          --diff-file "$DIFF_FILE" | tail -n 1)"
 
         echo "Reviewer JSON: ${json}" >&2
 
