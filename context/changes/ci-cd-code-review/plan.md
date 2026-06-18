@@ -619,8 +619,8 @@ on a throwaway branch/PR before considering the change done.
 
 #### Automated
 
-- [x] 5.1 Workflow YAML parses
-- [x] 5.2 `npm run typecheck` / `npm run lint` still pass
+- [x] 5.1 Workflow YAML parses — 1828b8d
+- [x] 5.2 `npm run typecheck` / `npm run lint` still pass — 1828b8d
 
 #### Manual
 
