@@ -28,10 +28,15 @@ providers:
     config:
       model: anthropic/claude-sonnet-4.6
 
-# Placeholder test case — real vars (the golden fixture) land in Phase 2 and the
-# deterministic + g-eval assertions land in Phase 3.
+# Golden fixture: a React 16→19 class→hooks + createRoot migration carrying three
+# planted, criterion-distinct flaws (XSS via dangerouslySetInnerHTML; a stale
+# closure from a missing useEffect dependency; a leaked listener subscription
+# with no cleanup). The deterministic + g-eval assertions land in Phase 3.
 tests:
   - vars:
-      title: "Placeholder"
-      body: "Placeholder test — replaced with the golden fixture in Phase 2."
-      diff: "+ // placeholder diff\n"
+      title: "Migrate NotificationFeed to React 19 (createRoot + hooks)"
+      body: |
+        Converts the legacy `NotificationFeed` class component to a function
+        component with hooks and adopts the React 19 `createRoot` API in the
+        app entrypoint. No behavior change intended — pure migration.
+      diff: file://eval/fixtures/react16-to-19.diff

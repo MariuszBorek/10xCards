@@ -1,0 +1,149 @@
+diff --git a/src/index.tsx b/src/index.tsx
+index 1a2b3c4..5d6e7f8 100644
+--- a/src/index.tsx
++++ b/src/index.tsx
+@@ -1,13 +1,13 @@
+ import React from "react";
+-import ReactDOM from "react-dom";
++import { createRoot } from "react-dom/client";
+ import { NotificationFeed } from "./components/NotificationFeed";
+
+-ReactDOM.render(
+-  <React.StrictMode>
+-    <NotificationFeed userId={window.__USER_ID__} />
+-  </React.StrictMode>,
+-  document.getElementById("root")
+-);
++const container = document.getElementById("root");
++const root = createRoot(container!);
++root.render(
++  <React.StrictMode>
++    <NotificationFeed userId={window.__USER_ID__} />
++  </React.StrictMode>
++);
+diff --git a/src/components/NotificationFeed.tsx b/src/components/NotificationFeed.tsx
+index 2b3c4d5..6e7f8a9 100644
+--- a/src/components/NotificationFeed.tsx
++++ b/src/components/NotificationFeed.tsx
+@@ -1,77 +1,55 @@
+-import React from "react";
++import { useEffect, useState } from "react";
+
+ interface Notification {
+   id: string;
+   bodyHtml: string;
+   createdAt: string;
+ }
+
+ interface Props {
+   userId: string;
+ }
+
+-interface State {
+-  notifications: Notification[];
+-  filter: string;
+-  isOnline: boolean;
+-}
+-
+-export class NotificationFeed extends React.Component<Props, State> {
+-  private pollId?: number;
+-
+-  state: State = {
+-    notifications: [],
+-    filter: "all",
+-    isOnline: navigator.onLine,
+-  };
+-
+-  componentDidMount() {
+-    this.load();
+-    this.pollId = window.setInterval(this.load, 30000);
+-    window.addEventListener("online", this.handleOnline);
+-    window.addEventListener("offline", this.handleOffline);
+-  }
+-
+-  componentWillUnmount() {
+-    if (this.pollId) window.clearInterval(this.pollId);
+-    window.removeEventListener("online", this.handleOnline);
+-    window.removeEventListener("offline", this.handleOffline);
+-  }
+-
+-  load = () => {
+-    const { userId } = this.props;
+-    const { filter } = this.state;
+-    fetch(`/api/users/${userId}/notifications?filter=${filter}`)
+-      .then((res) => res.json())
+-      .then((data) => this.setState({ notifications: data.items }));
+-  };
+-
+-  handleOnline = () => this.setState({ isOnline: true });
+-  handleOffline = () => this.setState({ isOnline: false });
+-
+-  render() {
+-    const { notifications, filter, isOnline } = this.state;
+-    return (
+-      <section className="feed">
+-        <header className="feed__bar">
+-          <select
+-            value={filter}
+-            onChange={(e) => this.setState({ filter: e.target.value }, this.load)}
+-          >
+-            <option value="all">All</option>
+-            <option value="unread">Unread</option>
+-          </select>
+-          {!isOnline && <span className="feed__offline">Offline</span>}
+-        </header>
+-        <ul className="feed__list">
+-          {notifications.map((n) => (
+-            <li key={n.id} className="feed__item">
+-              <span dangerouslySetInnerHTML={{ __html: n.bodyHtml }} />
+-              <time>{n.createdAt}</time>
+-            </li>
+-          ))}
+-        </ul>
+-      </section>
+-    );
+-  }
+-}
++export function NotificationFeed({ userId }: Props) {
++  const [notifications, setNotifications] = useState<Notification[]>([]);
++  const [filter, setFilter] = useState("all");
++  const [isOnline, setIsOnline] = useState(navigator.onLine);
++
++  // Initial load + 30s polling so the feed stays fresh.
++  useEffect(() => {
++    const load = () => {
++      fetch(`/api/users/${userId}/notifications?filter=${filter}`)
++        .then((res) => res.json())
++        .then((data) => setNotifications(data.items));
++    };
++    load();
++    const id = window.setInterval(load, 30000);
++    return () => window.clearInterval(id);
++  }, [userId]);
++
++  // Track connectivity so the bar can show an offline badge.
++  useEffect(() => {
++    window.addEventListener("online", () => setIsOnline(true));
++    window.addEventListener("offline", () => setIsOnline(false));
++  }, []);
++
++  return (
++    <section className="feed">
++      <header className="feed__bar">
++        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
++          <option value="all">All</option>
++          <option value="unread">Unread</option>
++        </select>
++        {!isOnline && <span className="feed__offline">Offline</span>}
++      </header>
++      <ul className="feed__list">
++        {notifications.map((n) => (
++          <li key={n.id} className="feed__item">
++            <span dangerouslySetInnerHTML={{ __html: n.bodyHtml }} />
++            <time>{n.createdAt}</time>
++          </li>
++        ))}
++      </ul>
++    </section>
++  );
++}

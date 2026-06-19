@@ -323,27 +323,27 @@ None — additive only; no existing code, schema, workflow, or `.nvmrc` changes.
 
 #### Automated
 
-- [x] 1.1 Type checking passes (`npm --workspace @10xcards/code-reviewer run typecheck`)
-- [x] 1.2 Provider wiring test passes (`npm test -- review-provider`)
-- [x] 1.3 Config validates (`npx promptfoo validate -c promptfooconfig.yaml`)
-- [x] 1.4 Lint passes (`npm run lint`)
+- [x] 1.1 Type checking passes (`npm --workspace @10xcards/code-reviewer run typecheck`) — 60ec806
+- [x] 1.2 Provider wiring test passes (`npm test -- review-provider`) — 60ec806
+- [x] 1.3 Config validates (`npx promptfoo validate -c promptfooconfig.yaml`) — 60ec806
+- [x] 1.4 Lint passes (`npm run lint`) — 60ec806
 
 #### Manual
 
-- [x] 1.5 `OPENROUTER_MOCK=true npm run eval` runs the 3-provider matrix end-to-end without crashing
-- [x] 1.6 promptfoo runs under the active Node (≥ 22.22.0)
+- [x] 1.5 `OPENROUTER_MOCK=true npm run eval` runs the 3-provider matrix end-to-end without crashing — 60ec806
+- [x] 1.6 promptfoo runs under the active Node (≥ 22.22.0) — 60ec806
 
 ### Phase 2: Golden fixture — React 16→19 diff with three planted flaws
 
 #### Automated
 
-- [ ] 2.1 Config still validates with the fixture wired
-- [ ] 2.2 Fixture exists and is ≥ 80 lines
+- [x] 2.1 Config still validates with the fixture wired
+- [x] 2.2 Fixture exists and is ≥ 80 lines
 
 #### Manual
 
-- [ ] 2.3 All three flaws present, each mapping to its intended criterion, migration framing reads naturally
-- [ ] 2.4 Fixture contains no `FAIL_MARKER`
+- [x] 2.3 All three flaws present, each mapping to its intended criterion, migration framing reads naturally
+- [x] 2.4 Fixture contains no `FAIL_MARKER`
 
 ### Phase 3: Assertions — deterministic failure + g-eval judge
 
