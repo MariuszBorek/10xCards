@@ -31,7 +31,8 @@ providers:
 # Golden fixture: a React 16→19 class→hooks + createRoot migration carrying three
 # planted, criterion-distinct flaws (XSS via dangerouslySetInnerHTML; a stale
 # closure from a missing useEffect dependency; a leaked listener subscription
-# with no cleanup). The deterministic + g-eval assertions land in Phase 3.
+# with no cleanup). The provider returns the Review as a JSON string, so the
+# deterministic checks `JSON.parse(output)` and the g-eval judge reads that text.
 tests:
   - vars:
       title: "Migrate NotificationFeed to React 19 (createRoot + hooks)"
@@ -40,3 +41,28 @@ tests:
         component with hooks and adopts the React 19 `createRoot` API in the
         app entrypoint. No behavior change intended — pure migration.
       diff: file://eval/fixtures/react16-to-19.diff
+    assert:
+      # Deterministic: the review must FAIL, and fail for the three *planted*
+      # criteria — not for unrelated reasons. Catches a model that returns
+      # `failed` while scoring security / correctness / error-handling as fine.
+      - type: javascript
+        value: |
+          const r = JSON.parse(output);
+          return (
+            r.verdict === 'failed' &&
+            r.scores.security < 5 &&
+            r.scores.correctness < 5 &&
+            (r.scores.errorHandling < 5 || r.scores.performance < 5)
+          );
+      # g-eval judge: did the review actually name / penalize each planted flaw?
+      # g-eval averages the three per-criterion scores; threshold 0.67 ≈ 2-of-3.
+      - type: g-eval
+        threshold: 0.67
+        value:
+          - "Identifies or penalizes the XSS from rendering unsanitized, user-controlled content via dangerouslySetInnerHTML"
+          - "Identifies or penalizes the stale-closure bug: the polling useEffect omits `filter` from its dependency array, so it keeps querying stale data"
+          - "Identifies or penalizes the leaked subscription: the connectivity useEffect registers online/offline listeners with no cleanup return"
+        provider:
+          id: openrouter:anthropic/claude-sonnet-4.6
+          config:
+            temperature: 0

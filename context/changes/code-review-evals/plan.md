@@ -337,25 +337,25 @@ None — additive only; no existing code, schema, workflow, or `.nvmrc` changes.
 
 #### Automated
 
-- [x] 2.1 Config still validates with the fixture wired
-- [x] 2.2 Fixture exists and is ≥ 80 lines
+- [x] 2.1 Config still validates with the fixture wired — f33a89c
+- [x] 2.2 Fixture exists and is ≥ 80 lines — f33a89c
 
 #### Manual
 
-- [x] 2.3 All three flaws present, each mapping to its intended criterion, migration framing reads naturally
-- [x] 2.4 Fixture contains no `FAIL_MARKER`
+- [x] 2.3 All three flaws present, each mapping to its intended criterion, migration framing reads naturally — f33a89c
+- [x] 2.4 Fixture contains no `FAIL_MARKER` — f33a89c
 
 ### Phase 3: Assertions — deterministic failure + g-eval judge
 
 #### Automated
 
-- [ ] 3.1 Config with assertions validates
-- [ ] 3.2 Type checking still passes
+- [x] 3.1 Config with assertions validates
+- [x] 3.2 Type checking still passes
 
 #### Manual
 
-- [ ] 3.3 Deterministic assertion's conditions match the three planted criteria + failed verdict
-- [ ] 3.4 g-eval criteria map one-per-flaw; grader is `openrouter:anthropic/claude-sonnet-4.6` at temp 0
+- [x] 3.3 Deterministic assertion's conditions match the three planted criteria + failed verdict
+- [x] 3.4 g-eval criteria map one-per-flaw; grader is `openrouter:anthropic/claude-sonnet-4.6` at temp 0
 
 ### Phase 4: Live 3-model run + documentation
 
