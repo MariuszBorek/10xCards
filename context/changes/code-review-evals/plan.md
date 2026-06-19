@@ -366,6 +366,6 @@ None — additive only; no existing code, schema, workflow, or `.nvmrc` changes.
 
 #### Manual
 
-- [x] 4.3 `npm run eval` emits a 3-model × assertions matrix with deterministic + g-eval results per model
-- [x] 4.4 `npm run eval:view` renders the comparison
-- [x] 4.5 README accurately describes running and interpreting the eval
+- [x] 4.3 `npm run eval` emits a 3-model × assertions matrix with deterministic + g-eval results per model — 960e958
+- [x] 4.4 `npm run eval:view` renders the comparison — 960e958
+- [x] 4.5 README accurately describes running and interpreting the eval — 960e958
