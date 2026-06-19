@@ -9,9 +9,9 @@
     "dev": "tsx src/cli.ts",
     "start": "tsx src/cli.ts",
     "typecheck": "tsc --noEmit",
-    "eval": "NODE_OPTIONS=\"--import tsx\" promptfoo eval -c promptfooconfig.yaml",
+    "eval": "PROMPTFOO_DISABLE_TEMPLATING=true NODE_OPTIONS=\"--import tsx\" promptfoo eval -c promptfooconfig.yaml",
     "eval:view": "promptfoo view",
-    "eval:validate": "NODE_OPTIONS=\"--import tsx\" promptfoo validate -c promptfooconfig.yaml"
+    "eval:validate": "PROMPTFOO_DISABLE_TEMPLATING=true NODE_OPTIONS=\"--import tsx\" promptfoo validate -c promptfooconfig.yaml"
   },
   "engines": {
     "node": ">=22.14.0"

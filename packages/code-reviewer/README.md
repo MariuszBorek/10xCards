@@ -73,7 +73,12 @@ npm run eval:validate  # check the config + provider load
 
 The provider is loaded as a TypeScript module, so the scripts run promptfoo
 under the [`tsx`](https://tsx.is/) loader (`NODE_OPTIONS="--import tsx"`) — there
-is no build step for the package's TS source.
+is no build step for the package's TS source. The scripts also set
+`PROMPTFOO_DISABLE_TEMPLATING=true`: the fixture's JSX (`dangerouslySetInnerHTML={{ … }}`)
+would otherwise be parsed as Nunjucks `{{ … }}` and fail to render. Our provider
+ignores promptfoo's prompt and reads the raw `diff` var directly, so disabling
+templating is safe here — and the g-eval grader is exempt, so the judge still
+renders normally.
 
 The matrix lives inside the agent: each provider entry in
 `promptfooconfig.yaml` carries a distinct `config.model` that the wrapper

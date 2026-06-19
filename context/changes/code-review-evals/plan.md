@@ -361,11 +361,11 @@ None — additive only; no existing code, schema, workflow, or `.nvmrc` changes.
 
 #### Automated
 
-- [x] 4.1 Config validates
-- [x] 4.2 Lint passes
+- [x] 4.1 Config validates — f608b62
+- [x] 4.2 Lint passes — f608b62
 
 #### Manual
 
-- [ ] 4.3 `npm run eval` emits a 3-model × assertions matrix with deterministic + g-eval results per model
-- [ ] 4.4 `npm run eval:view` renders the comparison
-- [ ] 4.5 README accurately describes running and interpreting the eval
+- [x] 4.3 `npm run eval` emits a 3-model × assertions matrix with deterministic + g-eval results per model
+- [x] 4.4 `npm run eval:view` renders the comparison
+- [x] 4.5 README accurately describes running and interpreting the eval
