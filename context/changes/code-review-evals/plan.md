@@ -122,7 +122,7 @@ Add promptfoo to the package, write the wrapping provider and the base config wi
 
 - Type checking passes: `npm --workspace @10xcards/code-reviewer run typecheck`
 - Provider wiring test passes: `npm test -- review-provider`
-- Config validates: `cd packages/code-reviewer && npx promptfoo validate -c promptfooconfig.yaml`
+- Config validates: `cd packages/code-reviewer && npm run eval:validate` (wraps `promptfoo validate` with the tsx loader + `PROMPTFOO_DISABLE_TEMPLATING=true` — the bare `npx promptfoo validate` errors on the `.ts` provider)
 - Lint passes: `npm run lint`
 
 #### Manual Verification:
@@ -167,7 +167,7 @@ Author the single complex migration diff and wire it into the test case as the `
 
 #### Automated Verification:
 
-- Config still validates: `cd packages/code-reviewer && npx promptfoo validate -c promptfooconfig.yaml`
+- Config still validates: `cd packages/code-reviewer && npm run eval:validate` (the bare `npx promptfoo validate` errors on the `.ts` provider — use the script, which adds the tsx loader)
 - Fixture exists and is non-trivial: `test "$(grep -c '' packages/code-reviewer/eval/fixtures/react16-to-19.diff)" -ge 80`
 
 #### Manual Verification:
@@ -226,7 +226,7 @@ Attach the two assertion families to the test case: a deterministic "failed for 
 
 #### Automated Verification:
 
-- Config with assertions validates: `cd packages/code-reviewer && npx promptfoo validate -c promptfooconfig.yaml`
+- Config with assertions validates: `cd packages/code-reviewer && npm run eval:validate` (the bare `npx promptfoo validate` errors on the `.ts` provider — use the script, which adds the tsx loader)
 - Type checking still passes: `npm --workspace @10xcards/code-reviewer run typecheck`
 
 #### Manual Verification:
@@ -266,7 +266,7 @@ Run the eval against the three real models, interpret the matrix, and document h
 
 #### Automated Verification:
 
-- Config validates: `cd packages/code-reviewer && npx promptfoo validate -c promptfooconfig.yaml`
+- Config validates: `cd packages/code-reviewer && npm run eval:validate` (the bare `npx promptfoo validate` errors on the `.ts` provider — use the script, which adds the tsx loader)
 - Lint passes: `npm run lint`
 
 #### Manual Verification:
