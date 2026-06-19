@@ -78,3 +78,37 @@ is no build step for the package's TS source.
 The matrix lives inside the agent: each provider entry in
 `promptfooconfig.yaml` carries a distinct `config.model` that the wrapper
 (`eval/review-provider.ts`) forwards into `reviewPullRequest({ model })`.
+
+**The fixture and its planted flaws**
+
+The single golden fixture (`eval/fixtures/react16-to-19.diff`) is a realistic
+React 16→19 migration — `ReactDOM.render`→`createRoot` plus a class component
+rewritten to function-with-hooks. It hides three impactful, criterion-distinct
+flaws so the eval has unambiguous ground truth:
+
+| #   | Flaw                                                                          | Criterion                   |
+| --- | ----------------------------------------------------------------------------- | --------------------------- |
+| 1   | XSS — unsanitized user content rendered via `dangerouslySetInnerHTML`         | security                    |
+| 2   | Stale closure — polling `useEffect` omits `filter` from its dependency array  | correctness                 |
+| 3   | Leaked subscription — connectivity `useEffect` adds listeners with no cleanup | errorHandling / performance |
+
+**What the two assertions verify**
+
+- **Deterministic (`javascript`)** — the review must `verdict: "failed"` **and**
+  score the three planted criteria below 5 (`security < 5`, `correctness < 5`,
+  and `errorHandling < 5 || performance < 5`). This catches a model that fails
+  the review for the _wrong_ reasons.
+- **g-eval judge** — a `claude-sonnet-4.6` grader (temperature 0) scores, per
+  model, whether the review actually _named or penalized_ each of the three
+  flaws. It averages the three per-criterion scores; the `0.67` threshold ≈
+  2-of-3.
+
+**Reading the per-model matrix**
+
+`npm run eval:view` renders one column per model (`glm-5.1`,
+`deepseek-v4-flash`, `sonnet-4.6`), each showing the deterministic pass/fail and
+the g-eval score. A model that **fails** here is signal about _that model's_
+review quality on this diff — not a config bug. The deterministic check tells
+you whether it failed for the planted reasons; the g-eval score tells you how
+many of the three flaws it surfaced. Re-runs are cached, so unchanged
+prompt/fixture inputs don't re-bill.

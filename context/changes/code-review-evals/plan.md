@@ -349,20 +349,20 @@ None — additive only; no existing code, schema, workflow, or `.nvmrc` changes.
 
 #### Automated
 
-- [x] 3.1 Config with assertions validates
-- [x] 3.2 Type checking still passes
+- [x] 3.1 Config with assertions validates — 80bdb1e
+- [x] 3.2 Type checking still passes — 80bdb1e
 
 #### Manual
 
-- [x] 3.3 Deterministic assertion's conditions match the three planted criteria + failed verdict
-- [x] 3.4 g-eval criteria map one-per-flaw; grader is `openrouter:anthropic/claude-sonnet-4.6` at temp 0
+- [x] 3.3 Deterministic assertion's conditions match the three planted criteria + failed verdict — 80bdb1e
+- [x] 3.4 g-eval criteria map one-per-flaw; grader is `openrouter:anthropic/claude-sonnet-4.6` at temp 0 — 80bdb1e
 
 ### Phase 4: Live 3-model run + documentation
 
 #### Automated
 
-- [ ] 4.1 Config validates
-- [ ] 4.2 Lint passes
+- [x] 4.1 Config validates
+- [x] 4.2 Lint passes
 
 #### Manual
 
