@@ -70,15 +70,18 @@ export const ReviewScoresSchema = buildScores((anchors) =>
 export type ReviewScores = z.infer<typeof ReviewScoresSchema>;
 
 /**
- * Provider-safe wire variant of {@link ReviewScoresSchema}: plain numbers with
- * NO `minimum`/`maximum` bounds. Some OpenRouter providers (notably Azure
- * OpenAI's strict structured outputs) reject `minimum`/`maximum` on integer
- * types and fail the entire call — and zod's `.int()` itself emits safe-integer
- * `minimum`/`maximum`, so even a bound-less `.int()` trips the provider. Using
- * `z.number()` yields a clean `{ type: "number" }`; the 1–10 integer range is
- * conveyed only through each criterion's description and is restored by
- * {@link clampScores} (which rounds + clamps) plus a strict {@link ReviewSchema}
- * parse, so dropping the bounds here never lets an out-of-range score escape.
+ * Provider-safe wire variant of {@link ReviewScoresSchema}: plain `number`
+ * scores with NO JSON-Schema bounds at all. This must stay `z.number()` and not
+ * `z.number().int()`: Zod 4 renders `.int()` as `{"type":"integer", "minimum":
+ * -9007199254740991, "maximum": 9007199254740991}` — it auto-attaches the
+ * safe-integer `minimum`/`maximum`. Anthropic's structured outputs reject ANY
+ * `minimum`/`maximum` on a numeric type ("output_config.format.schema: For
+ * 'integer' type, properties maximum, minimum are not supported") and fail the
+ * whole call, which broke every review made with the default claude model.
+ * A bare `number` emits `{"type":"number"}` with no bounds. The 1–10 integer
+ * range is conveyed via each criterion's description and enforced afterwards:
+ * {@link clampScores} rounds + clamps the model's output and {@link ReviewSchema}
+ * strict-validates it, so a fractional or out-of-range score never escapes.
  */
 const ReviewWireScoresSchema = buildScores((anchors) => z.number().describe(anchors));
 
