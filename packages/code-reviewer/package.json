@@ -8,7 +8,10 @@
   "scripts": {
     "dev": "tsx src/cli.ts",
     "start": "tsx src/cli.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "eval": "NODE_OPTIONS=\"--import tsx\" promptfoo eval -c promptfooconfig.yaml",
+    "eval:view": "promptfoo view",
+    "eval:validate": "NODE_OPTIONS=\"--import tsx\" promptfoo validate -c promptfooconfig.yaml"
   },
   "engines": {
     "node": ">=22.14.0"
@@ -20,6 +23,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.9.3",
+    "promptfoo": "^0.120.19",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3"
   }

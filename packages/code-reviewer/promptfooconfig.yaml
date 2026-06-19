@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+#
+# First promptfoo eval for the code reviewer: run the SAME production review
+# prompt across three OpenRouter models against one golden fixture.
+#
+# The model matrix lives *inside* our agent, not in promptfoo's provider layer:
+# all three providers point at the same wrapper (eval/review-provider.ts); each
+# carries a distinct `config.model` that the wrapper forwards into
+# `reviewPullRequest({ model })`. The fixture and assertions land in later phases.
+description: "Code reviewer — 3-model comparison on a golden React 16→19 migration diff"
+
+# The provider builds its own prompt internally from the test vars (title/body/
+# diff), so this is just a passthrough to satisfy promptfoo's prompt requirement.
+prompts:
+  - "{{diff}}"
+
+providers:
+  - id: file://./eval/review-provider.ts
+    label: glm-5.1
+    config:
+      model: z-ai/glm-5.1
+  - id: file://./eval/review-provider.ts
+    label: deepseek-v4-flash
+    config:
+      model: deepseek/deepseek-v4-flash
+  - id: file://./eval/review-provider.ts
+    label: sonnet-4.6
+    config:
+      model: anthropic/claude-sonnet-4.6
+
+# Placeholder test case — real vars (the golden fixture) land in Phase 2 and the
+# deterministic + g-eval assertions land in Phase 3.
+tests:
+  - vars:
+      title: "Placeholder"
+      body: "Placeholder test — replaced with the golden fixture in Phase 2."
+      diff: "+ // placeholder diff\n"

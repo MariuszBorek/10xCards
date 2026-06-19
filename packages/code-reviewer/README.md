@@ -50,3 +50,31 @@ loads no `.env` and runs no demo. Module layout:
 | `OPENROUTER_MODEL`   | `anthropic/claude-sonnet-4.6` | Model id used for reviews |
 
 `.env` is loaded natively by Node 22 (`process.loadEnvFile`) — no `dotenv` needed.
+
+## Evals (promptfoo)
+
+The same production review prompt is evaluated across three OpenRouter models
+against one golden fixture using [promptfoo](https://www.promptfoo.dev/).
+
+**Prerequisites**
+
+- Node ≥ 22.22.0 (promptfoo's current floor; the repo pins 22.14.0, so the eval
+  is run locally on a newer Node — `.nvmrc` and CI are left untouched).
+- `OPENROUTER_API_KEY` set (in this package's `.env` or the environment).
+
+**Run**
+
+```bash
+cd packages/code-reviewer
+npm run eval           # promptfoo eval -c promptfooconfig.yaml
+npm run eval:view      # open the side-by-side comparison UI
+npm run eval:validate  # check the config + provider load
+```
+
+The provider is loaded as a TypeScript module, so the scripts run promptfoo
+under the [`tsx`](https://tsx.is/) loader (`NODE_OPTIONS="--import tsx"`) — there
+is no build step for the package's TS source.
+
+The matrix lives inside the agent: each provider entry in
+`promptfooconfig.yaml` carries a distinct `config.model` that the wrapper
+(`eval/review-provider.ts`) forwards into `reviewPullRequest({ model })`.
